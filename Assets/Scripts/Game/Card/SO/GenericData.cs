@@ -4,5 +4,7 @@ using UnityEngine;
 public class GenericData : ScriptableObject
 {
     public int elixir;
-    public float arrangementWaitTime;
+    public Vector3 positionAdjustment;
+
+    public GameObject model;
 }

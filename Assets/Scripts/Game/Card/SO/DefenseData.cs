@@ -5,6 +5,7 @@ public class DefenseData : ScriptableObject
 {
     public float health;
     public float shiledHealth;
-    public float size;
-    public float weight;
+
+    public EntityType entityType;
+    public float radius;
 }
