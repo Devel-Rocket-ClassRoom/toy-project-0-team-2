@@ -7,6 +7,7 @@ using Unity.AI.Navigation;
 
 public class StageBuilder : MonoBehaviour
 {
+    // test
     public GameObject Lode;
     public GameObject Plain;
 
