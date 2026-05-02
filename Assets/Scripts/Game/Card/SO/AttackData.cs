@@ -5,10 +5,9 @@ using UnityEngine;
 public class AttackData : ScriptableObject
 {
     [Header("유닛이 사용할 값")]
-    public float attackInterval;
-    public float firstAttackTime;
-    public float lastDelay;
-    public float loadTime;
+    public float attackInterval; // 공격 간격 (선후딜 총합보다 짧으면 0으로 두기)
+    public float firstAttackTime; // 선딜레이
+    public float lastDelay; // 후딜레이
     public float sightRange; // 시야
     public float attackRange; // 사거리
 

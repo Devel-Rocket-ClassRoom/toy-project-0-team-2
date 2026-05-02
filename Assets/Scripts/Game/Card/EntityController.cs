@@ -32,7 +32,7 @@ public abstract class EntityController : MonoBehaviour
             size = cardData.DefenseData.radius;
         }
 
-        if (cardData.model != null)
+        if (model != null)
             Instantiate(model, modelPosition);
     }
 

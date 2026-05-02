@@ -11,11 +11,9 @@ public class UnitController : EntityController, IDamageable
     private float activateWaitTime;
     private bool isLockOn;
 
-    private float crownTowerDamage;
     private float attackInterval = 0f;
 
     private EntityType attackFilter;
-    private AttackType attackType;
 
     private float health;
 
@@ -176,15 +174,24 @@ public class UnitController : EntityController, IDamageable
 
     IEnumerator CoAttack()
     {
+        if (cardData == null || cardData.AttackData == null)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(cardData.AttackData.firstAttackTime);
 
-        GameObject entity = Instantiate(CardArrangementManager.spell.gameObject);
+        if (target == null)
+        {
+            yield break;
+        }
 
+        GameObject entity = Instantiate(CardArrangementManager.spell.gameObject);
         var controller = entity.GetComponent<SpellController>();
         controller.team = team;
         controller.Init(cardData, transform.position, target.transform.position, transform.forward);
         controller.target = target;
-        // 해당 코드는 CAM에서 처리할 것. 메서드 이름 : RequestAttack?
+
 
         yield return new WaitForSeconds(cardData.AttackData.lastDelay);
         runningCoroutine = null;
@@ -206,6 +213,7 @@ public class UnitController : EntityController, IDamageable
 
     private void Dead()
     {
+        StopAllCoroutines();
         EntityManager.onEntitiesChanged -= LockOn;
         EntityManager.RemoveEntities(this);
         Destroy(gameObject);
