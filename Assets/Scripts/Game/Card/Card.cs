@@ -1,6 +1,17 @@
+using System;
 using UnityEngine;
 
-public class Card : MonoBehaviour
+[CreateAssetMenu(fileName = "Card", menuName = "Scriptable Objects/Card")]
+public class Card : ScriptableObject
 {
-    public CardData[] cardDatas;
+    public CardDataStructure[] cardDatas;
+
+    public float arrangmentCompletTime;
+}
+
+[Serializable]
+public struct CardDataStructure
+{
+    public CardData cardData;
+    public Vector3 positionAdjustment;
 }

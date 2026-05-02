@@ -3,44 +3,61 @@ using UnityEngine;
 
 public class CardArrangementManager: MonoBehaviour
 {
+    public static UnitController unit;
+    public static TowerController tower;
+    public static SpellController spell;
     public UnitController unitPrefab;
     public TowerController towerPrefab;
     public SpellController spellPrefab;
-    private float arrangmentCompletTime = 0.2f;
+    public Card KingTower;
+    public Transform RedTeamKing;
+    public Transform BlueTeamKing;
 
-    public void Arrangement(CardData[] cardDatas, Team team, Vector3 point)
+    private void Start()
     {
-        StartCoroutine(CoArrangement(cardDatas, team, point));
+        unit = unitPrefab;
+        tower = towerPrefab;
+        spell = spellPrefab;
+
+        Arrangement(KingTower, Team.RedTeam, RedTeamKing.position);
+        Arrangement(KingTower, Team.BlueTeam, BlueTeamKing.position);
     }
 
-    IEnumerator CoArrangement(CardData[] cards, Team team, Vector3 point)
+    public void Arrangement(Card card, Team team, Vector3 point)
     {
-        float arrangementInterval = arrangmentCompletTime / cards.Length;
+        StartCoroutine(CoArrangement(card, team, point));
+    }
 
-        for (int i = 0; i < cards.Length; i++)
+    IEnumerator CoArrangement(Card card, Team team, Vector3 point)
+    {
+        var cardDatas = card.cardDatas;
+        float arrangementInterval = card.arrangmentCompletTime / cardDatas.Length;
+
+        for (int i = 0; i < cardDatas.Length; i++)
         {
             GameObject entity = null;
 
-            if (cards[i] is UnitData unit)
+            if (cardDatas[i].cardData is UnitData unit)
             {
                 entity = Instantiate(unitPrefab.gameObject);
             }
-            else if (cards[i] is TowerData tower)
+            else if (cardDatas[i].cardData is TowerData tower)
             {
                 entity = Instantiate(towerPrefab.gameObject);
             }
-            else if (cards[i] is SpellData spell)
+            else if (cardDatas[i].cardData is SpellData spell)
             {
                 entity = Instantiate(spellPrefab.gameObject);
             }
 
-            entity.transform.position = point + cards[i].positionAdjustment;
-
             var controller = entity.GetComponent<EntityController>();
-            controller.Init(cards[i]);
             controller.team = team;
+            controller.Init(cardDatas[i].cardData, point);
 
-            EntityManager.AddEntities(controller);
+            if (controller is not SpellController)
+            {
+                EntityManager.AddEntities(controller);
+            }
 
             yield return new WaitForSeconds(arrangementInterval);
         }

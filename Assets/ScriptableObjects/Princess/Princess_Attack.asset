@@ -10,18 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5251c65367c76ba408a00f633f5a172e, type: 3}
-  m_Name: ArenaTower_Attack
+  m_Name: Princess_Attack
   m_EditorClassIdentifier: Assembly-CSharp::AttackData
-  damage: 60
-  crownTowerDamage: 0
-  attackInterval: 0.5
-  firstAttackTime: 0.4
-  lastDelay: 0.1
+  attackInterval: 3
+  firstAttackTime: 0.7
+  lastDelay: 0.2
   loadTime: 0
-  sightRange: 10
-  attackRange: 10
+  sightRange: 11
+  attackRange: 9
+  damage: 169
+  crownTowerDamage: 0
   knuckbackTile: 0
   freezeTime: 0
-  attackTarget: -1
-  attackType: 0
-  attackModel: {fileID: 0}
+  attackArriveTime: 0
+  projectileSpeed: 12
+  attackRadius: 1.5
+  attackFilter: -1
+  attackType: 1
+  attackModel: {fileID: 467419676813794834, guid: 6eafbe893e477774784421c166a47381, type: 3}
+  attackArriveModel: {fileID: 4286784737559568395, guid: 6074dd0f40661b447bb30319d5a8ba37, type: 3}

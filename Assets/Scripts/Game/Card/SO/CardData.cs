@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
+[Serializable]
 public abstract class CardData : ScriptableObject
 {
     public int elixir;
-    public Vector3 positionAdjustment;
 
     public AttackData AttackData;
     public DefenseData DefenseData;

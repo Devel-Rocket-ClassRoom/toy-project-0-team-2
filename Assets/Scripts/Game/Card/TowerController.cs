@@ -7,7 +7,6 @@ public class TowerController : EntityController, IDamageable
 {
     private NavMeshAgent agent;
 
-    private TowerData unitData;
     private float activateWaitTime;
     private bool isLockOn;
 
@@ -27,12 +26,12 @@ public class TowerController : EntityController, IDamageable
     {
         get
         {
-            var entities = team == Team.RedTeam ? EntityManager.blueTeamEnntities : EntityManager.redTeamEntities;
+            var entities = team == Team.RedTeam ? EntityManager.blueTeamEntities : EntityManager.redTeamEntities;
 
             EntityController result = null;
             float min = float.MaxValue;
 
-            float rangeSqr = unitData.AttackData.sightRange * unitData.AttackData.sightRange;
+            float rangeSqr = cardData.AttackData.sightRange * cardData.AttackData.sightRange;
             foreach (var entity in entities)
             {
                 if ((attackTarget & entity.entityType) == 0) { continue; }
@@ -56,31 +55,29 @@ public class TowerController : EntityController, IDamageable
     }
     private EntityController target;
 
-    private Coroutine runningCoroutine;
-
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
     }
 
-    public override void Init(CardData cardData)
+    public override void Init(CardData cardData, Vector3 point)
     {
-        base.Init(cardData);
+        base.Init(cardData, point);
 
         if (cardData is TowerData unit)
         {
-            unitData = unit;
+            this.cardData = unit;
 
             damage = unit.AttackData.damage;
             health = unit.DefenseData.health;
 
             rangeSqr = unit.AttackData.attackRange * unit.AttackData.attackRange;
-            attackTarget = unit.AttackData.attackTarget;
+            attackTarget = unit.AttackData.attackFilter;
 
             hpComsumePerSecond = unit.lifeTime > 0 ? health / unit.lifeTime : 0;
         }
 
-        activateWaitTime = unitData.activateWaitTime;
+        activateWaitTime = this.cardData.activateWaitTime;
         EntityManager.onEntitiesChanged += LockOn;
     }
 
@@ -134,13 +131,13 @@ public class TowerController : EntityController, IDamageable
         if (isLockOn && runningCoroutine == null)
         {
             runningCoroutine = StartCoroutine(CoAttack());
-            attackInterval = unitData.AttackData.attackInterval;
+            attackInterval = cardData.AttackData.attackInterval;
         }
     }
 
     IEnumerator CoAttack()
     {
-        yield return new WaitForSeconds(unitData.AttackData.firstAttackTime);
+        yield return new WaitForSeconds(cardData.AttackData.firstAttackTime);
 
         switch (attackType)
         {
@@ -153,7 +150,7 @@ public class TowerController : EntityController, IDamageable
                 break;
         }
 
-        yield return new WaitForSeconds(unitData.AttackData.lastDelay);
+        yield return new WaitForSeconds(cardData.AttackData.lastDelay);
         runningCoroutine = null;
     }
 
@@ -167,12 +164,12 @@ public class TowerController : EntityController, IDamageable
         }
     }
 
-    public void TakeDamage(float damage, Team team)
+    public override void TakeDamage(float damage, Team team)
     {
         if (this.team == team) return;
-
-        //Debug.Log($"{team} 타워피격! 남은체력 {health}");
+        
         TakeDamage(damage);
+        Debug.Log($"{team} 타워피격! 남은체력 {health}");
     }
 
     private void Dead()

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.EventSystems.EventTrigger;
@@ -7,15 +8,13 @@ public class UnitController : EntityController, IDamageable
 {
     private NavMeshAgent agent;
 
-    private UnitData unitData;
     private float activateWaitTime;
     private bool isLockOn;
 
-    private float damage;
     private float crownTowerDamage;
     private float attackInterval = 0f;
 
-    private EntityType attackTarget;
+    private EntityType attackFilter;
     private AttackType attackType;
 
     private float health;
@@ -52,17 +51,17 @@ public class UnitController : EntityController, IDamageable
     {
         get
         {
-            var entities = team == Team.RedTeam ? EntityManager.blueTeamEnntities : EntityManager.redTeamEntities;
+            var entities = team == Team.RedTeam ? EntityManager.blueTeamEntities : EntityManager.redTeamEntities;
 
             EntityController result = null;
             float min = float.MaxValue;
 
             foreach (var entity in entities)
             {
-                if ((attackTarget & entity.entityType) == 0) { Debug.Log($"공격타입 같지 않음 : {attackTarget} / {entity.entityType}"); continue; }
+                if ((attackFilter & entity.entityType) == 0) { Debug.Log($"공격타입 같지 않음 : {attackFilter} / {entity.entityType}"); continue; }
                 if (entity == this) { continue; }
 
-                float range = unitData.AttackData.sightRange + size + entity.size;
+                float range = cardData.AttackData.sightRange + size + entity.size;
                 Vector3 diff = entity.transform.position - transform.position;
                 diff.y = 0;
 
@@ -86,28 +85,25 @@ public class UnitController : EntityController, IDamageable
     }
     private EntityController target;
 
-    private Coroutine runningCoroutine;
-
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
     }
 
-    public override void Init(CardData cardData)
+    public override void Init(CardData cardData, Vector3 point)
     {
-        base.Init(cardData);
+        base.Init(cardData, point);
 
         if (cardData is UnitData unit)
         {
-            unitData = unit;
+            this.cardData = unit;
 
-            damage = unit.AttackData.damage;
             health = unit.DefenseData.health;
 
-            attackTarget = unit.AttackData.attackTarget;
+            attackFilter = unit.AttackData.attackFilter;
         }
 
-        activateWaitTime = unitData.activateWaitTime;
+        activateWaitTime = this.cardData.activateWaitTime;
         EntityManager.onEntitiesChanged += LockOn;
     }
 
@@ -136,6 +132,10 @@ public class UnitController : EntityController, IDamageable
                 Attack();
             }
         }
+        else
+        {
+            isLockOn = false;
+        }
 
         attackInterval -= Time.deltaTime;
     }
@@ -152,15 +152,15 @@ public class UnitController : EntityController, IDamageable
     }
     protected override void LockOn()
     {
-        target = NearestTarget;
+        if (!isLockOn)
+            target = NearestTarget;
     }
 
     protected override void CheckAttackRange()
     {
         Vector3 diff = target.transform.position - transform.position;
         diff.y = 0;
-
-        float range = unitData.AttackData.attackRange + size + target.size;
+        float range = cardData.AttackData.attackRange + size + target.size;
 
         isLockOn = diff.sqrMagnitude < range * range;
     }
@@ -170,30 +170,27 @@ public class UnitController : EntityController, IDamageable
         if (isLockOn && runningCoroutine == null)
         { 
             runningCoroutine = StartCoroutine(CoAttack());
-            attackInterval = unitData.AttackData.attackInterval;
+            attackInterval = cardData.AttackData.attackInterval;
         }
     }
 
     IEnumerator CoAttack()
     {
-        yield return new WaitForSeconds(unitData.AttackData.firstAttackTime);
+        yield return new WaitForSeconds(cardData.AttackData.firstAttackTime);
 
-        switch (attackType)
-        {
-            case AttackType.Single:
-                if (target == null) break;
-                target.transform.GetComponent<IDamageable>().TakeDamage(damage, team);
-                break;
-            case AttackType.Area:
-                // 데미지를 주는 오브젝트 생성
-                break;
-        }
+        GameObject entity = Instantiate(CardArrangementManager.spell.gameObject);
 
-        yield return new WaitForSeconds(unitData.AttackData.lastDelay);
+        var controller = entity.GetComponent<SpellController>();
+        controller.team = team;
+        controller.Init(cardData, transform.position, target.transform.position, transform.forward);
+        controller.target = target;
+        // 해당 코드는 CAM에서 처리할 것. 메서드 이름 : RequestAttack?
+
+        yield return new WaitForSeconds(cardData.AttackData.lastDelay);
         runningCoroutine = null;
     }
 
-    public void TakeDamage(float damage, Team team)
+    public override void TakeDamage(float damage, Team team)
     {
         if (this.team == team) return;
 

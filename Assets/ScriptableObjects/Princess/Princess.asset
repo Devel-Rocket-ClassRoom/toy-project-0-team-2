@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300f6651ac0f4ed45a5974fcedfad824, type: 3}
+  m_Name: Princess
+  m_EditorClassIdentifier: Assembly-CSharp::UnitData
+  elixir: 0
+  AttackData: {fileID: 11400000, guid: 68e6c38729f2d574caee0b8a04bca43d, type: 2}
+  DefenseData: {fileID: 11400000, guid: 80b7bfa31c3dd2247b17a9381ca34c27, type: 2}
+  SpecialData: {fileID: 0}
+  model: {fileID: 8407263951156874503, guid: bb6cb412e201f67439ae4b39f000ffd8, type: 3}
+  activateWaitTime: 1.2
+  tilePerSeconds: 1
