@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Arrow Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardDatas:
-  - cardData: {fileID: 11400000, guid: feccc6452dfda1b47be92c929c2a2415, type: 2}
+  - entityData: {fileID: 11400000, guid: feccc6452dfda1b47be92c929c2a2415, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}
-  - cardData: {fileID: 11400000, guid: feccc6452dfda1b47be92c929c2a2415, type: 2}
+  - entityData: {fileID: 11400000, guid: feccc6452dfda1b47be92c929c2a2415, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}
-  - cardData: {fileID: 11400000, guid: feccc6452dfda1b47be92c929c2a2415, type: 2}
+  - entityData: {fileID: 11400000, guid: feccc6452dfda1b47be92c929c2a2415, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}
   arrangmentCompletTime: 0.3

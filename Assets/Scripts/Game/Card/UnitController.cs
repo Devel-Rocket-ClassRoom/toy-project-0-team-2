@@ -6,16 +6,24 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class UnitController : EntityController, IDamageable
 {
+    [SerializeField]
+    private EntityState state;
+
+    private TargetFinder targetFinder;
+    private EntityMover entityMover;
+    private EntityAttacker entityAttacker;
     private NavMeshAgent agent;
 
     private float activateWaitTime;
     private bool isLockOn;
 
-    private float attackInterval = 0f;
+    private float lastAttackTime;
 
     private EntityType attackFilter;
 
     private float health;
+    private float speed;
+    private float continuousMoveTime = 0f;
 
 
     private TowerController NearestCrownTower
@@ -85,12 +93,15 @@ public class UnitController : EntityController, IDamageable
 
     private void Awake()
     {
+        targetFinder = GetComponent<TargetFinder>();
+        entityMover = GetComponent<EntityMover>();
+        entityAttacker = GetComponent<EntityAttacker>();
         agent = GetComponent<NavMeshAgent>();
     }
 
-    public override void Init(CardData cardData, Vector3 point)
+    public override void Init(EntityData cardData, Vector3 point, Team team)
     {
-        base.Init(cardData, point);
+        base.Init(cardData, point, team);
 
         if (cardData is UnitData unit)
         {
@@ -102,104 +113,19 @@ public class UnitController : EntityController, IDamageable
         }
 
         activateWaitTime = this.cardData.activateWaitTime;
-        EntityManager.onEntitiesChanged += LockOn;
+        speed = (cardData as UnitData).tilePerSeconds;
     }
 
     private void Update()
     {
-        if (activateWaitTime > 0f)
-        {
-            activateWaitTime -= Time.deltaTime;
-            // 이곳에서 타이머UI 갱신
-            return;
-        }
-
-        if (Time.time - lastSearchTime > searchInterval)
-        {
-            LockOn();
-            lastSearchTime = Time.time;
-        }
-
-        if (target != null)
-        {
-            Move();
-            CheckAttackRange();
-
-            if (attackInterval < 0f)
-            {
-                Attack();
-            }
-        }
-        else
-        {
-            isLockOn = false;
-        }
-
-        attackInterval -= Time.deltaTime;
+        CheckTransition();
+        ExecuteState();
     }
 
-    protected override void Move()
-    {
-        agent.isStopped = isLockOn;
-        if (isLockOn)
-        {
-            return;
-        }
-
-        agent.SetDestination(target.transform.position);
-    }
-    protected override void LockOn()
-    {
-        if (!isLockOn)
-            target = NearestTarget;
-    }
-
-    protected override void CheckAttackRange()
-    {
-        Vector3 diff = target.transform.position - transform.position;
-        diff.y = 0;
-        float range = cardData.AttackData.attackRange + size + target.size;
-
-        isLockOn = diff.sqrMagnitude < range * range;
-    }
-
-    protected override void Attack()
-    {
-        if (isLockOn && runningCoroutine == null)
-        { 
-            runningCoroutine = StartCoroutine(CoAttack());
-            attackInterval = cardData.AttackData.attackInterval;
-        }
-    }
-
-    IEnumerator CoAttack()
-    {
-        if (cardData == null || cardData.AttackData == null)
-        {
-            yield break;
-        }
-
-        yield return new WaitForSeconds(cardData.AttackData.firstAttackTime);
-
-        if (target == null)
-        {
-            yield break;
-        }
-
-        GameObject entity = Instantiate(CardArrangementManager.spell.gameObject);
-        var controller = entity.GetComponent<SpellController>();
-        controller.team = team;
-        controller.Init(cardData, transform.position, target.transform.position, transform.forward);
-        controller.target = target;
-
-
-        yield return new WaitForSeconds(cardData.AttackData.lastDelay);
-        runningCoroutine = null;
-    }
-
-    public override void TakeDamage(float damage, Team team)
+    public void TakeDamage(float damage, Team team)
     {
         if (this.team == team) return;
+        if (health < 0) return;
 
         health -= damage;
 
@@ -214,8 +140,126 @@ public class UnitController : EntityController, IDamageable
     private void Dead()
     {
         StopAllCoroutines();
-        EntityManager.onEntitiesChanged -= LockOn;
         EntityManager.RemoveEntities(this);
         Destroy(gameObject);
     }
+
+
+
+    private void CheckTransition()
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                if (activateWaitTime < 0) { ChangeState(EntityState.LookingForTarget); }
+                break;
+            case EntityState.LookingForTarget:
+                if (entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.Attack); }
+                if (cardData.SpecialData != null
+                    && cardData.SpecialData.hasSprint
+                    && continuousMoveTime > cardData.SpecialData.springPrepareTime)
+                    { ChangeState(EntityState.Sprint); }
+                break;
+            case EntityState.Attack:
+                if (target == null || !entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.LookingForTarget); }
+                break;
+            case EntityState.Sprint:
+                if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange))
+                {
+                    runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, target, team));
+                    ChangeState(EntityState.Attack);
+                }
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                break;
+        }
+    }
+    private void ExecuteState()
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                runningCoroutine = null;
+                activateWaitTime -= Time.deltaTime;
+                break;
+            case EntityState.LookingForTarget:
+                entityMover.MoveTo(target, speed);
+                continuousMoveTime += Time.deltaTime;
+                if (Time.time - lastSearchTime > searchInterval || EntityManager.isEntityUpdated)
+                {
+                    target = targetFinder?.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);
+                    if (target == null) target = targetFinder?.FindNearestCrownTower(team, attackFilter);
+                    lastSearchTime = Time.time;
+                }
+                break;
+            case EntityState.Attack:
+                if (Time.time - lastAttackTime > cardData.AttackData.attackInterval)
+                {
+                    StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, target, team));
+                    lastAttackTime = Time.time;
+                }
+                if (target != null)
+                    transform.LookAt(target.transform.position);
+                break;
+            case EntityState.Sprint:
+                entityMover.MoveTo(target, cardData.SpecialData.sprintSpeed);
+                if (Time.time - lastSearchTime > searchInterval)
+                {
+                    targetFinder.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);
+                    lastSearchTime = Time.time;
+                }
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                if (cardData.SpecialData != null && cardData.SpecialData.hasDeathrattle)
+                {
+
+                }
+                break;
+        }
+    }
+    private void ChangeState(EntityState state)
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                break;
+            case EntityState.LookingForTarget:
+                entityMover.MoveControl(false);
+                break;
+            case EntityState.Attack:
+                entityMover.MoveControl(true);
+                break;
+            case EntityState.Sprint:
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                break;
+        }
+
+        continuousMoveTime = 0f;
+        this.state = state;
+    }
+}
+
+
+public enum EntityState
+{
+    Idle,
+    LookingForTarget,
+    Attack,
+    Sprint,
+    PrepareCharge,
+    Charge,
+    Dead,
 }

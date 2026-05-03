@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b39515e34a56c1544a95a85e9f8c0602, type: 3}
-  m_Name: Princess Card
+  m_Name: Prince Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardDatas:
-  - entityData: {fileID: 11400000, guid: 915889229b96f2048bca62e1dae2edbf, type: 2}
+  - entityData: {fileID: 11400000, guid: 01ff4a122931ab946a44ebc500e772e0, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}
   arrangmentCompletTime: 0

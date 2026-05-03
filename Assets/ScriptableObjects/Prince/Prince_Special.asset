@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b32ec77296c8fd2418e14583e142ba3d, type: 3}
+  m_Name: Prince_Special
+  m_EditorClassIdentifier: Assembly-CSharp::SpecialData
+  hasSprint: 1
+  springPrepareTime: 2.5
+  sprintSpeed: 2
+  sprintAttack: {fileID: 11400000, guid: c993c3a263b88e74897f0e6047b3f961, type: 2}
+  hasCharge: 0
+  chargePrepareTime: 0
+  chargeSpeed: 0
+  chargeAttack: {fileID: 0}
+  hasBattleCry: 0
+  hasDeathrattle: 0

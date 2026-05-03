@@ -4,6 +4,8 @@ using System;
 
 public static class EntityManager
 {
+    public static bool isEntityUpdated = false;
+
     public static List<EntityController> redTeamEntities = new List<EntityController>();
     public static List<EntityController> blueTeamEntities = new List<EntityController>();
 
@@ -35,7 +37,7 @@ public static class EntityManager
             }
         }
 
-        onEntitiesChanged?.Invoke();
+        isEntityUpdated = true;
     }
 
     public static void RemoveEntities(EntityController entity)

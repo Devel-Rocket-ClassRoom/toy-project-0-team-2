@@ -5,13 +5,15 @@ public class CardArrangementManager: MonoBehaviour
 {
     public static UnitController unit;
     public static TowerController tower;
-    public static SpellController spell;
+    public static AttackEntityController spell;
     public UnitController unitPrefab;
     public TowerController towerPrefab;
-    public SpellController spellPrefab;
-    public Card KingTower;
+    public AttackEntityController spellPrefab;
+    public CardData KingTower;
     public Transform RedTeamKing;
     public Transform BlueTeamKing;
+
+    private Vector3 GetKingTowerPosition(Team team) => team == Team.RedTeam ? RedTeamKing.position : BlueTeamKing.position;
 
     private void Start()
     {
@@ -23,43 +25,83 @@ public class CardArrangementManager: MonoBehaviour
         Arrangement(KingTower, Team.BlueTeam, BlueTeamKing.position);
     }
 
-    public void Arrangement(Card card, Team team, Vector3 point)
+    private void LateUpdate()
+    {
+        EntityManager.isEntityUpdated = false;
+    }
+
+    public void Arrangement(CardData card, Team team, Vector3 point)
     {
         StartCoroutine(CoArrangement(card, team, point));
     }
 
-    IEnumerator CoArrangement(Card card, Team team, Vector3 point)
+    IEnumerator CoArrangement(CardData card, Team team, Vector3 point)
     {
-        var cardDatas = card.cardDatas;
-        float arrangementInterval = card.arrangmentCompletTime / cardDatas.Length;
+        var entityDatas = card.cardDatas;
+        float arrangementInterval = card.arrangmentCompletTime / entityDatas.Length;
 
-        for (int i = 0; i < cardDatas.Length; i++)
+        for (int i = 0; i < entityDatas.Length; i++)
         {
-            GameObject entity = null;
+            GameObject entity = EntityArrangement(entityDatas[i].entityData);
 
-            if (cardDatas[i].cardData is UnitData unit)
+            var controller = entity.GetComponent<RootController>();
+            
+            if (controller is EntityController e)
             {
-                entity = Instantiate(unitPrefab.gameObject);
-            }
-            else if (cardDatas[i].cardData is TowerData tower)
-            {
-                entity = Instantiate(towerPrefab.gameObject);
-            }
-            else if (cardDatas[i].cardData is SpellData spell)
-            {
-                entity = Instantiate(spellPrefab.gameObject);
-            }
+                e.Init(entityDatas[i].entityData, point + entityDatas[i].positionAdjustment, team);
 
-            var controller = entity.GetComponent<EntityController>();
-            controller.team = team;
-            controller.Init(cardDatas[i].cardData, point);
-
-            if (controller is not SpellController)
-            {
-                EntityManager.AddEntities(controller);
+                if (controller != null)
+                {
+                    EntityManager.AddEntities(e);
+                }
             }
+            else if (controller is AttackEntityController a)
+            {
+                var attack = entityDatas[i].entityData.AttackData;
+                if (attack.toKingTower)
+                {
+                    ReqeustAttack(a, attack, GetKingTowerPosition(team), point, team);
+                }
+                else
+                {
+                    ReqeustAttack(a, attack, point, point, team);
+                }
+            }
+            
 
             yield return new WaitForSeconds(arrangementInterval);
         }
+
+        EntityManager.isEntityUpdated = true;
+    }
+
+    public static GameObject EntityArrangement(EntityData entityData)
+    {
+        if (entityData is UnitData u)
+        {
+            return Instantiate(unit.gameObject);
+        }
+        else if (entityData is TowerData t)
+        {
+            return Instantiate(tower.gameObject);
+        }
+        else if (entityData is SpellData s)
+        {
+            return Instantiate(spell.gameObject);
+        }
+
+        else return null;
+    }
+
+    public static void ReqeustAttack(AttackData attackData, Vector3 point, EntityController target, Team team)
+    {
+        var attack = Instantiate(spell);
+        var attackComponent = attack.GetComponent<AttackEntityController>();
+        attackComponent.Init(attackData, point, target, team);
+    }
+    public static void ReqeustAttack(AttackEntityController a, AttackData attackData, Vector3 point, Vector3 target, Team team)
+    {
+        var attackComponent = a.GetComponent<AttackEntityController>();
+        attackComponent.Init(attackData, point, target, team);
     }
 }

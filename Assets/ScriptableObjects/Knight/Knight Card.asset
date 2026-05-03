@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Knight Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardDatas:
-  - cardData: {fileID: 11400000, guid: 2ee2b73a2539b1f488a9e832f2fc7315, type: 2}
+  - entityData: {fileID: 11400000, guid: 2ee2b73a2539b1f488a9e832f2fc7315, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}
   arrangmentCompletTime: 0.2

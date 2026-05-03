@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5251c65367c76ba408a00f633f5a172e, type: 3}
-  m_Name: ArenaTower_Attack
+  m_Name: Prince_Attack
   m_EditorClassIdentifier: Assembly-CSharp::AttackData
-  attackInterval: 0.5
-  firstAttackTime: 0.4
-  lastDelay: 0.1
-  sightRange: 8
-  attackRange: 8
-  damage: 60
+  attackInterval: 1.4
+  firstAttackTime: 0.3
+  lastDelay: 0.2
+  sightRange: 7
+  attackRange: 2
+  damage: 392
   crownTowerDamage: 0
   attackArriveTime: 0
-  projectileSpeed: 3
+  projectileSpeed: 0
   attackRadius: 0
   isNonTarget: 0
   isSingleTarget: 1
-  attackFilter: -1
+  attackFilter: 13
   attackType: 0
-  attackModel: {fileID: 467419676813794834, guid: 6eafbe893e477774784421c166a47381, type: 3}
+  attackModel: {fileID: 0}
   attackArriveModel: {fileID: 0}

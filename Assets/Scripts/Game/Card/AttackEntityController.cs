@@ -1,0 +1,346 @@
+using NUnit.Framework.Internal;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+
+public class AttackEntityController : RootController
+{
+    public AttackData attackData;
+    private Team team;
+    public Transform modelPosition;
+
+    private EntityAttacker entityAttacker;
+    private EntityMover entityMover;
+    [SerializeField]
+    private EntityState state;
+
+    private float activateWaitTime;
+    private bool isMoveEnd = false;
+    private bool isAttackEnd = false;
+    private EntityController target;
+    private IDamageable targetDamageComponent;
+
+    private bool isNonTarget;
+
+    private Vector3 OriginPoint;
+    private Vector3 destination;
+    private float distance;
+    private float moveProgress = 0f;
+
+
+
+
+    public void Init(AttackData attackData, Vector3 point, EntityController target, Team team)
+    {
+        if (attackData.attackModel != null)
+            Instantiate(attackData.attackModel, modelPosition);
+
+        activateWaitTime = attackData.attackArriveTime;
+        this.attackData = attackData;
+        transform.position = point;
+        this.team = team;
+        isNonTarget = attackData.isNonTarget;
+
+        if (isNonTarget)
+        {
+            destination = target.transform.position;
+            Debug.Log(destination);
+        }
+        else
+        {
+            this.target = target;
+        }
+
+        if (attackData.attackType == AttackType.Single)
+        {
+            targetDamageComponent = target.GetComponent<IDamageable>();
+        }
+        else if (attackData.attackType == AttackType.Area)
+        {
+
+        }
+
+        OriginPoint = point;
+
+        distance = Vector3.Distance(OriginPoint, destination);
+        entityMover = GetComponent<EntityMover>();
+        entityAttacker = GetComponent<EntityAttacker>();
+    }
+    public void Init(AttackData attackData, Vector3 point, Vector3 target, Team team)
+    {
+        if (attackData.attackModel != null)
+            Instantiate(attackData.attackModel, modelPosition);
+
+        activateWaitTime = attackData.attackArriveTime;
+        this.attackData = attackData;
+        transform.position = point;
+        this.team = team;
+        isNonTarget = attackData.isNonTarget;
+
+        if (isNonTarget)
+        {
+            destination = target;
+            Debug.Log(destination);
+        }
+        else
+        {
+            Debug.LogError("isNonTarget 에러");
+        }
+
+        if (attackData.attackType == AttackType.Single)
+        {
+            Debug.LogError("attackType 에러");
+        }
+        else if (attackData.attackType == AttackType.Area)
+        {
+
+        }
+
+        OriginPoint = point;
+
+        distance = Vector3.Distance(OriginPoint, destination);
+        entityMover = GetComponent<EntityMover>();
+        entityAttacker = GetComponent<EntityAttacker>();
+    }
+
+
+    private void Update()
+    {
+        CheckTransition();
+        ExecuteState();
+    }
+
+    private void CheckTransition()
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                if (activateWaitTime < 0f) ChangeState(EntityState.LookingForTarget);
+                break;
+            case EntityState.LookingForTarget:
+                if (!isNonTarget)
+                {
+                    if (target != null)
+                        destination = target.transform.position;
+                    if (entityAttacker.IsTargetInRange(destination, 0.5f)) ChangeState(EntityState.Attack);
+                }
+                else
+                {
+                    if (entityAttacker.IsTargetInRange(destination, 0.5f)) ChangeState(EntityState.Attack);
+                }
+                if (attackData.projectileSpeed <= 0f) ChangeState(EntityState.Attack);
+                break;
+            case EntityState.Attack:
+                break;
+            case EntityState.Sprint:
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                break;
+        }
+    }
+    private void ExecuteState()
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                activateWaitTime -= Time.deltaTime;
+                break;
+            case EntityState.LookingForTarget:
+                if (target == null) isNonTarget = true;
+                if (isNonTarget)
+                    entityMover.MoveTo(destination, attackData.projectileSpeed);
+                else
+                    entityMover.MoveTo(target, attackData.projectileSpeed);
+                break;
+            case EntityState.Attack:
+                if (!isAttackEnd)
+                {
+                    isAttackEnd = true;
+                    StartCoroutine(CoAttack());
+                }
+                break;
+            case EntityState.Dead:
+                break;
+        }
+    }
+    private void ChangeState(EntityState state)
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                break;
+            case EntityState.LookingForTarget:
+                entityMover.MoveControl(false);
+                break;
+            case EntityState.Attack:
+                entityMover.MoveControl(true);
+                break;
+            case EntityState.Sprint:
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                break;
+        }
+
+        this.state = state;
+    }
+
+
+    IEnumerator CoAttack()
+    {
+        transform.position = isNonTarget ? destination : target.transform.position;
+
+        yield return new WaitForSeconds(attackData.attackArriveTime);
+
+        if (attackData.attackArriveModel != null)
+            Instantiate(attackData.attackArriveModel, modelPosition);
+
+        switch (attackData.attackType)
+        {
+            case AttackType.Single:
+                if (targetDamageComponent != null && target != null)
+                {
+                    targetDamageComponent.TakeDamage(attackData.damage, team);
+                }
+                break;
+            case AttackType.Area:
+                List<EntityController> enemies = null;
+
+                if (team == Team.RedTeam)
+                {
+                    enemies = EntityManager.blueTeamEntities;
+                }
+                else if (team == Team.BlueTeam)
+                {
+                    enemies = EntityManager.redTeamEntities;
+                }
+
+                for (int i = enemies.Count - 1; i >= 0; i--)
+                {
+                    float sqrDistance = (enemies[i].transform.position - transform.position).sqrMagnitude;
+                    if (sqrDistance < attackData.attackRadius * attackData.attackRadius)
+                    {
+                        if (enemies[i].cardData.DefenseData != null)
+                        {
+                            enemies[i].GetComponent<IDamageable>().TakeDamage(attackData.damage, team);
+                        }
+                    }
+                }
+                break;
+        }
+
+        yield return new WaitForSeconds(0.2f);
+        Destroy(gameObject);
+    }
+        //private void Update()
+        //{
+        //    if (activateWaitTime > 0f)
+        //    {
+        //        activateWaitTime -= Time.deltaTime;
+        //        return;
+        //    }
+
+        //    Move();
+
+        //    if (isMoveEnd && !isAttackEnd)
+        //        Attack();
+        //}
+
+        //protected override void Move()
+        //{
+        //    if (attackData.projectileSpeed <= 0 || distance == 0)
+        //    {
+        //        transform.position = destination;
+        //        isMoveEnd = true;
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        transform.position = Vector3.Lerp(OriginPoint, destination, moveProgress / distance);
+        //        moveProgress += attackData.projectileSpeed * Time.deltaTime;
+
+        //        if (moveProgress > distance)
+        //            isMoveEnd = true;
+        //    }
+        //}
+        //protected override void LockOn()
+        //{
+        //    throw new NotImplementedException();
+        //}
+        //protected override void Attack()
+        //{
+        //    isAttackEnd = true;
+        //    if (attackData != null && runningCoroutine == null)
+        //    {
+        //        runningCoroutine = StartCoroutine(CoAttack());
+        //    }
+        //}
+        //IEnumerator CoAttack()
+        //{
+        //    yield return new WaitForSeconds(attackData.attackArriveTime);
+
+        //    switch (attackData.attackType)
+        //    {
+        //        case AttackType.Single:
+        //            if (target != null)
+        //            {
+        //                target.TakeDamage(attackData.damage, team);
+        //            }
+        //            break;
+        //        case AttackType.Area:
+        //            List<EntityController> enemies = null;
+
+        //            if (team == Team.RedTeam)
+        //            {
+        //                enemies = EntityManager.blueTeamEntities;
+        //            }
+        //            else if (team == Team.BlueTeam)
+        //            {
+        //                enemies = EntityManager.redTeamEntities;
+        //            }
+
+        //            for (int i = enemies.Count - 1; i >= 0; i--)
+        //            {
+        //                float sqrDistance = (enemies[i].transform.position - transform.position).sqrMagnitude;
+        //                if (sqrDistance < attackData.attackRadius * attackData.attackRadius)
+        //                {
+        //                    if (enemies[i].cardData.DefenseData != null)
+        //                    {
+        //                        enemies[i].TakeDamage(attackData.damage, team);
+        //                    }
+        //                }
+        //            }
+        //            break;
+        //    }
+
+        //    if (attackData.attackArriveModel != null)
+        //        Instantiate(attackData.attackArriveModel, transform);
+
+        //    runningCoroutine = null;
+
+        //    yield return new WaitForSeconds(0.1f);
+
+        //    Destroy(gameObject);
+        //}
+
+        //protected override void CheckAttackRange()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public override void TakeDamage(float damage, Team team)
+        //{
+        //    throw new NotImplementedException();
+        //}
+    
+}

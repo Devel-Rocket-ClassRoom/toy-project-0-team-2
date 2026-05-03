@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5251c65367c76ba408a00f633f5a172e, type: 3}
   m_Name: Knight_Attack
   m_EditorClassIdentifier: Assembly-CSharp::AttackData
-  damage: 100
-  crownTowerDamage: 100
-  attackInterval: 0
+  attackInterval: 1
   firstAttackTime: 0.5
-  attackArriveTime: 0
   lastDelay: 0.5
-  loadTime: 0
   sightRange: 7
   attackRange: 1.2
-  knuckbackTile: 0
-  freezeTime: 0
+  damage: 100
+  crownTowerDamage: 100
+  attackArriveTime: 0
   projectileSpeed: 0
   attackRadius: 0
+  isNonTarget: 0
+  isSingleTarget: 1
   attackFilter: 13
   attackType: 0
   attackModel: {fileID: 0}
+  attackArriveModel: {fileID: 0}
