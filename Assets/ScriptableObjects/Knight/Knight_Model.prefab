@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9003278833291390843}
   - component: {fileID: 1731949359477317299}
   - component: {fileID: 5228962289659012257}
+  - component: {fileID: 3945392387231201892}
   m_Layer: 0
   m_Name: Knight_Model
   m_TagString: Untagged
@@ -112,3 +113,16 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3945392387231201892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4741513341930761228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3b7e5da7a2a1a140b0653d3de6a2b59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
+  entityData: {fileID: 11400000, guid: 2ee2b73a2539b1f488a9e832f2fc7315, type: 2}

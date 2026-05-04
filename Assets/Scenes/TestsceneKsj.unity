@@ -1742,6 +1742,8 @@ MonoBehaviour:
   Ground:
     serializedVersion: 2
     m_Bits: 256
+  healthBarPrefab: {fileID: 5275914286225060262, guid: f61dd28d0479d2945b7701ca005c6b26, type: 3}
+  canvasTransform: {fileID: 1120124201}
 --- !u!4 &599709361
 Transform:
   m_ObjectHideFlags: 0
@@ -5926,6 +5928,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8262059950552651930, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 879bab3dee8b7c0448bd599be09d572f, type: 2}
     - target: {fileID: 8262059950552651930, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
       propertyPath: m_BuildHeightMesh
       value: 0

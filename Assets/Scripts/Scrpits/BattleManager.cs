@@ -1,20 +1,20 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Linq;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    //°ÔÀÓ ¿£µå
+    //ê²Œì„ ì—”ë“œ
     public bool Gameover;
-    //¿¤¸®¼­ Á¤º¸
+    //ì—˜ë¦¬ì„œ ì •ë³´
     private const float StartElixir = 6;
     private const float maxElixir = 10;
     private const float regenRate = 0.35f;
     public float currentElixir;
 
-    //Å¸ÀÌ¸Ó
+    //íƒ€ì´ë¨¸
     public int battleTime = 180;
-    //Ä«µå µ¥ÀÌÅÍ
+    //ì¹´ë“œ ë°ì´í„°
     public CardData selectedCard;
     public CardArrangementManager cardArrangementManager;
     public Team myTeam = Team.RedTeam;
@@ -40,7 +40,7 @@ public class BattleManager : MonoBehaviour
 
     }
 
-   //Å¸ÀÌ¸Ó
+   //íƒ€ì´ë¨¸
     IEnumerator BattleTimer()
     {
         while (battleTime > 0&& !Gameover)
@@ -56,21 +56,16 @@ public class BattleManager : MonoBehaviour
 
     public void UsedCard(int index, Vector2 screenPoint)
     {
-        if (Gameover)
-        {
-            return;
-        }
-        CardData card = handManager.handCards[index];
+        if (Gameover) return;
 
-        if (card == null || card.cardDatas.Length == 0)
-        {
-            return;
-        }
+        CardData card = handManager.handCards[index];
+        if (card == null || card.cardDatas.Length == 0) return;
+
         EntityData cardData = card.cardDatas[0].entityData;
 
         if (currentElixir < cardData.elixir)
         {
-            Debug.Log("¿¤¸¯¼­ ºÎÁ·");
+            Debug.Log("ì—˜ë¦­ì„œ ë¶€ì¡±");
             return;
         }
 
@@ -78,7 +73,7 @@ public class BattleManager : MonoBehaviour
 
         if (!Physics.Raycast(ray, out RaycastHit hit, 1000f, Ground))
         {
-            Debug.Log("¼ÒÈ¯ °¡´ÉÇÑ ¹Ù´ÚÀÌ ¾Æ´Ô");
+            Debug.Log("ì†Œí™˜ ê°€ëŠ¥í•œ ë°”ë‹¥ì´ ì•„ë‹˜");
             return;
         }
 
@@ -86,14 +81,58 @@ public class BattleManager : MonoBehaviour
 
         currentElixir -= cardData.elixir;
 
+        // ğŸ‘‰ ìƒì„± ì „ ìœ ë‹› ê°œìˆ˜ ì €ì¥
+        int beforeCount = FindObjectsOfType<UnitHealth>().Length;
+
         cardArrangementManager.Arrangement(card, myTeam, spawnPos);
 
-        handManager.UseHandCard(index);
+        // ğŸ‘‰ ìƒì„±ëœ ìœ ë‹› ì°¾ê¸°
+        UnitHealth[] units = FindObjectsOfType<UnitHealth>();
 
+        foreach (var unit in units)
+        {
+            if (unit.GetComponent<UnitHealthBarUI>() == null)
+            {
+                CreateHealthBar(unit.transform, cardData);
+            }
+        }
+
+        handManager.UseHandCard(index);
     }
 
+    [Header("Unit Spawn")]
+    public UnitHealthBarUI healthBarPrefab;
+    public Transform canvasTransform;
 
-    //¹öÆ°
+    void CreateHealthBar(Transform unit, EntityData data)
+    {
+        Debug.Log("ì²´ë ¥ë°” ìƒì„± ì‹œë„");
+
+        if (healthBarPrefab == null)
+        {
+            Debug.LogError("HealthBarPrefab ì—†ìŒ");
+            return;
+        }
+
+        GameObject canvasObj = GameObject.Find("Canvas");
+
+        if (canvasObj == null)
+        {
+            Debug.LogError("ì”¬ì— Canvas ì˜¤ë¸Œì íŠ¸ê°€ ì—†ìŒ");
+            return;
+        }
+
+        Transform canvas = canvasObj.transform;
+
+        UnitHealthBarUI hpBar = Instantiate(healthBarPrefab, canvas);
+        hpBar.gameObject.name = "Knight_Health_Runtime";
+
+        Debug.Log("ì²´ë ¥ë°” ìƒì„±ë¨: " + hpBar.name);
+        Debug.Log("ë¶€ëª¨: " + hpBar.transform.parent.name);
+
+        hpBar.Init(unit, data);
+    }
+    //ë²„íŠ¼
     //public void OnUsedCard(int index)
     //{
     //    if (Gameover)
@@ -111,7 +150,7 @@ public class BattleManager : MonoBehaviour
 
     //    if (currentElixir < cost)
     //    {
-    //        Debug.Log("¿¤¸¯¼­ ºÎÁ·");
+    //        Debug.Log("ì—˜ë¦­ì„œ ë¶€ì¡±");
     //        return;
     //    }
 
