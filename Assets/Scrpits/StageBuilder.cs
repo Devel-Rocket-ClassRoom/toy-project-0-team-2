@@ -7,17 +7,16 @@ using Unity.AI.Navigation;
 
 public class StageBuilder : MonoBehaviour
 {
-    // test
-    public GameObject Lode;
+    public GameObject Road;
     public GameObject Plain;
-
+    public GameObject Tree;
     public GameObject Bridge;
     public GameObject River;
 
-
-    public int ScreenWidth=18;
-    public int ScreenHeight=33;
-    public Color color;
+    
+    public int ScreenWidth = 18;
+    public int ScreenHeight = 15;
+    public Color color; 
     public Color color2;
 
     public GameObject RedTeam;
@@ -30,22 +29,35 @@ public class StageBuilder : MonoBehaviour
 
     public NavMeshSurface navMeshSurface;
 
+
+    private void Start()
+    {
+        ClearStage(StageRed);
+        ClearStage(StageBlue);
+        ClearStage(Stageriver);
+
+        CreateRedStage();
+        CreateBlueStage();
+        CreateRiver(RiverTeam.transform);
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            ClearStage(StageRed);
+            ClearStage(StageBlue);
+            ClearStage(Stageriver);
 
             CreateRedStage();
             CreateBlueStage();
             CreateRiver(RiverTeam.transform);
 
-            navMeshSurface.BuildNavMesh();
         }
     }
     private void CreateRedStage()
     {
         RedTeam.transform.localRotation = Quaternion.Euler(0, 180, 0);
-        RedTeam.transform.localPosition = new Vector3(310, 0, 39);
+        RedTeam.transform.localPosition = new Vector3(170, 0, 30);
         CreateStage(RedTeam.transform, StageRed);
     }
 
@@ -57,17 +69,22 @@ public class StageBuilder : MonoBehaviour
 
     private void CreateRiver(Transform parent)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 2; i++)
         {
-            for (int j = 0; j < ScreenHeight; j++)
+            for (int j = 0; j < ScreenHeight+1; j++)
             {
                 GameObject bridge;
                 GameObject river;
 
-                if (j == 2 || j == 29)
+                if (j == 3 || j == 15||j == 4 || j == 14)
                 {
                     bridge = Instantiate(Bridge, parent);
                     bridge.transform.localPosition = new Vector3(j * 10, 0, -i * 10);
+                    if (j == 14 || j == 3)
+                    {
+                        bridge.transform.localRotation = Quaternion.Euler(0, 180, 0);
+                    }
+
 
                     Stageriver.Add(bridge);
                 }
@@ -83,7 +100,7 @@ public class StageBuilder : MonoBehaviour
             }
         }
 
-        RiverTeam.transform.localPosition = new Vector3(0, 0, 30);
+        RiverTeam.transform.localPosition = new Vector3(-5, 0, 20);
     }
 
     private void CreateStage(Transform parent, List<GameObject> stageList)
@@ -92,23 +109,36 @@ public class StageBuilder : MonoBehaviour
         {
             for (int j = 0; j < ScreenHeight; j++)
             {
+                
+               
                 GameObject plain;
-                GameObject lode;
+                GameObject road;
 
-                if (i == 15&&j!=0&&j!=1&&j!=30&&j!=31)
+                if (i == 0 && (j == 0 || j == ScreenHeight - 1))
                 {
-                    lode = Instantiate(Lode, parent);
-                    lode.transform.localPosition = new Vector3(j * 10, 0, -i * 10);
+                    road = Instantiate(Tree, parent);
+                    road.transform.localPosition = new Vector3(j * 10, 0, -i * 10);
 
-                    stageList.Add(lode);
+                    stageList.Add(road);
                 }
-                else if((j == 2|| j == 29)&&(i<15))
+                else if(i == ScreenWidth - 4 && j >3 && j < ScreenHeight - 3)
+                {
+                    road = Instantiate(Road, parent);
+                    road.transform.localPosition = new Vector3(j * 10, 0, -i * 10);
+
+                    stageList.Add(road);
+                }
+                else if ((j == 3 || j == ScreenHeight - 4) && i < 12)
                 {
 
-                    lode = Instantiate(Lode, parent);
-                    lode.transform.localPosition = new Vector3(j * 10, 0, -i * 10);
+                    road = Instantiate(Road, parent);
+                    road.transform.localPosition = new Vector3(j * 10, 0, -i * 10);
 
-                    stageList.Add(lode);
+                    stageList.Add(road);
+                }
+                else if (i == ScreenWidth - 1 && (j < 6 || j > 11))
+                {
+                    continue;
                 }
                 else
                 {
@@ -118,15 +148,13 @@ public class StageBuilder : MonoBehaviour
                     {
                         Renderer renderer = plain.GetComponent<Renderer>();
                         renderer.material.color = color;
-
                     }
                     else
                     {
                         Renderer renderer = plain.GetComponent<Renderer>();
                         renderer.material.color = color2;
-
                     }
-                  
+
                     plain.transform.localPosition = new Vector3(j * 10, 0, -i * 10);
                     stageList.Add(plain);
                 }
@@ -139,4 +167,16 @@ public class StageBuilder : MonoBehaviour
         
     }
 }
+    private void ClearStage(List<GameObject> stageList)
+    {
+        for (int i = 0; i < stageList.Count; i++)
+        {
+            if (stageList[i] != null)
+            {
+                Destroy(stageList[i]);
+            }
+        }
+
+        stageList.Clear();
+    }
 }
