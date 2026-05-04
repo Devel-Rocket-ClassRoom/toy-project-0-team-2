@@ -9,24 +9,19 @@ using static UnityEngine.GraphicsBuffer;
 public class AttackEntityController : RootController
 {
     public AttackData attackData;
-    private Team team;
     public Transform modelPosition;
 
     private EntityAttacker entityAttacker;
     private EntityMover entityMover;
 
     private float activateWaitTime;
-    private bool isMoveEnd = false;
     private bool isAttackEnd = false;
     private EntityController target;
     private IDamageable targetDamageComponent;
 
     private bool isNonTarget;
 
-    private Vector3 OriginPoint;
     private Vector3 destination;
-    private float distance;
-    private float moveProgress = 0f;
 
 
 
@@ -61,9 +56,6 @@ public class AttackEntityController : RootController
 
         }
 
-        OriginPoint = point;
-
-        distance = Vector3.Distance(OriginPoint, destination);
         entityMover = GetComponent<EntityMover>();
         entityAttacker = GetComponent<EntityAttacker>();
     }
@@ -98,9 +90,6 @@ public class AttackEntityController : RootController
 
         }
 
-        OriginPoint = point;
-
-        distance = Vector3.Distance(OriginPoint, destination);
         entityMover = GetComponent<EntityMover>();
         entityAttacker = GetComponent<EntityAttacker>();
     }

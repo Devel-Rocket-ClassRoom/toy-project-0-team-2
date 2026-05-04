@@ -158,7 +158,7 @@ public class UnitController : EntityController, IDamageable
                 }
                 break;
             case EntityState.Sprint:
-                entityMover.AttackMoveTo(transform.position, target, cardData.SpecialData.sprintSpeed);
+                entityMover.UnitMoveTo(target, cardData.SpecialData.sprintSpeed);
                 if (Time.time - lastSearchTime > searchInterval)
                 {
                     targetFinder.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);

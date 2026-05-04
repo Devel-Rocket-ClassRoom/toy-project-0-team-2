@@ -14,6 +14,9 @@ public class CardArrangementManager: MonoBehaviour
     public CardData KingTower;
     public Transform RedTeamKing;
     public Transform BlueTeamKing;
+    public Transform[] RedArena;
+    public Transform[] BlueArena;
+    public Transform Mid;
 
     private void Awake()
     {

@@ -5,7 +5,6 @@ public abstract class EntityController : RootController
 {
     public EntityData cardData;
     public EntityType entityType;
-    public Team team;
     public Transform modelPosition;
 
     protected float searchInterval = 0.2f;
