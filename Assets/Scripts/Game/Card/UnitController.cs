@@ -9,6 +9,7 @@ public class UnitController : EntityController, IDamageable
     private TargetFinder targetFinder;
     private EntityMover entityMover;
     private EntityAttacker entityAttacker;
+    private Animator animator;
 
     private float activateWaitTime;
 
@@ -29,6 +30,7 @@ public class UnitController : EntityController, IDamageable
         targetFinder = GetComponent<TargetFinder>();
         entityMover = GetComponent<EntityMover>();
         entityAttacker = GetComponent<EntityAttacker>();
+        animator = modelPosition.GetComponent<Animator>();
     }
 
     public override void Init(EntityData cardData, Vector3 point, Team team)
@@ -145,6 +147,7 @@ public class UnitController : EntityController, IDamageable
             case EntityState.Attack:
                 if (Time.time - lastAttackTime > cardData.AttackData.attackInterval)
                 {
+                    animator.SetTrigger("Attack");
                     StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, modelPosition.position, target, team));
                     lastAttackTime = Time.time;
                 }
@@ -168,10 +171,6 @@ public class UnitController : EntityController, IDamageable
             case EntityState.Charge:
                 break;
             case EntityState.Dead:
-                if (cardData.SpecialData != null && cardData.SpecialData.hasDeathrattle)
-                {
-
-                }
                 break;
         }
     }
@@ -180,8 +179,10 @@ public class UnitController : EntityController, IDamageable
         switch (state)
         {
             case EntityState.Idle:
+                animator.SetTrigger("Idle");
                 break;
             case EntityState.LookingForTarget:
+                animator.SetTrigger("Move");
                 entityMover.MoveControl(false);
                 break;
             case EntityState.Attack:
