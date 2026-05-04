@@ -21,7 +21,7 @@ public class EntityMover : MonoBehaviour
 
     public void MoveTo(Vector3 target, float speed)
     {
-        if (agent.isActiveAndEnabled && agent.isOnNavMesh)
+        if (agent.isOnNavMesh)
         {
             agent.SetDestination(target);
             agent.speed = speed;
