@@ -5,10 +5,10 @@ using UnityEngine.UI;
 public class HandManager : MonoBehaviour
 {
 
-    public Queue<Card> deckQueue = new Queue<Card>();
-    public List<Card> deck = new List<Card>();
+    public Queue<CardData> deckQueue = new Queue<CardData>();
+    public List<CardData> deck = new List<CardData>();
 
-    public Card[] handCards = new Card[4];
+    public CardData[] handCards = new CardData[4];
     public Button[] cardButtons = new Button[4];
 
 
@@ -24,7 +24,7 @@ public class HandManager : MonoBehaviour
 
         ShuffleDeck(deck);
 
-        foreach (Card card in deck)
+        foreach (CardData card in deck)
         {
             deckQueue.Enqueue(card);
         }
@@ -33,18 +33,18 @@ public class HandManager : MonoBehaviour
         {
             handCards[i] = deckQueue.Dequeue();
         }
-        Card nextCard = deckQueue.Peek();
+        CardData nextCard = deckQueue.Peek();
      
     }
 
 
-    private void ShuffleDeck(List<Card> list)
+    private void ShuffleDeck(List<CardData> list)
     {
         for (int i = 0; i < list.Count; i++)
         {
             int rand = Random.Range(i, list.Count);
 
-            Card temp = list[i];
+            CardData temp = list[i];
             list[i] = list[rand];
             list[rand] = temp;
         }
@@ -52,7 +52,7 @@ public class HandManager : MonoBehaviour
 
     public void UseHandCard(int index)
     {
-        Card usedCard = handCards[index];
+        CardData usedCard = handCards[index];
 
         deckQueue.Enqueue(usedCard);
         handCards[index] = deckQueue.Dequeue();

@@ -88,14 +88,14 @@ public class BattleUI : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            Card card = handManager.handCards[i];
+            CardData card = handManager.handCards[i];
 
             if (card == null || card.cardDatas.Length == 0)
             {
                 continue;
             }
 
-            CardData data = card.cardDatas[0];
+            EntityData data = card.cardDatas[0].entityData;
             int cost = data.elixir;
 
             CardNames[i].text = data.name;
@@ -158,8 +158,8 @@ public class BattleUI : MonoBehaviour
     private void UpdateNextCardUI()
     {
     
-        Card nextCard = handManager.deckQueue.Peek();
-        CardData data = nextCard.cardDatas[0];
+        CardData nextCard = handManager.deckQueue.Peek();
+        EntityData data = nextCard.cardDatas[0].entityData;
 
         NextCardNames.text = data.name;
         NextCardElixirs.text = data.elixir.ToString();

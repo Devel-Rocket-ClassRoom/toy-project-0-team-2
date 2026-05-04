@@ -7,7 +7,7 @@ public class SpawnMonster : MonoBehaviour
     public BattleManager battleManager;
     public GameObject unitPrefab;
     public Transform spawnPoint;
-    public Card card;
+    public CardData card;
 
 
 

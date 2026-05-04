@@ -15,7 +15,7 @@ public class BattleManager : MonoBehaviour
     //타이머
     public int battleTime = 180;
     //카드 데이터
-    public Card selectedCard;
+    public CardData selectedCard;
     public CardArrangementManager cardArrangementManager;
     public Team myTeam = Team.RedTeam;
     private Vector3 spawnPoint;
@@ -60,13 +60,13 @@ public class BattleManager : MonoBehaviour
         {
             return;
         }
-        Card card = handManager.handCards[index];
+        CardData card = handManager.handCards[index];
 
         if (card == null || card.cardDatas.Length == 0)
         {
             return;
         }
-        CardData cardData = card.cardDatas[0];
+        EntityData cardData = card.cardDatas[0].entityData;
 
         if (currentElixir < cardData.elixir)
         {
@@ -86,7 +86,7 @@ public class BattleManager : MonoBehaviour
 
         currentElixir -= cardData.elixir;
 
-        cardArrangementManager.Arrangement( new CardData[] { cardData },myTeam,spawnPos);
+        cardArrangementManager.Arrangement(card, myTeam, spawnPos);
 
         handManager.UseHandCard(index);
 
