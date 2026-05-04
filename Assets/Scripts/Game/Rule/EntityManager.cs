@@ -4,11 +4,13 @@ using System;
 
 public static class EntityManager
 {
-    public static List<EntityController> redTeamEntities = new List<EntityController>();
-    public static List<EntityController> blueTeamEnntities = new List<EntityController>();
+    public static bool isEntityUpdated = false;
 
-    public static List<TowerController> redTeamCrownTower = new List<TowerController>();
-    public static List<TowerController> blueTeamCrownTower = new List<TowerController>();
+    public static List<EntityController> redTeamEntities = new List<EntityController>();
+    public static List<EntityController> blueTeamEntities = new List<EntityController>();
+
+    public static List<EntityController> redTeamCrownTower = new List<EntityController>();
+    public static List<EntityController> blueTeamCrownTower = new List<EntityController>();
 
     public static Action onEntitiesChanged;
 
@@ -17,15 +19,25 @@ public static class EntityManager
         if (entity.team == Team.RedTeam)
         {
             redTeamEntities.Add(entity);
-            Debug.Log(redTeamEntities.Count);
         }
         else if (entity.team == Team.BlueTeam)
         {
-            blueTeamEnntities.Add(entity);
-            Debug.Log(blueTeamEnntities.Count);
+            blueTeamEntities.Add(entity);
         }
 
-        onEntitiesChanged?.Invoke();
+        if (entity.cardData.DefenseData != null && (entity.cardData.DefenseData.entityType & EntityType.CrownTower) != 0)
+        {
+            if (entity.team == Team.RedTeam)
+            {
+                redTeamCrownTower.Add(entity);
+            }
+            else if (entity.team == Team.BlueTeam)
+            {
+                blueTeamCrownTower.Add(entity);
+            }
+        }
+
+        isEntityUpdated = true;
     }
 
     public static void RemoveEntities(EntityController entity)
@@ -36,7 +48,19 @@ public static class EntityManager
         }
         else if (entity.team == Team.BlueTeam)
         {
-            blueTeamEnntities.Remove(entity);
+            blueTeamEntities.Remove(entity);
+        }
+
+        if (entity.cardData.DefenseData != null && entity.cardData.DefenseData.entityType == EntityType.CrownTower)
+        {
+            if (entity.team == Team.RedTeam)
+            {
+                redTeamCrownTower.Remove(entity);
+            }
+            else if (entity.team == Team.BlueTeam)
+            {
+                blueTeamCrownTower.Remove(entity);
+            }
         }
 
         onEntitiesChanged?.Invoke();

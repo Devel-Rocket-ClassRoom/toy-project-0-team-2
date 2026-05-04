@@ -15,6 +15,9 @@ GameObject:
   - component: {fileID: -2704455851951203925}
   - component: {fileID: 3495129178747001820}
   - component: {fileID: -7061191651531707956}
+  - component: {fileID: 5166536247095996631}
+  - component: {fileID: -1488941578792591594}
+  - component: {fileID: -2543669101603376067}
   m_Layer: 0
   m_Name: Unit Prefab
   m_TagString: Untagged
@@ -130,9 +133,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a9c29a7808de149b2d50e1e94e61ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitController
+  cardData: {fileID: 0}
   entityType: 0
   team: 0
   modelPosition: {fileID: 84791723234861286}
+  size: 0
+  state: 0
 --- !u!195 &3495129178747001820
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -182,6 +188,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &5166536247095996631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766330989535337657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f9b900f5172dbc42af6247c27440099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityAttacker
+--- !u!114 &-1488941578792591594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766330989535337657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b5b00f9412e854da49d36abcc4d58a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityMover
+--- !u!114 &-2543669101603376067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766330989535337657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44824c9a8061bc64da702eb84fdaece5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetFinder
 --- !u!1 &2100149258088653874
 GameObject:
   m_ObjectHideFlags: 0

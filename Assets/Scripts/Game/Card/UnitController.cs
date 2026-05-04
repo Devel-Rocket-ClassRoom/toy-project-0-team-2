@@ -1,24 +1,29 @@
 using System.Collections;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class UnitController : EntityController, IDamageable
 {
+    [SerializeField]
+    private EntityState state;
+
+    private TargetFinder targetFinder;
+    private EntityMover entityMover;
+    private EntityAttacker entityAttacker;
     private NavMeshAgent agent;
 
-    private UnitData unitData;
     private float activateWaitTime;
     private bool isLockOn;
 
-    private float damage;
-    private float crownTowerDamage;
-    private float attackInterval = 0f;
+    private float lastAttackTime;
 
-    private EntityType attackTarget;
-    private AttackType attackType;
+    private EntityType attackFilter;
 
     private float health;
+    private float speed;
+    private float continuousMoveTime = 0f;
 
 
     private TowerController NearestCrownTower
@@ -52,17 +57,17 @@ public class UnitController : EntityController, IDamageable
     {
         get
         {
-            var entities = team == Team.RedTeam ? EntityManager.blueTeamEnntities : EntityManager.redTeamEntities;
+            var entities = team == Team.RedTeam ? EntityManager.blueTeamEntities : EntityManager.redTeamEntities;
 
             EntityController result = null;
             float min = float.MaxValue;
 
             foreach (var entity in entities)
             {
-                if ((attackTarget & entity.entityType) == 0) { Debug.Log($"공격타입 같지 않음 : {attackTarget} / {entity.entityType}"); continue; }
+                if ((attackFilter & entity.entityType) == 0) { Debug.Log($"공격타입 같지 않음 : {attackFilter} / {entity.entityType}"); continue; }
                 if (entity == this) { continue; }
 
-                float range = unitData.AttackData.sightRange + size + entity.size;
+                float range = cardData.AttackData.sightRange + size + entity.size;
                 Vector3 diff = entity.transform.position - transform.position;
                 diff.y = 0;
 
@@ -86,116 +91,41 @@ public class UnitController : EntityController, IDamageable
     }
     private EntityController target;
 
-    private Coroutine runningCoroutine;
-
     private void Awake()
     {
+        targetFinder = GetComponent<TargetFinder>();
+        entityMover = GetComponent<EntityMover>();
+        entityAttacker = GetComponent<EntityAttacker>();
         agent = GetComponent<NavMeshAgent>();
     }
 
-    public override void Init(CardData cardData)
+    public override void Init(EntityData cardData, Vector3 point, Team team)
     {
-        base.Init(cardData);
+        base.Init(cardData, point, team);
 
         if (cardData is UnitData unit)
         {
-            unitData = unit;
+            this.cardData = unit;
 
-            damage = unit.AttackData.damage;
             health = unit.DefenseData.health;
 
-            attackTarget = unit.AttackData.attackTarget;
+            attackFilter = unit.AttackData.attackFilter;
         }
 
-        activateWaitTime = unitData.activateWaitTime;
-        EntityManager.onEntitiesChanged += LockOn;
+        activateWaitTime = this.cardData.activateWaitTime;
+        speed = (cardData as UnitData).tilePerSeconds;
     }
 
     private void Update()
     {
-        if (activateWaitTime > 0f)
-        {
-            activateWaitTime -= Time.deltaTime;
-            // 이곳에서 타이머UI 갱신
-            return;
-        }
-
-        if (Time.time - lastSearchTime > searchInterval)
-        {
-            LockOn();
-            lastSearchTime = Time.time;
-        }
-
-        if (target != null)
-        {
-            Move();
-            CheckAttackRange();
-
-            if (attackInterval < 0f)
-            {
-                Attack();
-            }
-        }
-
-        attackInterval -= Time.deltaTime;
-    }
-
-    protected override void Move()
-    {
-        agent.isStopped = isLockOn;
-        if (isLockOn)
-        {
-            return;
-        }
-
-        agent.SetDestination(target.transform.position);
-    }
-    protected override void LockOn()
-    {
-        target = NearestTarget;
-    }
-
-    protected override void CheckAttackRange()
-    {
-        Vector3 diff = target.transform.position - transform.position;
-        diff.y = 0;
-
-        float range = unitData.AttackData.attackRange + size + target.size;
-
-        isLockOn = diff.sqrMagnitude < range * range;
-    }
-
-    protected override void Attack()
-    {
-        if (isLockOn && runningCoroutine == null)
-        { 
-            runningCoroutine = StartCoroutine(CoAttack());
-            attackInterval = unitData.AttackData.attackInterval;
-        }
-    }
-
-    IEnumerator CoAttack()
-    {
-        yield return new WaitForSeconds(unitData.AttackData.firstAttackTime);
-
-        switch (attackType)
-        {
-            case AttackType.Single:
-                if (target == null) break;
-                target.transform.GetComponent<IDamageable>().TakeDamage(damage, team);
-                break;
-            case AttackType.Area:
-                // 데미지를 주는 오브젝트 생성
-                break;
-        }
-
-        yield return new WaitForSeconds(unitData.AttackData.lastDelay);
-        runningCoroutine = null;
+        CheckTransition();
+        ExecuteState();
     }
 
     public void TakeDamage(float damage, Team team)
     {
         if (this.team == team) return;
+        if (health < 0) return;
 
         health -= damage;
 
@@ -209,8 +139,127 @@ public class UnitController : EntityController, IDamageable
 
     private void Dead()
     {
-        EntityManager.onEntitiesChanged -= LockOn;
+        StopAllCoroutines();
         EntityManager.RemoveEntities(this);
         Destroy(gameObject);
     }
+
+
+
+    private void CheckTransition()
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                if (activateWaitTime < 0) { ChangeState(EntityState.LookingForTarget); }
+                break;
+            case EntityState.LookingForTarget:
+                if (entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.Attack); }
+                if (cardData.SpecialData != null
+                    && cardData.SpecialData.hasSprint
+                    && continuousMoveTime > cardData.SpecialData.springPrepareTime)
+                    { ChangeState(EntityState.Sprint); }
+                break;
+            case EntityState.Attack:
+                if (target == null || !entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.LookingForTarget); }
+                break;
+            case EntityState.Sprint:
+                if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange))
+                {
+                    runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, target, team));
+                    ChangeState(EntityState.Attack);
+                }
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                break;
+        }
+    }
+    private void ExecuteState()
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                runningCoroutine = null;
+                activateWaitTime -= Time.deltaTime;
+                break;
+            case EntityState.LookingForTarget:
+                entityMover.MoveTo(target, speed);
+                continuousMoveTime += Time.deltaTime;
+                if (Time.time - lastSearchTime > searchInterval || EntityManager.isEntityUpdated)
+                {
+                    target = targetFinder?.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);
+                    if (target == null) target = targetFinder?.FindNearestCrownTower(team, attackFilter);
+                    lastSearchTime = Time.time;
+                }
+                break;
+            case EntityState.Attack:
+                if (Time.time - lastAttackTime > cardData.AttackData.attackInterval)
+                {
+                    StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, target, team));
+                    lastAttackTime = Time.time;
+                }
+                if (target != null)
+                    transform.LookAt(target.transform.position);
+                break;
+            case EntityState.Sprint:
+                entityMover.MoveTo(target, cardData.SpecialData.sprintSpeed);
+                if (Time.time - lastSearchTime > searchInterval)
+                {
+                    targetFinder.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);
+                    lastSearchTime = Time.time;
+                }
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                if (cardData.SpecialData != null && cardData.SpecialData.hasDeathrattle)
+                {
+
+                }
+                break;
+        }
+    }
+    private void ChangeState(EntityState state)
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                break;
+            case EntityState.LookingForTarget:
+                entityMover.MoveControl(false);
+                break;
+            case EntityState.Attack:
+                entityMover.MoveControl(true);
+                break;
+            case EntityState.Sprint:
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                break;
+        }
+
+        continuousMoveTime = 0f;
+        this.state = state;
+    }
+}
+
+
+public enum EntityState
+{
+    Idle,
+    LookingForTarget,
+    Attack,
+    Sprint,
+    PrepareCharge,
+    Charge,
+    Dead,
 }

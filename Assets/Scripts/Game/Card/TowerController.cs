@@ -1,47 +1,74 @@
 using System.Collections;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.AI;
-using System;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class TowerController : EntityController, IDamageable
 {
+    [SerializeField]
+    private EntityState state;
+
+    private TargetFinder targetFinder;
+    private EntityAttacker entityAttacker;
     private NavMeshAgent agent;
 
-    private TowerData unitData;
     private float activateWaitTime;
     private bool isLockOn;
 
-    private float damage;
-    private float crownTowerDamage;
-    private float attackInterval = 0f;
-    private float rangeSqr;
+    private float lastAttackTime;
 
-    private EntityType attackTarget;
-    private AttackType attackType;
+    private EntityType attackFilter;
 
     private float health;
-    private float hpComsumePerSecond;
 
 
+    private TowerController NearestCrownTower
+    {
+        get
+        {
+            var towers = team == Team.RedTeam ? EntityManager.blueTeamCrownTower : EntityManager.redTeamCrownTower;
+
+            TowerController result = null;
+            float min = float.MaxValue;
+
+            foreach (TowerController tower in towers)
+            {
+                if (tower == this) continue;
+                if ((tower.entityType & EntityType.CrownTower) == 0) continue;
+
+                Vector3 diff = tower.transform.position - transform.position;
+                diff.y = 0;
+
+                if (diff.sqrMagnitude < min)
+                {
+                    min = diff.sqrMagnitude;
+                    result = tower;
+                }
+            }
+
+            return result;
+        }
+    }
     private EntityController NearestTarget
     {
         get
         {
-            var entities = team == Team.RedTeam ? EntityManager.blueTeamEnntities : EntityManager.redTeamEntities;
+            var entities = team == Team.RedTeam ? EntityManager.blueTeamEntities : EntityManager.redTeamEntities;
 
             EntityController result = null;
             float min = float.MaxValue;
 
-            float rangeSqr = unitData.AttackData.sightRange * unitData.AttackData.sightRange;
             foreach (var entity in entities)
             {
-                if ((attackTarget & entity.entityType) == 0) { continue; }
+                if ((attackFilter & entity.entityType) == 0) { Debug.Log($"공격타입 같지 않음 : {attackFilter} / {entity.entityType}"); continue; }
                 if (entity == this) { continue; }
 
+                float range = cardData.AttackData.sightRange + size + entity.size;
                 Vector3 diff = entity.transform.position - transform.position;
                 diff.y = 0;
 
-                if (diff.sqrMagnitude <= rangeSqr)
+                if (diff.sqrMagnitude <= range * range)
                 {
                     if (diff.sqrMagnitude < min)
                     {
@@ -51,115 +78,53 @@ public class TowerController : EntityController, IDamageable
                 }
             }
 
+            if (result == null)
+            {
+                result = NearestCrownTower;
+            }
+
             return result;
         }
     }
     private EntityController target;
 
-    private Coroutine runningCoroutine;
-
     private void Awake()
     {
+        targetFinder = GetComponent<TargetFinder>();
+        entityAttacker = GetComponent<EntityAttacker>();
         agent = GetComponent<NavMeshAgent>();
     }
 
-    public override void Init(CardData cardData)
+    public override void Init(EntityData cardData, Vector3 point, Team team)
     {
-        base.Init(cardData);
+        base.Init(cardData, point, team);
 
-        if (cardData is TowerData unit)
+        if (cardData is TowerData tower)
         {
-            unitData = unit;
+            this.cardData = tower;
 
-            damage = unit.AttackData.damage;
-            health = unit.DefenseData.health;
+            health = tower.DefenseData.health;
 
-            rangeSqr = unit.AttackData.attackRange * unit.AttackData.attackRange;
-            attackTarget = unit.AttackData.attackTarget;
-
-            hpComsumePerSecond = unit.lifeTime > 0 ? health / unit.lifeTime : 0;
+            attackFilter = tower.AttackData.attackFilter;
         }
 
-        activateWaitTime = unitData.activateWaitTime;
-        EntityManager.onEntitiesChanged += LockOn;
+        activateWaitTime = this.cardData.activateWaitTime;
     }
 
     private void Update()
     {
-        if (activateWaitTime > 0f)
-        {
-            activateWaitTime -= Time.deltaTime;
-            // 이곳에서 타이머UI 갱신
-            return;
-        }
-
-        if (Time.time - lastSearchTime > searchInterval)
-        {
-            LockOn();
-            lastSearchTime = Time.time;
-        }
-
-        if (target != null)
-        {
-            CheckAttackRange();
-
-            if (attackInterval < 0f)
-            {
-                Attack();
-            }
-        }
-
-        attackInterval -= Time.deltaTime;
-        TakeDamage(hpComsumePerSecond * Time.deltaTime);
+        CheckTransition();
+        ExecuteState();
     }
 
-    protected override void Move()
+    public void TakeDamage(float damage, Team team)
     {
-        throw new NotImplementedException();
-    }
-    protected override void LockOn()
-    {
-        target = NearestTarget;
-    }
+        if (this.team == team) return;
+        if (health < 0) return;
 
-    protected override void CheckAttackRange()
-    {
-        Vector3 diff = target.transform.position - transform.position;
-        diff.y = 0;
-        isLockOn = diff.sqrMagnitude < rangeSqr;
-    }
-
-    protected override void Attack()
-    {
-        if (isLockOn && runningCoroutine == null)
-        {
-            runningCoroutine = StartCoroutine(CoAttack());
-            attackInterval = unitData.AttackData.attackInterval;
-        }
-    }
-
-    IEnumerator CoAttack()
-    {
-        yield return new WaitForSeconds(unitData.AttackData.firstAttackTime);
-
-        switch (attackType)
-        {
-            case AttackType.Single:
-                if (target == null) break;
-                target.transform.GetComponent<IDamageable>().TakeDamage(damage, team);
-                break;
-            case AttackType.Area:
-                // 데미지를 주는 오브젝트 생성
-                break;
-        }
-
-        yield return new WaitForSeconds(unitData.AttackData.lastDelay);
-        runningCoroutine = null;
-    }
-
-    public void TakeDamage(float damage)
-    {
         health -= damage;
+
+        Debug.Log($"{team}타워 피격! 남은체력 {health}");
 
         if (health <= 0)
         {
@@ -167,18 +132,97 @@ public class TowerController : EntityController, IDamageable
         }
     }
 
-    public void TakeDamage(float damage, Team team)
-    {
-        if (this.team == team) return;
-
-        //Debug.Log($"{team} 타워피격! 남은체력 {health}");
-        TakeDamage(damage);
-    }
-
     private void Dead()
     {
-        EntityManager.onEntitiesChanged -= LockOn;
+        StopAllCoroutines();
         EntityManager.RemoveEntities(this);
         Destroy(gameObject);
+    }
+
+
+
+    private void CheckTransition()
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                if (activateWaitTime < 0) { ChangeState(EntityState.LookingForTarget); }
+                break;
+            case EntityState.LookingForTarget:
+                if (entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.Attack); }
+                break;
+            case EntityState.Attack:
+                if (target == null || !entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.LookingForTarget); }
+                break;
+            case EntityState.Sprint:
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                break;
+        }
+    }
+    private void ExecuteState()
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                runningCoroutine = null;
+                activateWaitTime -= Time.deltaTime;
+                break;
+            case EntityState.LookingForTarget:
+                if (Time.time - lastSearchTime > searchInterval || EntityManager.isEntityUpdated)
+                {
+                    target = targetFinder?.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);
+                    if (target == null) target = targetFinder?.FindNearestCrownTower(team, attackFilter);
+                    lastSearchTime = Time.time;
+                }
+                break;
+            case EntityState.Attack:
+                if (Time.time - lastAttackTime > cardData.AttackData.attackInterval)
+                {
+                    StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, target, team));
+                    lastAttackTime = Time.time;
+                }
+                if (target != null)
+                        transform.LookAt(target.transform.position);
+                break;
+            case EntityState.Sprint:
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                if (cardData.SpecialData != null && cardData.SpecialData.hasDeathrattle)
+                {
+
+                }
+                break;
+        }
+    }
+    private void ChangeState(EntityState state)
+    {
+        switch (state)
+        {
+            case EntityState.Idle:
+                break;
+            case EntityState.LookingForTarget:
+                break;
+            case EntityState.Attack:
+                break;
+            case EntityState.Sprint:
+                break;
+            case EntityState.PrepareCharge:
+                break;
+            case EntityState.Charge:
+                break;
+            case EntityState.Dead:
+                break;
+        }
+
+        this.state = state;
     }
 }

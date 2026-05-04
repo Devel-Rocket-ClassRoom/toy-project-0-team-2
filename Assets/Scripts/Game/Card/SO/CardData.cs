@@ -1,26 +1,17 @@
 using System;
 using UnityEngine;
 
-public abstract class CardData : ScriptableObject
+[CreateAssetMenu(fileName = "Card", menuName = "Scriptable Objects/Card")]
+public class CardData : ScriptableObject
 {
-    public int elixir;
-    public Vector3 positionAdjustment;
+    public CardDataStructure[] cardDatas;
 
-    public AttackData AttackData;
-    public DefenseData DefenseData;
-    public SpecialData SpecialData;
-
-    public GameObject model;
-    public float activateWaitTime;
+    public float arrangmentCompletTime;
 }
 
-[Flags]
-public enum EntityType
+[Serializable]
+public struct CardDataStructure
 {
-    Nothing = 0,
-    Ground = 1, 
-    Aerial = 1 << 1, 
-    Tower = 1 << 2, 
-    CrownTower = 1 << 3,
-    Everything = Ground | Aerial | Tower | CrownTower,
+    public EntityData entityData;
+    public Vector3 positionAdjustment;
 }
