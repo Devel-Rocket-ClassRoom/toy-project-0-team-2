@@ -9,8 +9,8 @@ public static class EntityManager
     public static List<EntityController> redTeamEntities = new List<EntityController>();
     public static List<EntityController> blueTeamEntities = new List<EntityController>();
 
-    public static List<TowerController> redTeamCrownTower = new List<TowerController>();
-    public static List<TowerController> blueTeamCrownTower = new List<TowerController>();
+    public static List<EntityController> redTeamCrownTower = new List<EntityController>();
+    public static List<EntityController> blueTeamCrownTower = new List<EntityController>();
 
     public static Action onEntitiesChanged;
 
@@ -29,11 +29,11 @@ public static class EntityManager
         {
             if (entity.team == Team.RedTeam)
             {
-                redTeamCrownTower.Add(entity as TowerController);
+                redTeamCrownTower.Add(entity);
             }
             else if (entity.team == Team.BlueTeam)
             {
-                blueTeamCrownTower.Add(entity as TowerController);
+                blueTeamCrownTower.Add(entity);
             }
         }
 
@@ -55,11 +55,11 @@ public static class EntityManager
         {
             if (entity.team == Team.RedTeam)
             {
-                redTeamCrownTower.Remove(entity as TowerController);
+                redTeamCrownTower.Remove(entity);
             }
             else if (entity.team == Team.BlueTeam)
             {
-                blueTeamCrownTower.Remove(entity as TowerController);
+                blueTeamCrownTower.Remove(entity);
             }
         }
 

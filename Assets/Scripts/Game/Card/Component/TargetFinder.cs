@@ -37,13 +37,14 @@ public class TargetFinder : MonoBehaviour
     public TowerController FindNearestCrownTower(Team team, EntityType attackFilter)
     {
         var towers = team == Team.RedTeam ? EntityManager.blueTeamCrownTower : EntityManager.redTeamCrownTower;
+        if (towers.Count == 0) return null;
 
         TowerController result = null;
         float min = float.MaxValue;
 
         foreach (TowerController tower in towers)
         {
-            if (tower == this) continue;
+            if (tower == this || tower == null) continue;
             if ((tower.entityType & EntityType.CrownTower) == 0) continue;
 
             Vector3 diff = tower.transform.position - transform.position;
