@@ -200,7 +200,10 @@ public class AttackEntityController : RootController
         yield return new WaitForSeconds(attackData.attackArriveTime);
 
         if (attackData.attackArriveModel != null)
-            Instantiate(attackData.attackArriveModel, modelPosition);
+        {
+            var model = Instantiate(attackData.attackArriveModel, modelPosition.position, Quaternion.identity);
+            Destroy(model, 0.1f);
+        }
 
         switch (attackData.attackType)
         {

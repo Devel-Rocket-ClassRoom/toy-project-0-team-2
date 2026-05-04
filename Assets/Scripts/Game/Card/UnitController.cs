@@ -149,7 +149,11 @@ public class UnitController : EntityController, IDamageable
                     lastAttackTime = Time.time;
                 }
                 if (target != null)
-                    transform.LookAt(target.transform.position);
+                {
+                    var look = target.modelPosition.position;
+                    look.y = transform.position.y;
+                    transform.LookAt(look);
+                }
                 break;
             case EntityState.Sprint:
                 entityMover.AttackMoveTo(transform.position, target, cardData.SpecialData.sprintSpeed);
