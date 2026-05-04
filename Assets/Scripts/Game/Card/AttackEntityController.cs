@@ -14,8 +14,6 @@ public class AttackEntityController : RootController
 
     private EntityAttacker entityAttacker;
     private EntityMover entityMover;
-    [SerializeField]
-    private EntityState state;
 
     private float activateWaitTime;
     private bool isMoveEnd = false;
@@ -41,13 +39,13 @@ public class AttackEntityController : RootController
         activateWaitTime = attackData.attackArriveTime;
         this.attackData = attackData;
         transform.position = point;
+        transform.forward = target.transform.position - transform.position;
         this.team = team;
         isNonTarget = attackData.isNonTarget;
 
         if (isNonTarget)
         {
             destination = target.transform.position;
-            Debug.Log(destination);
         }
         else
         {
@@ -77,6 +75,7 @@ public class AttackEntityController : RootController
         activateWaitTime = attackData.attackArriveTime;
         this.attackData = attackData;
         transform.position = point;
+        transform.forward = target - transform.position;
         this.team = team;
         isNonTarget = attackData.isNonTarget;
 
@@ -155,9 +154,9 @@ public class AttackEntityController : RootController
             case EntityState.LookingForTarget:
                 if (target == null) isNonTarget = true;
                 if (isNonTarget)
-                    entityMover.MoveTo(destination, attackData.projectileSpeed);
+                    entityMover.AttackMoveTo(transform.position, destination, attackData.projectileSpeed);
                 else
-                    entityMover.MoveTo(target, attackData.projectileSpeed);
+                    entityMover.AttackMoveTo(transform.position, target, attackData.projectileSpeed);
                 break;
             case EntityState.Attack:
                 if (!isAttackEnd)
@@ -177,10 +176,8 @@ public class AttackEntityController : RootController
             case EntityState.Idle:
                 break;
             case EntityState.LookingForTarget:
-                entityMover.MoveControl(false);
                 break;
             case EntityState.Attack:
-                entityMover.MoveControl(true);
                 break;
             case EntityState.Sprint:
                 break;
@@ -198,7 +195,7 @@ public class AttackEntityController : RootController
 
     IEnumerator CoAttack()
     {
-        transform.position = isNonTarget ? destination : target.transform.position;
+        transform.position = isNonTarget ? destination : target.modelPosition.transform.position;
 
         yield return new WaitForSeconds(attackData.attackArriveTime);
 
@@ -239,7 +236,8 @@ public class AttackEntityController : RootController
                 break;
         }
 
-        yield return new WaitForSeconds(0.2f);
+        float afterTime = attackData.attackDuration <= 0 ? 0.1f : attackData.attackDuration;
+        yield return new WaitForSeconds(afterTime);
         Destroy(gameObject);
     }
         //private void Update()

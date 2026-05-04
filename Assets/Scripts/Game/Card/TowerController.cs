@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.AdaptivePerformance;
 using UnityEngine.AI;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class TowerController : EntityController, IDamageable
 {
-    [SerializeField]
-    private EntityState state;
-
     private TargetFinder targetFinder;
     private EntityAttacker entityAttacker;
     private NavMeshAgent agent;
@@ -20,72 +18,12 @@ public class TowerController : EntityController, IDamageable
 
     private EntityType attackFilter;
 
+    [SerializeField]
     private float health;
 
+    private float hpConsumePerSec;
 
-    private TowerController NearestCrownTower
-    {
-        get
-        {
-            var towers = team == Team.RedTeam ? EntityManager.blueTeamCrownTower : EntityManager.redTeamCrownTower;
 
-            TowerController result = null;
-            float min = float.MaxValue;
-
-            foreach (TowerController tower in towers)
-            {
-                if (tower == this) continue;
-                if ((tower.entityType & EntityType.CrownTower) == 0) continue;
-
-                Vector3 diff = tower.transform.position - transform.position;
-                diff.y = 0;
-
-                if (diff.sqrMagnitude < min)
-                {
-                    min = diff.sqrMagnitude;
-                    result = tower;
-                }
-            }
-
-            return result;
-        }
-    }
-    private EntityController NearestTarget
-    {
-        get
-        {
-            var entities = team == Team.RedTeam ? EntityManager.blueTeamEntities : EntityManager.redTeamEntities;
-
-            EntityController result = null;
-            float min = float.MaxValue;
-
-            foreach (var entity in entities)
-            {
-                if ((attackFilter & entity.entityType) == 0) { Debug.Log($"공격타입 같지 않음 : {attackFilter} / {entity.entityType}"); continue; }
-                if (entity == this) { continue; }
-
-                float range = cardData.AttackData.sightRange + size + entity.size;
-                Vector3 diff = entity.transform.position - transform.position;
-                diff.y = 0;
-
-                if (diff.sqrMagnitude <= range * range)
-                {
-                    if (diff.sqrMagnitude < min)
-                    {
-                        min = diff.sqrMagnitude;
-                        result = entity;
-                    }
-                }
-            }
-
-            if (result == null)
-            {
-                result = NearestCrownTower;
-            }
-
-            return result;
-        }
-    }
     private EntityController target;
 
     private void Awake()
@@ -103,12 +41,14 @@ public class TowerController : EntityController, IDamageable
         {
             this.cardData = tower;
 
-            health = tower.DefenseData.health;
+                health = tower.DefenseData.health;
 
-            attackFilter = tower.AttackData.attackFilter;
+                attackFilter = tower.AttackData.attackFilter;
         }
 
         activateWaitTime = this.cardData.activateWaitTime;
+        if ((cardData as TowerData).lifeTime > 0)
+            hpConsumePerSec = health / (cardData as TowerData).lifeTime;
     }
 
     private void Update()
@@ -117,6 +57,17 @@ public class TowerController : EntityController, IDamageable
         ExecuteState();
     }
 
+    public void TakeDamage(float damage)
+    {
+        if (health < 0) return;
+
+        health -= damage;
+
+        if (health <= 0)
+        {
+            Dead();
+        }
+    }
     public void TakeDamage(float damage, Team team)
     {
         if (this.team == team) return;
@@ -134,6 +85,11 @@ public class TowerController : EntityController, IDamageable
 
     private void Dead()
     {
+        if (cardData.SpecialData != null && cardData.SpecialData.hasDeathrattle)
+        {
+            CardArrangementManager.Instance.Arrangement(cardData.SpecialData.deathrattleEntity, team, transform.position);
+        }
+
         StopAllCoroutines();
         EntityManager.RemoveEntities(this);
         Destroy(gameObject);
@@ -166,6 +122,20 @@ public class TowerController : EntityController, IDamageable
     }
     private void ExecuteState()
     {
+        if (state != EntityState.Idle)
+        {
+            if (cardData.SpecialData != null && cardData.SpecialData.hasSummon)
+            {
+                if (Time.time - lastSummonTime > cardData.SpecialData.summonInterval)
+                {
+                    CardArrangementManager.Instance.Arrangement(cardData.SpecialData.summonEntity, team, transform.position);
+                    lastSummonTime = Time.time;
+                }
+            }
+
+            TakeDamage(hpConsumePerSec * Time.deltaTime);
+        }
+
         switch (state)
         {
             case EntityState.Idle:
@@ -183,7 +153,7 @@ public class TowerController : EntityController, IDamageable
             case EntityState.Attack:
                 if (Time.time - lastAttackTime > cardData.AttackData.attackInterval)
                 {
-                    StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, target, team));
+                    StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, modelPosition.position, target, team));
                     lastAttackTime = Time.time;
                 }
                 if (target != null)

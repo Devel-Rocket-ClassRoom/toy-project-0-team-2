@@ -6,6 +6,7 @@ public abstract class EntityData : ScriptableObject
 {
     public string cardName;
     public int elixir;
+    public int level;
 
     public AttackData AttackData;
     public DefenseData DefenseData;

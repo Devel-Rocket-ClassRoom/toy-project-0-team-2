@@ -12,27 +12,33 @@ public class EntityMover : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
-    public void MoveTo(EntityController target, float speed)
+    public void UnitMoveTo(EntityController target, float speed)
     {
         if (target == null) return;
 
-        MoveTo(target.transform.position, speed);
-    }
+        var t = target.transform.position;
+        t.y = transform.position.y;
 
-    public void MoveTo(Vector3 target, float speed)
-    {
         if (agent.isOnNavMesh)
         {
-            agent.SetDestination(target);
+            agent.SetDestination(t);
             agent.speed = speed;
         }
-        else
-        {
-            // 디버그를 통해 어떤 상태인지 파악 가능
-            Debug.LogWarning($"{gameObject.name} : Agent is not ready! {agent.isActiveAndEnabled} {agent.isOnNavMesh}");
-        }
-        
+    }
 
+    public void AttackMoveTo(Vector3 position, EntityController target, float speed)
+    {
+        if (target == null) return;
+
+        AttackMoveTo(position, target.modelPosition.transform.position, speed);
+    }
+
+    public void AttackMoveTo(Vector3 position, Vector3 target, float speed)
+    {
+        var dir = target - position;
+        dir.Normalize();
+
+        transform.Translate(dir * speed * Time.deltaTime, Space.World);
     }
 
 

@@ -160,9 +160,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9a9616edd83bd4498e3745783f84610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellController
+  state: 0
   attackData: {fileID: 0}
   modelPosition: {fileID: 3908833635735527851}
-  state: 0
 --- !u!114 &-916354371560736981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,7 +194,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8347812329073620317}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5

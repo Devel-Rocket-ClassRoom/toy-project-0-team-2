@@ -7,6 +7,8 @@ public class TargetFinder : MonoBehaviour
 
     public EntityController FindNearestTarget(Team team, EntityType attackFilter, float sightRange)
     {
+        if (sightRange <= 0) return null;
+
         var entities = team == Team.RedTeam ? EntityManager.blueTeamEntities : EntityManager.redTeamEntities;
 
         EntityController result = null;

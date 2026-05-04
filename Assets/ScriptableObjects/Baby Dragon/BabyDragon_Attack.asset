@@ -10,23 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5251c65367c76ba408a00f633f5a172e, type: 3}
-  m_Name: ArenaTower_Attack
+  m_Name: BabyDragon_Attack
   m_EditorClassIdentifier: Assembly-CSharp::AttackData
-  attackInterval: 0.5
-  firstAttackTime: 0.4
-  lastDelay: 0.1
-  sightRange: 8
-  attackRange: 8
-  damage: 60
+  attackInterval: 1.5
+  firstAttackTime: 0.2
+  lastDelay: 0.3
+  sightRange: 7
+  attackRange: 4
+  damage: 160
   crownTowerDamage: 0
   attackArriveTime: 0
-  projectileSpeed: 20
+  projectileSpeed: 12
   attackDuration: 0
-  attackRadius: 0
-  isNonTarget: 0
-  isSingleTarget: 1
+  attackRadius: 1
+  isNonTarget: 1
   toKingTower: 0
   attackFilter: -1
-  attackType: 0
-  attackModel: {fileID: 467419676813794834, guid: 6eafbe893e477774784421c166a47381, type: 3}
-  attackArriveModel: {fileID: 0}
+  attackType: 1
+  attackModel: {fileID: 3604592886499914945, guid: 53c363797bcbde94db7f2221b568cd96, type: 3}
+  attackArriveModel: {fileID: 4286784737559568395, guid: 6074dd0f40661b447bb30319d5a8ba37, type: 3}

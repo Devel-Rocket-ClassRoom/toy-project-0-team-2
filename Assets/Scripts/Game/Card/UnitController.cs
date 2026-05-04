@@ -6,16 +6,11 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class UnitController : EntityController, IDamageable
 {
-    [SerializeField]
-    private EntityState state;
-
     private TargetFinder targetFinder;
     private EntityMover entityMover;
     private EntityAttacker entityAttacker;
-    private NavMeshAgent agent;
 
     private float activateWaitTime;
-    private bool isLockOn;
 
     private float lastAttackTime;
 
@@ -26,69 +21,7 @@ public class UnitController : EntityController, IDamageable
     private float continuousMoveTime = 0f;
 
 
-    private TowerController NearestCrownTower
-    {
-        get
-        {
-            var towers = team == Team.RedTeam ? EntityManager.blueTeamCrownTower : EntityManager.redTeamCrownTower;
-
-            TowerController result = null;
-            float min = float.MaxValue;
-
-            foreach (TowerController tower in towers)
-            {
-                if (tower == this) continue;
-                if ((tower.entityType & EntityType.CrownTower) == 0) continue;
-
-                Vector3 diff = tower.transform.position - transform.position;
-                diff.y = 0;
-
-                if (diff.sqrMagnitude < min)
-                {
-                    min = diff.sqrMagnitude;
-                    result = tower;
-                }
-            }
-
-            return result;
-        }
-    }
-    private EntityController NearestTarget
-    {
-        get
-        {
-            var entities = team == Team.RedTeam ? EntityManager.blueTeamEntities : EntityManager.redTeamEntities;
-
-            EntityController result = null;
-            float min = float.MaxValue;
-
-            foreach (var entity in entities)
-            {
-                if ((attackFilter & entity.entityType) == 0) { Debug.Log($"공격타입 같지 않음 : {attackFilter} / {entity.entityType}"); continue; }
-                if (entity == this) { continue; }
-
-                float range = cardData.AttackData.sightRange + size + entity.size;
-                Vector3 diff = entity.transform.position - transform.position;
-                diff.y = 0;
-
-                if (diff.sqrMagnitude <= range * range)
-                {
-                    if (diff.sqrMagnitude < min)
-                    {
-                        min = diff.sqrMagnitude;
-                        result = entity;
-                    }
-                }
-            }
-
-            if (result == null)
-            {
-                result = NearestCrownTower;
-            }
-
-            return result;
-        }
-    }
+    
     private EntityController target;
 
     private void Awake()
@@ -96,7 +29,6 @@ public class UnitController : EntityController, IDamageable
         targetFinder = GetComponent<TargetFinder>();
         entityMover = GetComponent<EntityMover>();
         entityAttacker = GetComponent<EntityAttacker>();
-        agent = GetComponent<NavMeshAgent>();
     }
 
     public override void Init(EntityData cardData, Vector3 point, Team team)
@@ -139,6 +71,11 @@ public class UnitController : EntityController, IDamageable
 
     private void Dead()
     {
+        if (cardData.SpecialData != null && cardData.SpecialData.hasDeathrattle)
+        {
+            CardArrangementManager.Instance.Arrangement(cardData.SpecialData.deathrattleEntity, team, transform.position);
+        }
+
         StopAllCoroutines();
         EntityManager.RemoveEntities(this);
         Destroy(gameObject);
@@ -166,7 +103,7 @@ public class UnitController : EntityController, IDamageable
             case EntityState.Sprint:
                 if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange))
                 {
-                    runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, target, team));
+                    runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, modelPosition.position, target, team));
                     ChangeState(EntityState.Attack);
                 }
                 break;
@@ -180,6 +117,15 @@ public class UnitController : EntityController, IDamageable
     }
     private void ExecuteState()
     {
+        if (state != EntityState.Idle && cardData.SpecialData != null && cardData.SpecialData.hasSummon)
+        {
+            if (Time.time - lastSummonTime > cardData.SpecialData.summonInterval)
+            {
+                CardArrangementManager.Instance.Arrangement(cardData.SpecialData.summonEntity, team, transform.position);
+                lastSummonTime = Time.time;
+            }
+        }
+
         switch (state)
         {
             case EntityState.Idle:
@@ -187,7 +133,7 @@ public class UnitController : EntityController, IDamageable
                 activateWaitTime -= Time.deltaTime;
                 break;
             case EntityState.LookingForTarget:
-                entityMover.MoveTo(target, speed);
+                entityMover.UnitMoveTo(target, speed);
                 continuousMoveTime += Time.deltaTime;
                 if (Time.time - lastSearchTime > searchInterval || EntityManager.isEntityUpdated)
                 {
@@ -199,14 +145,14 @@ public class UnitController : EntityController, IDamageable
             case EntityState.Attack:
                 if (Time.time - lastAttackTime > cardData.AttackData.attackInterval)
                 {
-                    StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, target, team));
+                    StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, modelPosition.position, target, team));
                     lastAttackTime = Time.time;
                 }
                 if (target != null)
                     transform.LookAt(target.transform.position);
                 break;
             case EntityState.Sprint:
-                entityMover.MoveTo(target, cardData.SpecialData.sprintSpeed);
+                entityMover.AttackMoveTo(transform.position, target, cardData.SpecialData.sprintSpeed);
                 if (Time.time - lastSearchTime > searchInterval)
                 {
                     targetFinder.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);

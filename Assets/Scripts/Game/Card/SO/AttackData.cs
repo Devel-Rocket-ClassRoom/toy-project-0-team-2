@@ -16,10 +16,10 @@ public class AttackData : ScriptableObject
     public float crownTowerDamage;
     public float attackArriveTime; // 공격 도착 이후 대기 시간 (예 : 마법병 떨구는 시간)
     public float projectileSpeed; // 투사체 속도
+    public float attackDuration;
     public float attackRadius; // 공격 범위 (AttackType : Area 한정)
 
     public bool isNonTarget;
-    public bool isSingleTarget;
     public bool toKingTower;
 
     public EntityType attackFilter;

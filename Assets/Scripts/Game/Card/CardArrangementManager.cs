@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CardArrangementManager: MonoBehaviour
 {
+    public static CardArrangementManager Instance;
+
     public static UnitController unit;
     public static TowerController tower;
     public static AttackEntityController spell;
@@ -12,6 +14,11 @@ public class CardArrangementManager: MonoBehaviour
     public CardData KingTower;
     public Transform RedTeamKing;
     public Transform BlueTeamKing;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private Vector3 GetKingTowerPosition(Team team) => team == Team.RedTeam ? RedTeamKing.position : BlueTeamKing.position;
 
@@ -48,7 +55,9 @@ public class CardArrangementManager: MonoBehaviour
             
             if (controller is EntityController e)
             {
-                e.Init(entityDatas[i].entityData, point + entityDatas[i].positionAdjustment, team);
+                var adjust = entityDatas[i].positionAdjustment;
+                if (team == Team.RedTeam) adjust.z = -adjust.z;
+                e.Init(entityDatas[i].entityData, point + adjust, team);
 
                 if (controller != null)
                 {

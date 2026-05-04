@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300f6651ac0f4ed45a5974fcedfad824, type: 3}
+  m_Name: Skeleton
+  m_EditorClassIdentifier: Assembly-CSharp::UnitData
+  cardName: 
+  elixir: 0
+  level: 0
+  AttackData: {fileID: 11400000, guid: 1a51642691c9a8f46a929dd936154d0a, type: 2}
+  DefenseData: {fileID: 11400000, guid: 6d5b0852cc4e3724aad0657be505ff44, type: 2}
+  SpecialData: {fileID: 0}
+  model: {fileID: 6075530309558365282, guid: 3136267f54bc1c34f9a49f5a0e364d3e, type: 3}
+  activateWaitTime: 1
+  tilePerSeconds: 1.5

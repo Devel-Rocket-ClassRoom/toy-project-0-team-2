@@ -11,6 +11,8 @@ public class EntityAttacker : MonoBehaviour
 
     public bool IsTargetInRange(Vector3 target, float attackRange)
     {
+        if (attackRange <= 0) return false;
+
         Vector3 diff = target - transform.position;
         diff.y = 0;
 
@@ -22,7 +24,7 @@ public class EntityAttacker : MonoBehaviour
         return sqrDistance < sqrRange;
     }
 
-    public IEnumerator CoAttack(AttackData attackData, EntityController target, Team team)
+    public IEnumerator CoAttack(AttackData attackData, Vector3 position, EntityController target, Team team)
     {
         if (attackData == null)
         {
@@ -36,7 +38,7 @@ public class EntityAttacker : MonoBehaviour
             yield break;
         }
 
-        CardArrangementManager.ReqeustAttack(attackData, transform.position, target, team);
+        CardArrangementManager.ReqeustAttack(attackData, position, target, team);
 
         yield return new WaitForSeconds(attackData.lastDelay);
     }

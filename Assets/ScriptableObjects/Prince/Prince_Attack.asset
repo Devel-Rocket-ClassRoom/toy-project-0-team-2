@@ -21,9 +21,11 @@ MonoBehaviour:
   crownTowerDamage: 0
   attackArriveTime: 0
   projectileSpeed: 0
+  attackDuration: 0
   attackRadius: 0
   isNonTarget: 0
   isSingleTarget: 1
+  toKingTower: 0
   attackFilter: 13
   attackType: 0
   attackModel: {fileID: 0}
