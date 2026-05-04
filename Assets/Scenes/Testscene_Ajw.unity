@@ -2108,7 +2108,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 56d699d6b715bc1439b247d8d8585226, type: 2}
   - {fileID: 11400000, guid: 212286fdcb65bad41825b9fe2c91b1d6, type: 2}
   - {fileID: 11400000, guid: ea3d15a3114f552418c443c4bde4f3a7, type: 2}
-  - {fileID: 11400000, guid: 56d699d6b715bc1439b247d8d8585226, type: 2}
+  - {fileID: 11400000, guid: 47efd5177674d494a9833fcf0a870fc9, type: 2}
   handCards:
   - {fileID: 0}
   - {fileID: 0}

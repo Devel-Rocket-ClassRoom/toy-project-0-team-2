@@ -9,6 +9,8 @@ public abstract class EntityController : RootController
 
     protected float searchInterval = 0.2f;
     protected float lastSearchTime;
+    protected float lastChargeTime;
+    protected bool isChargeEnd;
 
     protected Coroutine runningCoroutine;
 

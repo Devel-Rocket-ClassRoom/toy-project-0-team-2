@@ -7,22 +7,16 @@ public class EntityMover : MonoBehaviour
 {
     private NavMeshAgent agent;
 
-    Team team;
+    private Team team;
     private static float VerticalMidLine;
     private static float HorizontalMidLine;
     private static float ArenaTowerLine;
     private static float RoadLine;
     private static bool isInit = false;
 
-    static EntityMover()
-    {
-        
-    }
-
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        team = transform.GetComponent<RootController>().team;
 
         if (!isInit)
         {
@@ -33,6 +27,11 @@ public class EntityMover : MonoBehaviour
             RoadLine = Mathf.Abs(arena.x - VerticalMidLine);
             isInit = true;
         }
+    }
+
+    public void Init(Team team)
+    {
+        this.team = team;
     }
 
     public void UnitMoveTo(EntityController target, float speed)
@@ -53,19 +52,18 @@ public class EntityMover : MonoBehaviour
                 t.x = VerticalMidLine - RoadLine;
 
             float relativeZ = (transform.position.z - HorizontalMidLine) * reverse;
-            Debug.Log(relativeZ);
 
             float targetRelativeZ = 0;
 
-            if (!(relativeZ < -ArenaTowerLine - 0.5f))
+            if (relativeZ < -ArenaTowerLine - 0.5f)
             {
                 targetRelativeZ = -ArenaTowerLine;
             }
-            else if (!(relativeZ < -0.5f))
+            else if (relativeZ < -0.5f)
             {
                 targetRelativeZ = 0;
             }
-            else if (!(relativeZ < ArenaTowerLine- 0.5f))
+            else if (relativeZ < ArenaTowerLine- 0.5f)
             {
                 targetRelativeZ = ArenaTowerLine;
             }

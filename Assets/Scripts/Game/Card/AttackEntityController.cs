@@ -113,11 +113,11 @@ public class AttackEntityController : RootController
                 {
                     if (target != null)
                         destination = target.transform.position;
-                    if (entityAttacker.IsTargetInRange(destination, 0.5f)) ChangeState(EntityState.Attack);
+                    if (entityAttacker.IsTargetInRange(destination, 0.5f, out _)) ChangeState(EntityState.Attack);
                 }
                 else
                 {
-                    if (entityAttacker.IsTargetInRange(destination, 0.5f)) ChangeState(EntityState.Attack);
+                    if (entityAttacker.IsTargetInRange(destination, 0.5f, out _)) ChangeState(EntityState.Attack);
                 }
                 if (attackData.projectileSpeed <= 0f) ChangeState(EntityState.Attack);
                 break;

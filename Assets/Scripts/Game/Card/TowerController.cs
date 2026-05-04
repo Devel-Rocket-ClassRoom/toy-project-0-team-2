@@ -102,10 +102,10 @@ public class TowerController : EntityController, IDamageable
                 if (activateWaitTime < 0) { ChangeState(EntityState.LookingForTarget); }
                 break;
             case EntityState.LookingForTarget:
-                if (entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.Attack); }
+                if (entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _)) { ChangeState(EntityState.Attack); }
                 break;
             case EntityState.Attack:
-                if (target == null || !entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.LookingForTarget); }
+                if (target == null || !entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _)) { ChangeState(EntityState.LookingForTarget); }
                 break;
             case EntityState.Sprint:
                 break;

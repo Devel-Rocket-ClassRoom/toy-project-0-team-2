@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b39515e34a56c1544a95a85e9f8c0602, type: 3}
-  m_Name: Knight Card
-  m_EditorClassIdentifier: Assembly-CSharp::Card
+  m_Name: Bandit Card
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardDatas:
-  - entityData: {fileID: 11400000, guid: 2ee2b73a2539b1f488a9e832f2fc7315, type: 2}
+  - entityData: {fileID: 11400000, guid: 0aeeec25b5b376c4d805121c48a4527d, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}
   arrangmentCompletTime: 0
