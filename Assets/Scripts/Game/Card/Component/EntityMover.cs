@@ -7,6 +7,10 @@ public class EntityMover : MonoBehaviour
 {
     private NavMeshAgent agent;
 
+    public Transform[] friendlyArenaTower;
+    public Transform[] Birdge;
+    public Transform[] enemyArenaTower;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -14,10 +18,16 @@ public class EntityMover : MonoBehaviour
 
     public void UnitMoveTo(EntityController target, float speed)
     {
-        if (target == null) return;
+        Vector3 t = Vector3.zero;
+        if (target != null)
+        {
+            t = target.transform.position;
+            t.y = transform.position.y;
+        }
+        else
+        {
 
-        var t = target.transform.position;
-        t.y = transform.position.y;
+        }
 
         if (agent.isOnNavMesh)
         {
