@@ -11,31 +11,36 @@ public class UnitHealthBarUI : MonoBehaviour
     public Slider HPBar;
 
     private Camera cam;
-    private float currentHP;
+    private UnitController unit;
     private float maxHP;
 
     private void Awake()
     {
         cam = Camera.main;
+
+        if (HPBar == null)
+        {
+            HPBar = GetComponent<Slider>();
+        }
     }
 
-    public void Init(Transform unitTarget, EntityData entityData)
+    public void Init(UnitController unit)
     {
-        target = unitTarget;
+        this.unit = unit;
+        target = unit.transform;
 
-        maxHP = entityData.DefenseData.health;
-        currentHP = maxHP;
+        maxHP = unit.health;
 
         HPBar.minValue = 0;
         HPBar.maxValue = maxHP;
-        HPBar.value = currentHP;
+        HPBar.value = maxHP;
 
-        UpdateUI();
+        unitHP.text = maxHP.ToString("0");
     }
 
     private void LateUpdate()
     {
-        if (target == null)
+        if (target == null || unit == null)
         {
             Destroy(gameObject);
             return;
@@ -43,16 +48,14 @@ public class UnitHealthBarUI : MonoBehaviour
 
         Vector3 screenPos = cam.WorldToScreenPoint(target.position + offset);
         transform.position = screenPos;
-    }
 
-    public void SetHealth(float hp)
-    {
-        currentHP = Mathf.Clamp(hp, 0, maxHP);
         UpdateUI();
     }
 
     private void UpdateUI()
     {
+        float currentHP = unit.health;
+
         unitHP.text = currentHP.ToString("0");
         HPBar.value = currentHP;
     }
