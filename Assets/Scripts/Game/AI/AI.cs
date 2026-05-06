@@ -11,6 +11,8 @@ public class AI : MonoBehaviour
     public CardArrangementManager arrangementManager;
     private Team team = Team.RedTeam;
 
+    public bool isActive;
+
     private void Start()
     {
         deck = new Queue<CardData>();
@@ -29,6 +31,8 @@ public class AI : MonoBehaviour
 
     public void PlayerArrangementCard(CardData card, Vector3 point)
     {
+        if (!isActive) return;
+
         Debug.Log($"{card.name} : {card.elixer}, {card.cardDatas.Length}");
 
         var cardType = ClassifyCard(card);

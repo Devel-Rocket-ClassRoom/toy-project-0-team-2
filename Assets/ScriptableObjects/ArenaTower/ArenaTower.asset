@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b4922cd69382a84780693ef5401fd38, type: 3}
   m_Name: ArenaTower
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  cardName: 
+  cardName: King Tower
   elixir: 0
   level: 0
   AttackData: {fileID: 11400000, guid: d1e19821dbc7eb740bab3ba0fab3be52, type: 2}

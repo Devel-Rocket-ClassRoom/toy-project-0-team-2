@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,11 +17,11 @@ public class BattleUI : MonoBehaviour
     //크라운카운터
     public TextMeshProUGUI RedCrown;
     public int RedCrownCount = 0;
-    private bool DestroyRedTown;
 
     public TextMeshProUGUI BlueCrown;
     public int BlueCrownCount = 0;
-    private bool DestroyBlueTown;    
+
+
     //카드
     private Color originalColor;
     public TextMeshProUGUI[] CardNames = new TextMeshProUGUI[4];
@@ -41,6 +42,8 @@ public class BattleUI : MonoBehaviour
         ElixirSlider.minValue = 0;
         ElixirSlider.maxValue = 10;
         originalColor= Color.white;
+
+        EntityManager.onCrounTowerDestroy += CrownCounter;
     }
 
 
@@ -49,17 +52,9 @@ public class BattleUI : MonoBehaviour
         battleTime();
         ElixirUI();
         ButtonData();
-        CrownCounter();
+
 
         //확인용
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            DestroyRedTown=true;
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            DestroyBlueTown = true;
-        }
     }
 
 
@@ -77,7 +72,6 @@ public class BattleUI : MonoBehaviour
     {
         ElixirSlider.value = elixirManager.currentElixir;
         ElixirText.text = Mathf.FloorToInt(elixirManager.currentElixir).ToString();
-        
     }
 
     //카드정보표시
@@ -128,23 +122,18 @@ public class BattleUI : MonoBehaviour
 
 
     //크라운정보표시
-    private void CrownCounter()
+    private void CrownCounter(Team team)
     {
-        if (DestroyRedTown)
+        if (team == Team.BlueTeam)
         {
             RedCrownCount++;
             RedCrown.text = RedCrownCount.ToString();
-          
-            DestroyRedTown =false;
-
         }
 
-        if (DestroyBlueTown)
+        if (team == Team.RedTeam)
         {
             BlueCrownCount++;
             BlueCrown.text = BlueCrownCount.ToString();
-            
-            DestroyBlueTown = false;
         }
     }
 
