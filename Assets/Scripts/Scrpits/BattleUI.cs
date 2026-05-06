@@ -5,19 +5,21 @@ using UnityEngine.UI;
 public class BattleUI : MonoBehaviour
 {
 
+    public Gameendmanager gameendmanager;
     //타이머
     public TextMeshProUGUI Timer;
-    public BattleManager battleManager;
+    public timerManager timerManager;
     //엘리서
+    public ElixirManager elixirManager;
     public TextMeshProUGUI ElixirText;
     public Slider ElixirSlider;
     //크라운카운터
     public TextMeshProUGUI RedCrown;
-    private int RedCrownCount = 0;
+    public int RedCrownCount = 0;
     private bool DestroyRedTown;
 
     public TextMeshProUGUI BlueCrown;
-    private int BlueCrownCount = 0;
+    public int BlueCrownCount = 0;
     private bool DestroyBlueTown;    
     //카드
     private Color originalColor;
@@ -64,8 +66,8 @@ public class BattleUI : MonoBehaviour
     //타이머정보표시
     private void battleTime()
     {
-        int minutes = battleManager.battleTime / 60;
-        int seconds = battleManager.battleTime % 60;
+        int minutes = timerManager.battleTime / 60;
+        int seconds = timerManager.battleTime % 60;
 
         Timer.text = $"{minutes.ToString("00")}:{seconds.ToString("00")}";
     }
@@ -73,8 +75,8 @@ public class BattleUI : MonoBehaviour
     //엘리서정보표시
     private void ElixirUI()
     {
-        ElixirSlider.value = battleManager.currentElixir;
-        ElixirText.text = Mathf.FloorToInt(battleManager.currentElixir).ToString();
+        ElixirSlider.value = elixirManager.currentElixir;
+        ElixirText.text = Mathf.FloorToInt(elixirManager.currentElixir).ToString();
         
     }
 
@@ -104,7 +106,7 @@ public class BattleUI : MonoBehaviour
 
             ColorBlock cb = CardButtons[i].colors;
 
-            if (battleManager.currentElixir < cost)
+            if (elixirManager.currentElixir < cost)
             {
                 cb.normalColor = Color.gray;
                 cb.highlightedColor = Color.gray;
@@ -132,11 +134,7 @@ public class BattleUI : MonoBehaviour
         {
             RedCrownCount++;
             RedCrown.text = RedCrownCount.ToString();
-            if (RedCrownCount >= 3)
-            {
-                battleManager.Gameover = true;
-                Debug.Log("레드팀 승리");
-            }
+          
             DestroyRedTown =false;
 
         }
@@ -145,11 +143,7 @@ public class BattleUI : MonoBehaviour
         {
             BlueCrownCount++;
             BlueCrown.text = BlueCrownCount.ToString();
-            if (BlueCrownCount >= 3)
-            {
-                battleManager.Gameover=true;
-                Debug.Log("블루팀 승리");
-            }
+            
             DestroyBlueTown = false;
         }
     }

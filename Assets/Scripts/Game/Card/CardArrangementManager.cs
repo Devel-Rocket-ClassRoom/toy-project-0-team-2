@@ -17,7 +17,7 @@ public class CardArrangementManager : MonoBehaviour
     public Transform[] RedArena;
     public Transform[] BlueArena;
     public Transform Mid;
-    public BattleManager battleManager;
+    public CardManager cardManager;
 
 
     private void Awake()
@@ -78,7 +78,7 @@ public class CardArrangementManager : MonoBehaviour
 
                 if (realUnit != null)
                 {
-                    battleManager.CreateHealthBar(realUnit);
+                    cardManager.CreateHealthBar(realUnit);
                 }
 
                
