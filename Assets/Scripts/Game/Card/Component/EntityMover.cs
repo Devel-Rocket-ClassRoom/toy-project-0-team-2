@@ -8,10 +8,10 @@ public class EntityMover : MonoBehaviour
     private NavMeshAgent agent;
 
     private Team team;
-    private static float VerticalMidLine;
-    private static float HorizontalMidLine;
-    private static float ArenaTowerLine;
-    private static float RoadLine;
+    public static float VerticalMidLine;
+    public static float HorizontalMidLine;
+    public static float ArenaTowerLine;
+    public static float RoadLine;
     private static bool isInit = false;
 
     private void Awake()
