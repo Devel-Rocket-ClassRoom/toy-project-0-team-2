@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Drawing;
 using UnityEngine;
-using UnityEngine.AI;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class UnitController : EntityController, IDamageable
 {
@@ -30,7 +26,6 @@ public class UnitController : EntityController, IDamageable
         targetFinder = GetComponent<TargetFinder>();
         entityMover = GetComponent<EntityMover>();
         entityAttacker = GetComponent<EntityAttacker>();
-        animator = modelPosition.GetComponentInChildren<Animator>();
     }
 
     public override void Init(EntityData cardData, Vector3 point, Team team)
@@ -49,6 +44,8 @@ public class UnitController : EntityController, IDamageable
         activateWaitTime = this.cardData.activateWaitTime;
         speed = (cardData as UnitData).tilePerSeconds;
         entityMover?.Init(team);
+
+        animator = modelPosition.GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -84,8 +81,6 @@ public class UnitController : EntityController, IDamageable
         Destroy(gameObject);
     }
 
-
-
     private void CheckTransition()
     {
         switch (state)
@@ -93,11 +88,10 @@ public class UnitController : EntityController, IDamageable
             case EntityState.Idle:
                 if (activateWaitTime < 0) { ChangeState(EntityState.LookingForTarget); }
                 break;
+
             case EntityState.LookingForTarget:
                 if (entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _))
                 {
-                    
-
                     ChangeState(EntityState.Attack);
                 }
                 if (cardData.SpecialData != null && cardData.SpecialData.hasCharge)
@@ -113,11 +107,13 @@ public class UnitController : EntityController, IDamageable
                 if (cardData.SpecialData != null
                     && cardData.SpecialData.hasSprint
                     && continuousMoveTime > cardData.SpecialData.springPrepareTime)
-                    { ChangeState(EntityState.Sprint); }
+                { ChangeState(EntityState.Sprint); }
                 break;
+
             case EntityState.Attack:
                 if (target == null || !entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _)) { ChangeState(EntityState.LookingForTarget); }
                 break;
+
             case EntityState.Sprint:
                 if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _))
                 {
@@ -125,6 +121,7 @@ public class UnitController : EntityController, IDamageable
                     ChangeState(EntityState.Attack);
                 }
                 break;
+
             case EntityState.PrepareCharge:
                 if (Time.time - lastChargeTime > cardData.SpecialData.chargePrepareTime)
                 {
@@ -132,6 +129,7 @@ public class UnitController : EntityController, IDamageable
                 }
                 if (target == null) ChangeState(EntityState.LookingForTarget);
                 break;
+
             case EntityState.Charge:
                 if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _))
                 {
@@ -143,10 +141,12 @@ public class UnitController : EntityController, IDamageable
                     ChangeState(EntityState.LookingForTarget);
                 }
                 break;
+
             case EntityState.Dead:
                 break;
         }
     }
+
     private void ExecuteState()
     {
         if (state != EntityState.Idle && cardData.SpecialData != null && cardData.SpecialData.hasSummon)
@@ -164,6 +164,7 @@ public class UnitController : EntityController, IDamageable
                 runningCoroutine = null;
                 activateWaitTime -= Time.deltaTime;
                 break;
+
             case EntityState.LookingForTarget:
                 entityMover.UnitMoveTo(target, speed);
                 continuousMoveTime += Time.deltaTime;
@@ -173,6 +174,7 @@ public class UnitController : EntityController, IDamageable
                     lastSearchTime = Time.time;
                 }
                 break;
+
             case EntityState.Attack:
                 if (Time.time - lastAttackTime > cardData.AttackData.attackInterval)
                 {
@@ -187,6 +189,7 @@ public class UnitController : EntityController, IDamageable
                     transform.LookAt(look);
                 }
                 break;
+
             case EntityState.Sprint:
                 entityMover.UnitMoveTo(target, cardData.SpecialData.sprintSpeed);
                 if (Time.time - lastSearchTime > searchInterval)
@@ -195,6 +198,7 @@ public class UnitController : EntityController, IDamageable
                     lastSearchTime = Time.time;
                 }
                 break;
+
             case EntityState.PrepareCharge:
                 if (Time.time - lastSearchTime > searchInterval)
                 {
@@ -202,14 +206,17 @@ public class UnitController : EntityController, IDamageable
                     lastSearchTime = Time.time;
                 }
                 break;
+
             case EntityState.Charge:
                 if (target != null)
                     entityMover.UnitMoveTo(target, cardData.SpecialData.chargeSpeed);
                 break;
+
             case EntityState.Dead:
                 break;
         }
     }
+
     private void ChangeState(EntityState state)
     {
         switch (state)
@@ -217,22 +224,28 @@ public class UnitController : EntityController, IDamageable
             case EntityState.Idle:
                 animator.SetTrigger("Idle");
                 break;
+
             case EntityState.LookingForTarget:
                 animator.SetTrigger("Move");
                 entityMover.MoveControl(false);
                 break;
+
             case EntityState.Attack:
                 entityMover.MoveControl(true);
                 break;
+
             case EntityState.Sprint:
                 break;
+
             case EntityState.PrepareCharge:
                 entityMover.MoveControl(true);
                 lastChargeTime = Time.time;
                 break;
+
             case EntityState.Charge:
                 entityMover.MoveControl(false);
                 break;
+
             case EntityState.Dead:
                 break;
         }
@@ -241,7 +254,6 @@ public class UnitController : EntityController, IDamageable
         this.state = state;
     }
 }
-
 
 public enum EntityState
 {
