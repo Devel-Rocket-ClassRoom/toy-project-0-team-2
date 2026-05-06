@@ -5,20 +5,21 @@ using UnityEngine.UI;
 public class BattleUI : MonoBehaviour
 {
 
+    public Gameendmanager gameendmanager;
     //Å¸ÀÌ¸Ó
     public TextMeshProUGUI Timer;
-     public timerManager timerManager;
+    public timerManager timerManager;
     //¿¤¸®¼­
     public ElixirManager elixirManager;
     public TextMeshProUGUI ElixirText;
     public Slider ElixirSlider;
     //Å©¶ó¿îÄ«¿îÅÍ
     public TextMeshProUGUI RedCrown;
-    private int RedCrownCount = 0;
+    public int RedCrownCount = 0;
     private bool DestroyRedTown;
 
     public TextMeshProUGUI BlueCrown;
-    private int BlueCrownCount = 0;
+    public int BlueCrownCount = 0;
     private bool DestroyBlueTown;    
     //Ä«µå
     private Color originalColor;
@@ -133,11 +134,7 @@ public class BattleUI : MonoBehaviour
         {
             RedCrownCount++;
             RedCrown.text = RedCrownCount.ToString();
-            if (RedCrownCount >= 3)
-            {
-                timerManager.Gameover = true;
-                Debug.Log("·¹µåÆÀ ½Â¸®");
-            }
+          
             DestroyRedTown =false;
 
         }
@@ -146,11 +143,7 @@ public class BattleUI : MonoBehaviour
         {
             BlueCrownCount++;
             BlueCrown.text = BlueCrownCount.ToString();
-            if (BlueCrownCount >= 3)
-            {
-                timerManager.Gameover=true;
-                Debug.Log("ºí·çÆÀ ½Â¸®");
-            }
+            
             DestroyBlueTown = false;
         }
     }

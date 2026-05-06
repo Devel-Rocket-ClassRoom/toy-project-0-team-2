@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    public bool Gameover;
-
+    public Gameendmanager gameendmanager;
     public ElixirManager elixir;
     public CardData selectedCard;
     public CardArrangementManager cardArrangementManager;
@@ -15,7 +14,7 @@ public class CardManager : MonoBehaviour
 
     public void UsedCard(int index, Vector2 screenPoint)
     {
-        if (Gameover)
+        if (gameendmanager.Gameover)
         {
             return;
         }

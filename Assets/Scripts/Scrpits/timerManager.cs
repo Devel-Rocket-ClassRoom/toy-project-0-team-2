@@ -2,10 +2,10 @@ using UnityEngine;
 using System.Collections;
 public class timerManager : MonoBehaviour
 {
-    public bool Gameover;
+    public Gameendmanager gameendmanager;
     public int battleTime = 180;
 
- private void Start()
+     private void Start()
     {
         StartCoroutine(BattleTimer());
     }
@@ -13,13 +13,13 @@ public class timerManager : MonoBehaviour
 
     private IEnumerator BattleTimer()
     {
-        while (battleTime > 0 && !Gameover)
+        while (battleTime > 0 && !gameendmanager.Gameover)
         {
             yield return new WaitForSeconds(1f);
             battleTime--;
         }
 
-        Gameover = true;
+        gameendmanager.Gameover = true;
     }
 
 }
