@@ -4,7 +4,8 @@ using UnityEngine.EventSystems;
 public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
 
-    public BattleManager battleManager;
+    public timerManager timerManager;
+    public CardManager cardManager;
 
     public int index;
 
@@ -15,29 +16,20 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (battleManager.Gameover)
-        { 
-          return;
-        }
+        
         previewObj = Instantiate(worldPreviewPrefab);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (battleManager.Gameover)
-        {
-            return;
-        }
+        
         MovePreview(eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (battleManager.Gameover)
-        {
-            return;
-        }
-        battleManager.UsedCard(index, eventData.position);
+        
+        cardManager.UsedCard(index, eventData.position);
 
         if (previewObj != null)
         {
