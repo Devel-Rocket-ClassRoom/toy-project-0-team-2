@@ -16,41 +16,65 @@ public class AI : MonoBehaviour
 
     public void PlayerArrangementCard(CardData card, Vector3 point)
     {
+        Debug.Log($"{card.name} : {card.elixer}, {card.cardDatas.Length}");
+
         var cardType = ClassifyCard(card);
+        Debug.Log(cardType);
+
         var selectedCard = SelectCard(cardType);
-        var method = ChooseReactMethod(selectedCard, card, point);
-        ArrangementCard(selectedCard, card, point, method);
+        Debug.Log(selectedCard);
+
+        if (selectedCard != null)
+        {
+            var method = ChooseReactMethod(selectedCard, card, point);
+            Debug.Log(method);
+
+            ArrangementCard(selectedCard, card, point, method);
+            Debug.Log("OK");
+        }
+        else
+        {
+            Debug.Log("AI는 카드를 내지 않았다");
+        }
     }
 
     private EntityTypeDetail ClassifyCard(CardData card)
     {
-        if (card.elixer >= 6
+        if (card.cardDatas[0].entityData.DefenseData != null)
+        {
+            if (card.elixer >= 6
             && card.cardDatas.Length == 1
             && (card.cardDatas[0].entityData.DefenseData.entityType & (EntityType.Aerial | EntityType.Ground)) != 0)
-        {
-            return EntityTypeDetail.BigUnit;
+            {
+                return EntityTypeDetail.BigUnit;
+            }
+
+            if (card.elixer >= 3 && card.elixer <= 6
+                && card.cardDatas.Length <= 6
+                && (card.cardDatas[0].entityData.DefenseData.entityType & (EntityType.Aerial | EntityType.Ground)) != 0)
+            {
+                return EntityTypeDetail.MiddleUnit;
+            }
+
+            if (card.elixer >= 2 && card.elixer <= 4
+                && card.cardDatas.Length >= 3
+                && (card.cardDatas[0].entityData.DefenseData.entityType & (EntityType.Aerial | EntityType.Ground)) != 0)
+            {
+                return EntityTypeDetail.WiniUnit;
+            }
+
+            if (card.elixer == 1)
+            {
+                return EntityTypeDetail.Recycle;
+            }
+
+            if ((card.cardDatas[0].entityData.DefenseData.entityType & EntityType.Tower) != 0)
+            {
+                return EntityTypeDetail.Tower;
+            }
         }
 
-        if (card.elixer >= 3 && card.elixer <= 6
-            && card.cardDatas.Length <= 6
-            && (card.cardDatas[0].entityData.DefenseData.entityType & (EntityType.Aerial | EntityType.Ground)) != 0)
-        {
-            return EntityTypeDetail.MiddleUnit;
-        }
-
-        if (card.elixer >= 2 && card.elixer <= 4
-            && card.cardDatas.Length >= 3
-            && (card.cardDatas[0].entityData.DefenseData.entityType & (EntityType.Aerial | EntityType.Ground)) != 0)
-        {
-            return EntityTypeDetail.WiniUnit;
-        }
-
-        if ((card.cardDatas[0].entityData.DefenseData.entityType & EntityType.Tower) != 0)
-        {
-            return EntityTypeDetail.Tower;
-        }
-
-        return EntityTypeDetail.None;
+        return EntityTypeDetail.Magic;
     }
 
     private CardData SelectCard(EntityTypeDetail cardType)
@@ -68,8 +92,8 @@ public class AI : MonoBehaviour
 
             case EntityTypeDetail.MiddleUnit:
                 card = CheckHand(EntityTypeDetail.BigUnit);
-                if (card == null) card = CheckHand(EntityTypeDetail.Magic);
                 if (card == null) card = CheckHand(EntityTypeDetail.MiddleUnit);
+                if (card == null) card = CheckHand(EntityTypeDetail.Magic);
                 if (card == null) card = CheckHand(EntityTypeDetail.Tower);
                 if (card == null) card = CheckHand(EntityTypeDetail.Recycle);
                 break;

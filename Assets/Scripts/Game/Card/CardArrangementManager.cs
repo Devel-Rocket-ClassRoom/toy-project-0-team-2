@@ -19,6 +19,7 @@ public class CardArrangementManager : MonoBehaviour
     public Transform Mid;
     public BattleManager battleManager;
 
+    public AI ai;
 
     private void Awake()
     {
@@ -51,6 +52,11 @@ public class CardArrangementManager : MonoBehaviour
     {
         var entityDatas = card.cardDatas;
         float arrangementInterval = card.arrangmentCompletTime / entityDatas.Length;
+
+        if (team == Team.BlueTeam && (card.cardDatas[0].entityData.DefenseData.entityType & EntityType.CrownTower) == 0)
+        {
+            ai.PlayerArrangementCard(card, point);
+        }
 
         for (int i = 0; i < entityDatas.Length; i++)
         {
