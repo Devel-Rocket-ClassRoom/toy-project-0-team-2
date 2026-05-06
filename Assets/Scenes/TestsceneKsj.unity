@@ -5927,6 +5927,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8262059950552651930, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 3c48cc02919e74c4897ffafb8f3e8445, type: 2}
+    - target: {fileID: 8262059950552651930, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
       propertyPath: m_BuildHeightMesh
       value: 0
       objectReference: {fileID: 0}
