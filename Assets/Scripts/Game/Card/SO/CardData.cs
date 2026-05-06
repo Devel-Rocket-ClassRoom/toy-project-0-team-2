@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Card", menuName = "Scriptable Objects/Card")]
 public class CardData : ScriptableObject
 {
+    public int elixer;
     public CardDataStructure[] cardDatas;
 
     public float arrangmentCompletTime;

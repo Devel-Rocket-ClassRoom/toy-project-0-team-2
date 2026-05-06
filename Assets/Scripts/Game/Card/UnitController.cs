@@ -61,7 +61,7 @@ public class UnitController : EntityController, IDamageable
 
         health -= damage;
 
-        Debug.Log($"{team} 피격! 남은체력 {health}");
+        // Debug.Log($"{team} 피격! 남은체력 {health}");
 
         if (health <= 0)
         {

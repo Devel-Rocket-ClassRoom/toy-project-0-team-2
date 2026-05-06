@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6f0f19c39740a488a3d3966749bfc0, type: 3}
   m_Name: Princess Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
+  elixer: 3
   cardDatas:
   - entityData: {fileID: 11400000, guid: 915889229b96f2048bca62e1dae2edbf, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}
