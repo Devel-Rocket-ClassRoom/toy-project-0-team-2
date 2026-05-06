@@ -24,23 +24,12 @@ public class UiManager : MonoBehaviour
     private void Start()
     {
         ShowMain();
+        GachaWindow.Hide();
+        CardWindow.Hide();
     }
 
     public void ShowMain() => SwitchTo(MainWindow);
-
-    public void ShowCard(int playerIndex)
-    {
-        CardWindow.SetPlayer(playerIndex);
-        if (_currentWindow == CardWindow)
-        {
-            CardWindow.Show();
-        }
-        else
-        {
-            SwitchTo(CardWindow);
-        }
-    }
-
+    public void ShowCard() => SwitchTo(CardWindow);
     public void ShowGacha() => SwitchTo(GachaWindow);
 
     private void SwitchTo(UiBaseWindow next)

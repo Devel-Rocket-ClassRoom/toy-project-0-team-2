@@ -8,25 +8,11 @@ public abstract class UiBaseWindow : MonoBehaviour
     public Button CardDeckButton; // PlayerSelectButtons 팝업 열기
     public Button GachaButton;    // 가챠 창으로 이동
 
-    [Header("PlayerSelect Buttons")]
-    public GameObject PlayerSelectButtons;
-    public Button Player1Button;
-    public Button Player2Button;
-
-    [Header("Player Colors")]
-    public Color Player1Color = Color.cornflowerBlue;
-    public Color Player2Color = Color.tomato;
-
     protected virtual void Awake()
     {
-        PlayerSelectButtons.SetActive(false);
-
         BattleButton.onClick.AddListener(OnClickBattle);
         CardDeckButton.onClick.AddListener(OnClickCardDeck);
         GachaButton.onClick.AddListener(OnClickGacha);
-
-        Player1Button.onClick.AddListener(() => OnSelectPlayer(0));
-        Player2Button.onClick.AddListener(() => OnSelectPlayer(1));
     }
 
     public virtual void Show()
@@ -37,7 +23,6 @@ public abstract class UiBaseWindow : MonoBehaviour
 
     public virtual void Hide()
     {
-        PlayerSelectButtons.SetActive(false);
         gameObject.SetActive(false);
         OnHide();
     }
@@ -47,24 +32,16 @@ public abstract class UiBaseWindow : MonoBehaviour
 
     private void OnClickBattle()
     {
-        PlayerSelectButtons.SetActive(false);
         UiManager.Instance.ShowMain();
     }
 
     private void OnClickCardDeck()
     {
-        PlayerSelectButtons.SetActive(true);
+        UiManager.Instance.ShowCard();
     }
 
     private void OnClickGacha()
     {
-        PlayerSelectButtons.SetActive(false);
         UiManager.Instance.ShowGacha();
-    }
-
-    private void OnSelectPlayer(int playerIndex)
-    {
-        PlayerSelectButtons.SetActive(false);
-        UiManager.Instance.ShowCard(playerIndex);
     }
 }
