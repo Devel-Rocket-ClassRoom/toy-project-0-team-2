@@ -21,6 +21,8 @@ public class SpecialData : ScriptableObject
 
     [Header("돌진")]
     public bool hasCharge;
+    public float minChargeRange;
+    public float maxChargeRange;
     public float chargePrepareTime;
     public float chargeSpeed;
     public AttackData chargeAttack;

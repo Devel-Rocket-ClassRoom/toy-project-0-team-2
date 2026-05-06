@@ -9,10 +9,8 @@ public class TowerController : EntityController, IDamageable
 {
     private TargetFinder targetFinder;
     private EntityAttacker entityAttacker;
-    private NavMeshAgent agent;
 
     private float activateWaitTime;
-    private bool isLockOn;
 
     private float lastAttackTime;
 
@@ -30,7 +28,6 @@ public class TowerController : EntityController, IDamageable
     {
         targetFinder = GetComponent<TargetFinder>();
         entityAttacker = GetComponent<EntityAttacker>();
-        agent = GetComponent<NavMeshAgent>();
     }
 
     public override void Init(EntityData cardData, Vector3 point, Team team)
@@ -105,10 +102,10 @@ public class TowerController : EntityController, IDamageable
                 if (activateWaitTime < 0) { ChangeState(EntityState.LookingForTarget); }
                 break;
             case EntityState.LookingForTarget:
-                if (entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.Attack); }
+                if (entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _)) { ChangeState(EntityState.Attack); }
                 break;
             case EntityState.Attack:
-                if (target == null || !entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.LookingForTarget); }
+                if (target == null || !entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _)) { ChangeState(EntityState.LookingForTarget); }
                 break;
             case EntityState.Sprint:
                 break;
@@ -166,10 +163,6 @@ public class TowerController : EntityController, IDamageable
             case EntityState.Charge:
                 break;
             case EntityState.Dead:
-                if (cardData.SpecialData != null && cardData.SpecialData.hasDeathrattle)
-                {
-
-                }
                 break;
         }
     }

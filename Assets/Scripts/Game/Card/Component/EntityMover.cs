@@ -7,20 +7,78 @@ public class EntityMover : MonoBehaviour
 {
     private NavMeshAgent agent;
 
+    private Team team;
+    private static float VerticalMidLine;
+    private static float HorizontalMidLine;
+    private static float ArenaTowerLine;
+    private static float RoadLine;
+    private static bool isInit = false;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+
+        if (!isInit)
+        {
+            VerticalMidLine = CardArrangementManager.Instance.Mid.position.x;
+            HorizontalMidLine = CardArrangementManager.Instance.Mid.position.z;
+            Vector3 arena = CardArrangementManager.Instance.RedArena[1].position;
+            ArenaTowerLine = Mathf.Abs(arena.z - HorizontalMidLine);
+            RoadLine = Mathf.Abs(arena.x - VerticalMidLine);
+            isInit = true;
+        }
+    }
+
+    public void Init(Team team)
+    {
+        this.team = team;
     }
 
     public void UnitMoveTo(EntityController target, float speed)
     {
-        if (target == null) return;
+        Vector3 t = Vector3.zero;
+        if (target != null)
+        {
+            t = target.transform.position;
+            t.y = transform.position.y;
+        }
+        else
+        {
+            int reverse = (team == Team.RedTeam) ? -1 : 1;
 
-        var t = target.transform.position;
-        t.y = transform.position.y;
+            if (transform.position.x > VerticalMidLine)
+                t.x = VerticalMidLine + RoadLine;
+            else
+                t.x = VerticalMidLine - RoadLine;
+
+            float relativeZ = (transform.position.z - HorizontalMidLine) * reverse;
+
+            float targetRelativeZ = 0;
+
+            if (relativeZ < -ArenaTowerLine - 0.5f)
+            {
+                targetRelativeZ = -ArenaTowerLine;
+            }
+            else if (relativeZ < -0.5f)
+            {
+                targetRelativeZ = 0;
+            }
+            else if (relativeZ < ArenaTowerLine- 0.5f)
+            {
+                targetRelativeZ = ArenaTowerLine;
+            }
+            else
+            {
+                t.x = VerticalMidLine;
+                targetRelativeZ = ArenaTowerLine * 2;
+            }
+
+            t.z = HorizontalMidLine + (targetRelativeZ * reverse);
+        }
 
         if (agent.isOnNavMesh)
         {
+            
             agent.SetDestination(t);
             agent.speed = speed;
         }

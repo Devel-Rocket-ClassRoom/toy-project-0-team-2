@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300f6651ac0f4ed45a5974fcedfad824, type: 3}
+  m_Name: Bandit
+  m_EditorClassIdentifier: Assembly-CSharp::UnitData
+  cardName: 
+  elixir: 3
+  level: 0
+  AttackData: {fileID: 11400000, guid: 94669f0deb81f004c8315f4b5d004b75, type: 2}
+  DefenseData: {fileID: 11400000, guid: 9890a34ac36e7fb4ca011d008cb218ce, type: 2}
+  SpecialData: {fileID: 11400000, guid: 45ba89d52286b5140866f8375a047084, type: 2}
+  model: {fileID: 4826274244099483105, guid: a907009d4355356419206353f341fa02, type: 3}
+  activateWaitTime: 1
+  tilePerSeconds: 1.5

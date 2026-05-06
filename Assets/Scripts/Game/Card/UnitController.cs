@@ -9,6 +9,7 @@ public class UnitController : EntityController, IDamageable
     private TargetFinder targetFinder;
     private EntityMover entityMover;
     private EntityAttacker entityAttacker;
+    private Animator animator;
 
     private float activateWaitTime;
 
@@ -21,7 +22,7 @@ public class UnitController : EntityController, IDamageable
     private float continuousMoveTime = 0f;
 
 
-    
+    [SerializeField]
     private EntityController target;
 
     private void Awake()
@@ -29,6 +30,7 @@ public class UnitController : EntityController, IDamageable
         targetFinder = GetComponent<TargetFinder>();
         entityMover = GetComponent<EntityMover>();
         entityAttacker = GetComponent<EntityAttacker>();
+        animator = modelPosition.GetComponent<Animator>();
     }
 
     public override void Init(EntityData cardData, Vector3 point, Team team)
@@ -46,6 +48,7 @@ public class UnitController : EntityController, IDamageable
 
         activateWaitTime = this.cardData.activateWaitTime;
         speed = (cardData as UnitData).tilePerSeconds;
+        entityMover?.Init(team);
     }
 
     private void Update()
@@ -91,25 +94,54 @@ public class UnitController : EntityController, IDamageable
                 if (activateWaitTime < 0) { ChangeState(EntityState.LookingForTarget); }
                 break;
             case EntityState.LookingForTarget:
-                if (entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.Attack); }
+                if (entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _))
+                {
+                    
+
+                    ChangeState(EntityState.Attack);
+                }
+                if (cardData.SpecialData != null && cardData.SpecialData.hasCharge)
+                {
+                    if (entityAttacker.IsTargetInRange(target, cardData.SpecialData.maxChargeRange, out float sqrDistance))
+                    {
+                        float minDistance = cardData.SpecialData.minChargeRange;
+
+                        if (sqrDistance > minDistance * minDistance)
+                            ChangeState(EntityState.PrepareCharge);
+                    }
+                }
                 if (cardData.SpecialData != null
                     && cardData.SpecialData.hasSprint
                     && continuousMoveTime > cardData.SpecialData.springPrepareTime)
                     { ChangeState(EntityState.Sprint); }
                 break;
             case EntityState.Attack:
-                if (target == null || !entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange)) { ChangeState(EntityState.LookingForTarget); }
+                if (target == null || !entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _)) { ChangeState(EntityState.LookingForTarget); }
                 break;
             case EntityState.Sprint:
-                if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange))
+                if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _))
                 {
-                    runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, modelPosition.position, target, team));
+                    runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.SpecialData.sprintAttack, modelPosition.position, target, team));
                     ChangeState(EntityState.Attack);
                 }
                 break;
             case EntityState.PrepareCharge:
+                if (Time.time - lastChargeTime > cardData.SpecialData.chargePrepareTime)
+                {
+                    ChangeState(EntityState.Charge);
+                }
+                if (target == null) ChangeState(EntityState.LookingForTarget);
                 break;
             case EntityState.Charge:
+                if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _))
+                {
+                    runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.SpecialData.chargeAttack, modelPosition.position, target, team));
+                    ChangeState(EntityState.Attack);
+                }
+                else if (target == null)
+                {
+                    ChangeState(EntityState.LookingForTarget);
+                }
                 break;
             case EntityState.Dead:
                 break;
@@ -138,13 +170,13 @@ public class UnitController : EntityController, IDamageable
                 if (Time.time - lastSearchTime > searchInterval || EntityManager.isEntityUpdated)
                 {
                     target = targetFinder?.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);
-                    if (target == null) target = targetFinder?.FindNearestCrownTower(team, attackFilter);
                     lastSearchTime = Time.time;
                 }
                 break;
             case EntityState.Attack:
                 if (Time.time - lastAttackTime > cardData.AttackData.attackInterval)
                 {
+                    animator.SetTrigger("Attack");
                     StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, modelPosition.position, target, team));
                     lastAttackTime = Time.time;
                 }
@@ -156,22 +188,25 @@ public class UnitController : EntityController, IDamageable
                 }
                 break;
             case EntityState.Sprint:
-                entityMover.AttackMoveTo(transform.position, target, cardData.SpecialData.sprintSpeed);
+                entityMover.UnitMoveTo(target, cardData.SpecialData.sprintSpeed);
                 if (Time.time - lastSearchTime > searchInterval)
                 {
-                    targetFinder.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);
+                    target = targetFinder.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);
                     lastSearchTime = Time.time;
                 }
                 break;
             case EntityState.PrepareCharge:
+                if (Time.time - lastSearchTime > searchInterval)
+                {
+                    target = targetFinder.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);
+                    lastSearchTime = Time.time;
+                }
                 break;
             case EntityState.Charge:
+                if (target != null)
+                    entityMover.UnitMoveTo(target, cardData.SpecialData.chargeSpeed);
                 break;
             case EntityState.Dead:
-                if (cardData.SpecialData != null && cardData.SpecialData.hasDeathrattle)
-                {
-
-                }
                 break;
         }
     }
@@ -180,8 +215,10 @@ public class UnitController : EntityController, IDamageable
         switch (state)
         {
             case EntityState.Idle:
+                animator.SetTrigger("Idle");
                 break;
             case EntityState.LookingForTarget:
+                animator.SetTrigger("Move");
                 entityMover.MoveControl(false);
                 break;
             case EntityState.Attack:
@@ -190,8 +227,11 @@ public class UnitController : EntityController, IDamageable
             case EntityState.Sprint:
                 break;
             case EntityState.PrepareCharge:
+                entityMover.MoveControl(true);
+                lastChargeTime = Time.time;
                 break;
             case EntityState.Charge:
+                entityMover.MoveControl(false);
                 break;
             case EntityState.Dead:
                 break;

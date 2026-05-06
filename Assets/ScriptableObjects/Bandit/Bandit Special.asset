@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b32ec77296c8fd2418e14583e142ba3d, type: 3}
+  m_Name: Bandit Special
+  m_EditorClassIdentifier: Assembly-CSharp::SpecialData
+  knuckbackTile: 0
+  freezeTime: 0
+  speedDownRate: 0
+  attackSpeedDownRate: 0
+  speedUpRate: 0
+  attackSpeedUpRate: 0
+  hasSprint: 0
+  springPrepareTime: 0
+  sprintSpeed: 0
+  sprintAttack: {fileID: 0}
+  hasCharge: 1
+  minChargeRange: 3.5
+  maxChargeRange: 6
+  chargePrepareTime: 0.8
+  chargeSpeed: 15
+  chargeAttack: {fileID: 11400000, guid: 82a0117e2099d0a4384a09df22b97b3f, type: 2}
+  hasDeathrattle: 0
+  deathrattleEntity: {fileID: 0}
+  hasSummon: 0
+  summonEntity: {fileID: 0}
+  summonInterval: 0
