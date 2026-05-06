@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b39515e34a56c1544a95a85e9f8c0602, type: 3}
+  m_Script: {fileID: 11500000, guid: bd6f0f19c39740a488a3d3966749bfc0, type: 3}
   m_Name: Bandit Card
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardDatas:
