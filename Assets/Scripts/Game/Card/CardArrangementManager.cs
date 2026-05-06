@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CardArrangementManager: MonoBehaviour
+public class CardArrangementManager : MonoBehaviour
 {
     public static CardArrangementManager Instance;
 
@@ -14,6 +14,8 @@ public class CardArrangementManager: MonoBehaviour
     public CardData KingTower;
     public Transform RedTeamKing;
     public Transform BlueTeamKing;
+    public BattleManager battleManager;
+
 
     private void Awake()
     {
@@ -51,22 +53,37 @@ public class CardArrangementManager: MonoBehaviour
         {
             GameObject entity = EntityArrangement(entityDatas[i].entityData);
 
+
+
             var controller = entity.GetComponent<RootController>();
-            
+
             if (controller is EntityController e)
             {
                 var adjust = entityDatas[i].positionAdjustment;
-                if (team == Team.RedTeam) adjust.z = -adjust.z;
+
+                if (team == Team.RedTeam)
+                    adjust.z = -adjust.z;
+
                 e.Init(entityDatas[i].entityData, point + adjust, team);
 
                 if (controller != null)
                 {
                     EntityManager.AddEntities(e);
                 }
+
+                UnitController realUnit = entity.GetComponent<UnitController>();
+
+                if (realUnit != null)
+                {
+                    battleManager.CreateHealthBar(realUnit);
+                }
+
+               
             }
             else if (controller is AttackEntityController a)
             {
                 var attack = entityDatas[i].entityData.AttackData;
+
                 if (attack.toKingTower)
                 {
                     ReqeustAttack(a, attack, GetKingTowerPosition(team), point, team);
@@ -76,7 +93,7 @@ public class CardArrangementManager: MonoBehaviour
                     ReqeustAttack(a, attack, point, point, team);
                 }
             }
-            
+
 
             yield return new WaitForSeconds(arrangementInterval);
         }

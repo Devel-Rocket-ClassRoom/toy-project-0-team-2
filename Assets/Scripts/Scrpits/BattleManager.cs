@@ -1,57 +1,53 @@
-using System.Collections;
-using System.Linq;
+ï»¿using System.Collections;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    //°ÔÀÓ ¿£µå
     public bool Gameover;
-    //¿¤¸®¼­ Á¤º¸
+
     private const float StartElixir = 6;
     private const float maxElixir = 10;
     private const float regenRate = 0.35f;
-    public float currentElixir;
 
-    //Å¸ÀÌ¸Ó
+    public float currentElixir;
     public int battleTime = 180;
-    //Ä«µå µ¥ÀÌÅÍ
+
     public CardData selectedCard;
     public CardArrangementManager cardArrangementManager;
     public Team myTeam = Team.RedTeam;
-    private Vector3 spawnPoint;
     public HandManager handManager;
 
     public LayerMask Ground;
 
+    public UnitHealthBarUI healthBarPrefab;
+    public Transform worldUICanvas;
 
-    void Start()
+    private void Start()
     {
-        StartCoroutine(BattleTimer());
         currentElixir = StartElixir;
+        StartCoroutine(BattleTimer());
     }
 
-    void Update()
+    private void Update()
     {
-        if (!Gameover)
+        if (Gameover)
         {
-            currentElixir += Time.deltaTime * regenRate;
-            currentElixir = Mathf.Clamp(currentElixir, 0, maxElixir);
+            return;
         }
 
+        currentElixir += Time.deltaTime * regenRate;
+        currentElixir = Mathf.Clamp(currentElixir, 0, maxElixir);
     }
 
-   //Å¸ÀÌ¸Ó
-    IEnumerator BattleTimer()
+    private IEnumerator BattleTimer()
     {
-        while (battleTime > 0&& !Gameover)
+        while (battleTime > 0 && !Gameover)
         {
             yield return new WaitForSeconds(1f);
             battleTime--;
-            if (battleTime < 0)
-            {
-                Gameover=true;
-            }
         }
+
+        Gameover = true;
     }
 
     public void UsedCard(int index, Vector2 screenPoint)
@@ -60,17 +56,18 @@ public class BattleManager : MonoBehaviour
         {
             return;
         }
+
         CardData card = handManager.handCards[index];
 
         if (card == null || card.cardDatas.Length == 0)
         {
             return;
         }
-        EntityData cardData = card.cardDatas[0].entityData;
+        EntityData entityData = card.cardDatas[0].entityData;
 
-        if (currentElixir < cardData.elixir)
+        if (currentElixir < entityData.elixir)
         {
-            Debug.Log("¿¤¸¯¼­ ºÎÁ·");
+            Debug.Log("ì—˜ë¦­ì„œ ë¶€ì¡±");
             return;
         }
 
@@ -78,49 +75,31 @@ public class BattleManager : MonoBehaviour
 
         if (!Physics.Raycast(ray, out RaycastHit hit, 1000f, Ground))
         {
-            Debug.Log("¼ÒÈ¯ °¡´ÉÇÑ ¹Ù´ÚÀÌ ¾Æ´Ô");
+            Debug.Log("ì†Œí™˜ ê°€ëŠ¥í•œ ë°”ë‹¥ì´ ì•„ë‹˜");
             return;
         }
 
         Vector3 spawnPos = hit.point;
 
-        currentElixir -= cardData.elixir;
-
-        cardArrangementManager.Arrangement(card, myTeam, spawnPos);
-
-        handManager.UseHandCard(index);
-
+        UseCard(index, card, entityData, spawnPos);
     }
 
+    private void UseCard(int index, CardData card, EntityData entityData, Vector3 spawnPos)
+    {
+ 
+        cardArrangementManager.Arrangement(card, myTeam, spawnPos);
 
-    //¹öÆ°
-    //public void OnUsedCard(int index)
-    //{
-    //    if (Gameover)
-    //    {
-    //        return;
-    //    }
-    //    Card card = handManager.handCards[index];
+        currentElixir -= entityData.elixir;
+        handManager.UseHandCard(index);
+    }
 
-    //    if (card == null || card.cardDatas.Length == 0)
-    //    {
-    //        return;
-    //    }
-    //    CardData cardData = card.cardDatas[0];
-    //    int cost = cardData.elixir;
-
-    //    if (currentElixir < cost)
-    //    {
-    //        Debug.Log("¿¤¸¯¼­ ºÎÁ·");
-    //        return;
-    //    }
-
-    //    currentElixir -= cost;
-
-    //    cardArrangementManager.Arrangement( new CardData[] { cardData }, myTeam,spawnPoint);
-
-    //    handManager.UseHandCard(index);
-    //}
-
-
+    public void CreateHealthBar(UnitController unit)
+    {
+        if (unit == null)
+        {
+            return;
+        }
+        UnitHealthBarUI hpBar = Instantiate(healthBarPrefab, worldUICanvas);
+        hpBar.Init(unit);
+    }
 }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpellData
   cardName: Arrow
   elixir: 0
+  level: 0
   AttackData: {fileID: 11400000, guid: 271f7a766cbf4fe46a474cd3b39f016a, type: 2}
   DefenseData: {fileID: 0}
   SpecialData: {fileID: 0}
