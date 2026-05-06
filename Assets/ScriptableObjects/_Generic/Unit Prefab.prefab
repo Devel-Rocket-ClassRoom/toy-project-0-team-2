@@ -153,11 +153,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitController
   state: 0
+  team: 0
   cardData: {fileID: 0}
   entityType: 0
-  team: 0
   modelPosition: {fileID: 84791723234861286}
   size: 0
+  target: {fileID: 0}
 --- !u!54 &-7061191651531707956
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -252,7 +253,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 84791723234861286}
-  - component: {fileID: 6973649621204368397}
   - component: {fileID: 4750559376078572928}
   m_Layer: 0
   m_Name: GameObject
@@ -276,29 +276,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 831558229261379651}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &6973649621204368397
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2100149258088653874}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &4750559376078572928
 Animator:
   serializedVersion: 7
@@ -307,7 +284,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2100149258088653874}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: f8ed05044677e5d4aae509b51ad63f20, type: 2}
   m_CullingMode: 0

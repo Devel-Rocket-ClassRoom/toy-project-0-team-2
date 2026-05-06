@@ -30,7 +30,7 @@ public class UnitController : EntityController, IDamageable
         targetFinder = GetComponent<TargetFinder>();
         entityMover = GetComponent<EntityMover>();
         entityAttacker = GetComponent<EntityAttacker>();
-        animator = modelPosition.GetComponent<Animator>();
+        animator = modelPosition.GetComponentInChildren<Animator>();
     }
 
     public override void Init(EntityData cardData, Vector3 point, Team team)
