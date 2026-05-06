@@ -24,9 +24,8 @@ MonoBehaviour:
   attackDuration: 0
   attackRadius: 0
   isNonTarget: 0
-  isSingleTarget: 1
   toKingTower: 0
   attackFilter: -1
   attackType: 0
-  attackModel: {fileID: 467419676813794834, guid: 6eafbe893e477774784421c166a47381, type: 3}
-  attackArriveModel: {fileID: 0}
+  attackModel: {fileID: 6724965079889689595, guid: 5b48c3f61a2aed14faf143090bff9e88, type: 3}
+  attackArriveModel: {fileID: 4286784737559568395, guid: 6074dd0f40661b447bb30319d5a8ba37, type: 3}

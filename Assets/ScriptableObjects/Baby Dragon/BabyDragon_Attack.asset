@@ -28,4 +28,4 @@ MonoBehaviour:
   attackFilter: -1
   attackType: 1
   attackModel: {fileID: 3604592886499914945, guid: 53c363797bcbde94db7f2221b568cd96, type: 3}
-  attackArriveModel: {fileID: 4286784737559568395, guid: 6074dd0f40661b447bb30319d5a8ba37, type: 3}
+  attackArriveModel: {fileID: 4286784737559568395, guid: 6ec82b49e6e036641a365c4c05cb6ad8, type: 3}
