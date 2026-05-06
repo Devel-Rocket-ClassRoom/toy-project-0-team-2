@@ -16,14 +16,15 @@ MonoBehaviour:
   firstAttackTime: 0.5
   lastDelay: 0.5
   sightRange: 7
-  attackRange: 1.2
+  attackRange: 1.5
   damage: 100
   crownTowerDamage: 100
   attackArriveTime: 0
   projectileSpeed: 0
+  attackDuration: 0
   attackRadius: 0
   isNonTarget: 0
-  isSingleTarget: 1
+  toKingTower: 0
   attackFilter: 13
   attackType: 0
   attackModel: {fileID: 0}

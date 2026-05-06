@@ -1,17 +1,30 @@
 using System.Collections;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AI : MonoBehaviour
 {
     public float currentElixer;
-    public CardData[] hand;
+    public CardData[] originDeck;
+    private Queue<CardData> deck;
+    private CardData[] hand = new CardData[4];
     public CardArrangementManager arrangementManager;
     private Team team = Team.RedTeam;
 
     private void Start()
     {
-        
+        deck = new Queue<CardData>();
+
+        for (int i = 0; i < originDeck.Length; i++)
+        {
+            deck.Enqueue(originDeck[i]);
+        }
+
+        for (int i = 0; i < hand.Length; i++)
+        {
+            hand[i] = deck.Dequeue();
+            deck.Enqueue(hand[i]);
+        }
     }
 
     public void PlayerArrangementCard(CardData card, Vector3 point)
@@ -24,13 +37,14 @@ public class AI : MonoBehaviour
         var selectedCard = SelectCard(cardType);
         Debug.Log(selectedCard);
 
-        if (selectedCard != null)
+        if (selectedCard != -1)
         {
-            var method = ChooseReactMethod(selectedCard, card, point);
+            var method = ChooseReactMethod(hand[selectedCard], card, point);
             Debug.Log(method);
 
-            ArrangementCard(selectedCard, card, point, method);
-            Debug.Log("OK");
+            ArrangementCard(hand[selectedCard], card, point, method);
+            hand[selectedCard] = deck.Dequeue();
+            deck.Enqueue(hand[selectedCard]);
         }
         else
         {
@@ -77,65 +91,65 @@ public class AI : MonoBehaviour
         return EntityTypeDetail.Magic;
     }
 
-    private CardData SelectCard(EntityTypeDetail cardType)
+    private int SelectCard(EntityTypeDetail cardType)
     {
-        CardData card = null;
+        int card = -1;
 
         switch (cardType)
         {
             case EntityTypeDetail.BigUnit:
                 card = CheckHand(EntityTypeDetail.BigUnit);
-                if (card == null) card = CheckHand(EntityTypeDetail.WiniUnit);
-                if (card == null) card = CheckHand(EntityTypeDetail.Tower);
-                if (card == null) card = CheckHand(EntityTypeDetail.Recycle);
+                if (card == -1) card = CheckHand(EntityTypeDetail.WiniUnit);
+                if (card == -1) card = CheckHand(EntityTypeDetail.Tower);
+                if (card == -1) card = CheckHand(EntityTypeDetail.Recycle);
                 break;
 
             case EntityTypeDetail.MiddleUnit:
                 card = CheckHand(EntityTypeDetail.BigUnit);
-                if (card == null) card = CheckHand(EntityTypeDetail.MiddleUnit);
-                if (card == null) card = CheckHand(EntityTypeDetail.Magic);
-                if (card == null) card = CheckHand(EntityTypeDetail.Tower);
-                if (card == null) card = CheckHand(EntityTypeDetail.Recycle);
+                if (card == -1) card = CheckHand(EntityTypeDetail.MiddleUnit);
+                if (card == -1) card = CheckHand(EntityTypeDetail.Magic);
+                if (card == -1) card = CheckHand(EntityTypeDetail.Tower);
+                if (card == -1) card = CheckHand(EntityTypeDetail.Recycle);
                 break;
 
             case EntityTypeDetail.WiniUnit:
                 card = CheckHand(EntityTypeDetail.MiddleUnit);
-                if (card == null) card = CheckHand(EntityTypeDetail.Magic);
-                if (card == null) card = CheckHand(EntityTypeDetail.WiniUnit);
-                if (card == null) card = CheckHand(EntityTypeDetail.Recycle);
+                if (card == -1) card = CheckHand(EntityTypeDetail.Magic);
+                if (card == -1) card = CheckHand(EntityTypeDetail.WiniUnit);
+                if (card == -1) card = CheckHand(EntityTypeDetail.Recycle);
                 break;
         }
 
         return card;
     }
 
-    private CardData CheckHand(EntityTypeDetail type)
+    private int CheckHand(EntityTypeDetail type)
     {
         if (type == EntityTypeDetail.Recycle)
         {
-            var selected = hand[0];
+            var selected = 0;
 
-            foreach (var card in hand)
+            for (int i = 0; i < hand.Length; i++)
             {
-                if (card.elixer < selected.elixer)
+                if (hand[i].elixer < hand[selected].elixer)
                 {
-                    selected = card;
+                    selected = i;
                 }
             }
 
             return selected;
         }
 
-        foreach (var card in hand)
+        for (int i = 0; i < hand.Length; i++)
         {
-            if (card.elixer <= currentElixer && ClassifyCard(card) == type)
+            if (hand[i].elixer <= currentElixer && ClassifyCard(hand[i]) == type)
             {
-                return card;
+                return i;
             }
         }
 
 
-        return null;
+        return -1;
     }
 
     private ReactMethod ChooseReactMethod(CardData card, CardData enemyCard, Vector3 point)
@@ -149,11 +163,11 @@ public class AI : MonoBehaviour
         {
             if (u.tilePerSeconds >= 1.5 || (u.SpecialData != null && (u.SpecialData.hasSprint || u.SpecialData.hasCharge)))
             {
-                if (point.z > EntityMover.HorizontalMidLine - EntityMover.ArenaTowerLine)
+                if (point.z < EntityMover.HorizontalMidLine - EntityMover.ArenaTowerLine)
                 {
                     return ReactMethod.ArenaTowerShiled;
                 }
-                else if (point.z > EntityMover.HorizontalMidLine)
+                else if (point.z < EntityMover.HorizontalMidLine)
                 {
                     return ReactMethod.DefenseArenaTower;
                 }
@@ -165,17 +179,17 @@ public class AI : MonoBehaviour
 
             else
             {
-                if (point.z > EntityMover.HorizontalMidLine - EntityMover.ArenaTowerLine)
+                if (point.z < EntityMover.HorizontalMidLine - EntityMover.ArenaTowerLine)
                 {
                     return ReactMethod.Rear;
                 }
-                else if (point.z > EntityMover.HorizontalMidLine)
+                else if (point.z < EntityMover.HorizontalMidLine)
                 {
                     return ReactMethod.ArenaTowerShiled;
                 }
                 else
                 {
-                    return ReactMethod.ArenaTowerShiled;
+                    return ReactMethod.DefenseArenaTower;
                 }
             }
         }
@@ -195,26 +209,26 @@ public class AI : MonoBehaviour
             case ReactMethod.ArenaTowerShiled:
                 arrangementManager.Arrangement(card, team, 
                     new Vector3(EntityMover.VerticalMidLine + (EntityMover.RoadLine - 2) * reverse, 0,
-                    EntityMover.ArenaTowerLine - 2));
+                    EntityMover.HorizontalMidLine + EntityMover.ArenaTowerLine + 2));
                 break;
             case ReactMethod.DefenseArenaTower:
                 arrangementManager.Arrangement(card, team,
                     new Vector3(EntityMover.VerticalMidLine + (EntityMover.RoadLine) * reverse, 0,
-                    EntityMover.ArenaTowerLine + 2));
+                    EntityMover.HorizontalMidLine + EntityMover.ArenaTowerLine - 2));
                 break;
             case ReactMethod.Rear:
                 int rand1 = Random.Range(0, 2);
                 if (rand1 == 0) arrangementManager.Arrangement(card, team,
                     new Vector3(EntityMover.VerticalMidLine + (8.5f) * reverse, 0,
-                    EntityMover.HorizontalMidLine - 14.5f));
+                    EntityMover.HorizontalMidLine + 14.5f));
                 else if (rand1 == 1) arrangementManager.Arrangement(card, team,
                     new Vector3(EntityMover.VerticalMidLine + (2.5f) * reverse, 0,
-                    EntityMover.HorizontalMidLine - 15.5f));
+                    EntityMover.HorizontalMidLine + 15.5f));
                 break;
             case ReactMethod.Mid:
                 arrangementManager.Arrangement(card, team,
                     new Vector3(EntityMover.VerticalMidLine - 0.5f, 0,
-                    EntityMover.HorizontalMidLine - 5.5f) + new Vector3(Random.Range(0, 2), 0, Random.Range(0, 2)));
+                    EntityMover.HorizontalMidLine + 4.5f) + new Vector3(Random.Range(0, 2), 0, Random.Range(0, 2)));
                 break;
             case ReactMethod.Magic:
                 StartCoroutine(CoArrangementMagic(card, enemyCard, point));
@@ -238,7 +252,7 @@ public class AI : MonoBehaviour
         {
             float radius = s.AttackData.attackRadius;
 
-            if (point.z < EntityMover.HorizontalMidLine - EntityMover.ArenaTowerLine)
+            if (point.z > EntityMover.HorizontalMidLine - EntityMover.ArenaTowerLine)
             {
                 int reverse = point.x > EntityMover.VerticalMidLine ? 1 : -1;
                 float speed = (enemyCard.cardDatas[0].entityData as UnitData).tilePerSeconds;

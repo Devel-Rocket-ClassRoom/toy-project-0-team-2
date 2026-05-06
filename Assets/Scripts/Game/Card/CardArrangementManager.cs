@@ -53,7 +53,8 @@ public class CardArrangementManager : MonoBehaviour
         var entityDatas = card.cardDatas;
         float arrangementInterval = card.arrangmentCompletTime / entityDatas.Length;
 
-        if (team == Team.BlueTeam && (card.cardDatas[0].entityData.DefenseData.entityType & EntityType.CrownTower) == 0)
+        if (team == Team.BlueTeam && card.cardDatas[0].entityData.DefenseData != null
+            && (card.cardDatas[0].entityData.DefenseData.entityType & EntityType.CrownTower) == 0)
         {
             ai.PlayerArrangementCard(card, point);
         }

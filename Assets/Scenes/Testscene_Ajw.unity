@@ -10735,7 +10735,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AI
   currentElixer: 10
-  hand:
+  originDeck:
   - {fileID: 11400000, guid: a0e8dbdacbe702944939f097a5d7a8ca, type: 2}
   - {fileID: 11400000, guid: ea3d15a3114f552418c443c4bde4f3a7, type: 2}
   - {fileID: 11400000, guid: 5289c439a2ef80d43b5a38f497292721, type: 2}
