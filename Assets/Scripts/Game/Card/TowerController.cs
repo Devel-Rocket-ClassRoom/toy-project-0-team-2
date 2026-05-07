@@ -80,12 +80,19 @@ public class TowerController : EntityController, IDamageable
 
     public override void Dead()
     {
+        if (isDead) return;
+        isDead = true;
+
         if (cardData.SpecialData != null && cardData.SpecialData.hasDeathrattle)
         {
             CardArrangementManager.Instance.Arrangement(cardData.SpecialData.deathrattleEntity, team, transform.position);
         }
 
-        StopAllCoroutines();
+        if (this != null)
+        {
+            StopAllCoroutines();
+        }
+
         EntityManager.RemoveEntities(this);
         Destroy(gameObject);
     }

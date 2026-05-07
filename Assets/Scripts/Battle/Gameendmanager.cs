@@ -2,10 +2,12 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Runtime.CompilerServices;
+using System;
 
 public class Gameendmanager : MonoBehaviour
 {
     public bool Gameover;
+    public static Action<Team> onGameEnd;
     public BattleUI battleUI;
     public timerManager timerManager;
 
@@ -31,6 +33,8 @@ public class Gameendmanager : MonoBehaviour
             VictoryTeam.text = "Red Team Victory!";
             VictoryTeam.color = Color.red;
             VictoryTeam.transform.localPosition = new Vector3(-235, 0, 0);
+            
+            onGameEnd.Invoke(Team.BlueTeam);
         }
         else if (battleUI.BlueCrownCount >= 3)
         {
@@ -39,8 +43,10 @@ public class Gameendmanager : MonoBehaviour
             VictoryTeam.text = ("Blue Team Victory!");
             VictoryTeam.color = Color.blue;
             VictoryTeam.transform.localPosition = new Vector3(235, 0, 0);
+         
+            onGameEnd.Invoke(Team.RedTeam);
         }
-       
+
 
         if (timerManager.battleTime == 0)
         {
@@ -51,6 +57,8 @@ public class Gameendmanager : MonoBehaviour
                 VictoryTeam.text = ("Red Team Victory!");
                 VictoryTeam.color = Color.red;
                 VictoryTeam.transform.localPosition = new Vector3(-235, 0, 0);
+
+                onGameEnd.Invoke(Team.BlueTeam);
             }
             else if (battleUI.RedCrownCount < battleUI.BlueCrownCount)
             {
@@ -59,6 +67,8 @@ public class Gameendmanager : MonoBehaviour
                 VictoryTeam.text = ("Blue Team Victory!");
                 VictoryTeam.color = Color.blue;
                 VictoryTeam.transform.localPosition = new Vector3(235, 0, 0);
+
+                onGameEnd.Invoke(Team.RedTeam);
             }
             else
             {
@@ -67,8 +77,8 @@ public class Gameendmanager : MonoBehaviour
                 VictoryTeam.text = ("Draw!");
                 VictoryTeam.color = Color.violet;
 
+                onGameEnd.Invoke(Team.Neutrality);
             }
         }
     }
-
 }
