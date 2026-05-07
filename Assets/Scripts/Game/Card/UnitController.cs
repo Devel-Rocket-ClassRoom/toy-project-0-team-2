@@ -12,7 +12,6 @@ public class UnitController : EntityController, IDamageable
 
     private EntityType attackFilter;
 
-    public float health { get; set; }
     private float speed;
     private float continuousMoveTime = 0f;
 

@@ -12,7 +12,9 @@ public class CardArrangementManager : MonoBehaviour
     public UnitController unitPrefab;
     public TowerController towerPrefab;
     public AttackEntityController spellPrefab;
+
     public CardData KingTower;
+    public CardData ArenaTower;
     public Transform RedTeamKing;
     public Transform BlueTeamKing;
     public Transform[] RedArena;
@@ -37,6 +39,10 @@ public class CardArrangementManager : MonoBehaviour
 
         Arrangement(KingTower, Team.RedTeam, RedTeamKing.position);
         Arrangement(KingTower, Team.BlueTeam, BlueTeamKing.position);
+        Arrangement(ArenaTower, Team.RedTeam, RedArena[0].position);
+        Arrangement(ArenaTower, Team.RedTeam, RedArena[1].position);
+        Arrangement(ArenaTower, Team.BlueTeam, BlueArena[0].position);
+        Arrangement(ArenaTower, Team.BlueTeam, BlueArena[1].position);
     }
 
     private void LateUpdate()

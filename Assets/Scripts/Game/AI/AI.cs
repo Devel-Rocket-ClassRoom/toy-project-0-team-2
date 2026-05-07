@@ -31,6 +31,7 @@ public class AI : MonoBehaviour
 
     public void PlayerArrangementCard(CardData card, Vector3 point)
     {
+        Debug.Log(point);
         if (!isActive) return;
 
         Debug.Log($"{card.name} : {card.elixer}, {card.cardDatas.Length}");

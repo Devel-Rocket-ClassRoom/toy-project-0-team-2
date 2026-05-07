@@ -12,6 +12,9 @@ public abstract class EntityController : RootController
     protected float lastChargeTime;
     protected bool isChargeEnd;
 
+
+    public float health { get; protected set; }
+
     protected Coroutine runningCoroutine;
 
 
