@@ -31,6 +31,6 @@ MonoBehaviour:
   chargeAttack: {fileID: 11400000, guid: dce3adf0a8bcc224d80717e9a9af3cf6, type: 2}
   hasDeathrattle: 0
   deathrattleEntity: {fileID: 0}
-  hasSummon: 1
+  hasSummon: 0
   summonEntity: {fileID: 0}
   summonInterval: 0
