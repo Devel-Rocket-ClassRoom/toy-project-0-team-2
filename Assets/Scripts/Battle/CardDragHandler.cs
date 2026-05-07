@@ -3,35 +3,60 @@ using UnityEngine.EventSystems;
 
 public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-
-    public timerManager timerManager;
     public CardManager cardManager;
-
     public int index;
 
-    public GameObject worldPreviewPrefab;
     private GameObject previewObj;
 
-
-    public Renderer blueAreaRenderer;
-    public Color normalColor = Color.white;
-    public Color highlightColor = Color.blue;
     public LayerMask groundMask;
+
+    public GameObject blueSpawnArea;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        previewObj = Instantiate(worldPreviewPrefab);
 
-        blueAreaRenderer.material.color = highlightColor;
+        if (cardManager.gameendmanager.Gameover)
+        {
+            return;
+        }
+
+        CardData card = cardManager.handManager.handCards[index];
+
+        if (card == null || card.cardDatas.Length == 0)
+        {
+            return;
+        }
+
+        EntityData entityData = card.cardDatas[0].entityData;
+
+        if (entityData.previewmodel == null)
+        {
+            return;
+        }
+
+        previewObj = Instantiate(entityData.previewmodel);
+
+        bool isSpell = entityData is SpellData;
+
+
+        if (blueSpawnArea != null&& !isSpell)
+        {
+            blueSpawnArea.SetActive(true);
+        }
     }
+
     public void OnDrag(PointerEventData eventData)
     {
-        
         MovePreview(eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (cardManager.gameendmanager.Gameover)
+        {
+            return;
+        }
+
         cardManager.UsedCard(index, eventData.position);
 
         if (previewObj != null)
@@ -39,9 +64,12 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             Destroy(previewObj);
         }
 
-        blueAreaRenderer.material.color = normalColor;
-    }
 
+        if (blueSpawnArea != null)
+        {
+            blueSpawnArea.SetActive(false);
+        }
+    }
 
     void MovePreview(PointerEventData eventData)
     {
@@ -49,6 +77,7 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             return;
         }
+
         Ray ray = Camera.main.ScreenPointToRay(eventData.position);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundMask))

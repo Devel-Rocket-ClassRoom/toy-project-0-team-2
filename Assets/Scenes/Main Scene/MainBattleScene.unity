@@ -1069,7 +1069,7 @@ GameObject:
   - component: {fileID: 283686587}
   - component: {fileID: 283686586}
   m_Layer: 5
-  m_Name: fore
+  m_Name: four
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2464,7 +2464,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3bb4a8e48206fc34a86e5f5a776c3c8a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 890d97ac453b444889bf7df383a03c84, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10033,7 +10033,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 212286fdcb65bad41825b9fe2c91b1d6, type: 2}
   - {fileID: 11400000, guid: 56d699d6b715bc1439b247d8d8585226, type: 2}
   arrangementManager: {fileID: 2013357499}
-  isActive: 0
+  isActive: 1
 --- !u!1 &1193562619 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8894958032492249895, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}

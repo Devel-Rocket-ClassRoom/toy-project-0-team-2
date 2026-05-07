@@ -2270,11 +2270,17 @@ MonoBehaviour:
   cardArrangementManager: {fileID: 2013357499}
   myTeam: 1
   handManager: {fileID: 599709362}
-  Ground:
-    serializedVersion: 2
-    m_Bits: 256
   healthBarPrefab: {fileID: 3489670061351428244, guid: 2228c730c11589b4e907b0bc89222e04, type: 3}
   worldUICanvas: {fileID: 1244005477}
+  GroundLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  redLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  blueLayerMaskk:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &599709365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4116,6 +4122,9 @@ MonoBehaviour:
   cardManager: {fileID: 599709364}
   index: 0
   worldPreviewPrefab: {fileID: 6724965079889689595, guid: 34f4337f87321ed42a68b3e64d7e3fdd, type: 3}
+  blueAreaRenderer: {fileID: 0}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightColor: {r: 0, g: 0, b: 1, a: 1}
   groundMask:
     serializedVersion: 2
     m_Bits: 256
@@ -9276,6 +9285,9 @@ MonoBehaviour:
   cardManager: {fileID: 599709364}
   index: 1
   worldPreviewPrefab: {fileID: 6724965079889689595, guid: 34f4337f87321ed42a68b3e64d7e3fdd, type: 3}
+  blueAreaRenderer: {fileID: 0}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightColor: {r: 0, g: 0, b: 1, a: 1}
   groundMask:
     serializedVersion: 2
     m_Bits: 256
@@ -10600,6 +10612,9 @@ MonoBehaviour:
   cardManager: {fileID: 599709364}
   index: 2
   worldPreviewPrefab: {fileID: 6724965079889689595, guid: 34f4337f87321ed42a68b3e64d7e3fdd, type: 3}
+  blueAreaRenderer: {fileID: 0}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightColor: {r: 0, g: 0, b: 1, a: 1}
   groundMask:
     serializedVersion: 2
     m_Bits: 256
@@ -11325,6 +11340,7 @@ MonoBehaviour:
   - {fileID: 494753409}
   Mid: {fileID: 1747679797}
   cardManager: {fileID: 599709364}
+  ai: {fileID: 0}
 --- !u!1 &2034996591 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2394124063090694499, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
@@ -11741,6 +11757,9 @@ MonoBehaviour:
   cardManager: {fileID: 599709364}
   index: 3
   worldPreviewPrefab: {fileID: 6724965079889689595, guid: 34f4337f87321ed42a68b3e64d7e3fdd, type: 3}
+  blueAreaRenderer: {fileID: 0}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightColor: {r: 0, g: 0, b: 1, a: 1}
   groundMask:
     serializedVersion: 2
     m_Bits: 256

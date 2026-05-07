@@ -19,4 +19,5 @@ MonoBehaviour:
   DefenseData: {fileID: 0}
   SpecialData: {fileID: 0}
   model: {fileID: 6724965079889689595, guid: 5b48c3f61a2aed14faf143090bff9e88, type: 3}
+  previewmodel: {fileID: 6724965079889689595, guid: fa46f1001d7aab747bfafde71af2067d, type: 3}
   activateWaitTime: 0

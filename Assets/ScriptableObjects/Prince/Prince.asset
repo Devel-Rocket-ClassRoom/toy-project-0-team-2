@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
   cardName: Prince
   elixir: 5
+  level: 0
   AttackData: {fileID: 11400000, guid: 340526398fcabfa44bd59354fe4173e4, type: 2}
   DefenseData: {fileID: 11400000, guid: a3a8bcc33e303754297da732dbf4e2e9, type: 2}
   SpecialData: {fileID: 11400000, guid: 468a63062a7d70b4e83f07b24a03e6f2, type: 2}
   model: {fileID: 4826274244099483105, guid: efee9f79a47cbf1469eab3f9a13026f5, type: 3}
+  previewmodel: {fileID: 4826274244099483105, guid: dd224d3e7d7da404dbf4b8f63ac07772, type: 3}
   activateWaitTime: 1
   tilePerSeconds: 1
