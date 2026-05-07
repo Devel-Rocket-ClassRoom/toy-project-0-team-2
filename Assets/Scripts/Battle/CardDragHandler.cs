@@ -8,13 +8,13 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     private GameObject previewObj;
 
-    public Renderer[] blueAreaRenderer;
-    public Color normalColor = Color.white;
-    public Color highlightColor = Color.blue;
     public LayerMask groundMask;
+
+    public GameObject blueSpawnArea;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+
         if (cardManager.gameendmanager.Gameover)
         {
             return;
@@ -36,9 +36,12 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         previewObj = Instantiate(entityData.previewmodel);
 
-        foreach (Renderer renderer in blueAreaRenderer) 
+        bool isSpell = entityData is SpellData;
+
+
+        if (blueSpawnArea != null&& !isSpell)
         {
-           renderer.material.color = highlightColor;
+            blueSpawnArea.SetActive(true);
         }
     }
 
@@ -61,9 +64,10 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             Destroy(previewObj);
         }
 
-        foreach (Renderer renderer in blueAreaRenderer)
+
+        if (blueSpawnArea != null)
         {
-            renderer.material = null;
+            blueSpawnArea.SetActive(false);
         }
     }
 
