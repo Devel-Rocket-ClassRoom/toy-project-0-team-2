@@ -188,6 +188,10 @@ public class UnitController : EntityController, IDamageable
                 if (Time.time - lastSearchTime > searchInterval || EntityManager.isEntityUpdated)
                 {
                     target = targetFinder?.FindNearestTarget(team, attackFilter, cardData.AttackData.sightRange);
+                    if (target == null && (cardData.DefenseData.entityType & EntityType.Aerial) != 0)
+                    {
+                        target = targetFinder?.FindNearestTarget(team, attackFilter, 100f);
+                    }
                     lastSearchTime = Time.time;
                 }
                 break;
