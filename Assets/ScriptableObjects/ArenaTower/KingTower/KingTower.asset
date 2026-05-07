@@ -16,6 +16,7 @@ MonoBehaviour:
   AttackData: {fileID: 11400000, guid: dab2f4b8756cab74f883b0752904146c, type: 2}
   DefenseData: {fileID: 11400000, guid: 6d82e78b3b9fcf749846a0635b0cc554, type: 2}
   SpecialData: {fileID: 0}
-  model: {fileID: 6724965079889689595, guid: 6b42f1ead2739d94eb07e5f69b8171b8, type: 3}
+  model: {fileID: 6724965079889689595, guid: f9bf88a9e5daa2246a9eb38472b798dc, type: 3}
+  previewmodel: {fileID: 0}
   activateWaitTime: 0
   lifeTime: 0
