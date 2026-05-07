@@ -134,6 +134,8 @@ public class AttackEntityController : RootController
     }
     private void ExecuteState()
     {
+        if (target != null) destination = target.transform.position;
+
         switch (state)
         {
             case EntityState.Idle:
@@ -183,7 +185,7 @@ public class AttackEntityController : RootController
 
     IEnumerator CoAttack()
     {
-        transform.position = isNonTarget ? destination : target.modelPosition.transform.position;
+        transform.position = target == null ? destination : target.modelPosition.transform.position;
 
         yield return new WaitForSeconds(attackData.attackArriveTime);
 

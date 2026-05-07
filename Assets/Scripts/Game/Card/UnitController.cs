@@ -106,7 +106,7 @@ public class UnitController : EntityController, IDamageable
                 {
                     if (entityAttacker.IsTargetInRange(target, cardData.SpecialData.maxChargeRange, out float sqrDistance))
                     {
-                        float minDistance = cardData.SpecialData.minChargeRange;
+                        float minDistance = cardData.SpecialData.minChargeRange + target.size;
 
                         if (sqrDistance > minDistance * minDistance)
                             ChangeState(EntityState.PrepareCharge);
@@ -123,7 +123,7 @@ public class UnitController : EntityController, IDamageable
                 break;
 
             case EntityState.Sprint:
-                if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _))
+                if (target != null && entityAttacker.IsTargetInRange(target, cardData.SpecialData.sprintAttack.attackRange, out _))
                 {
                     lastAttackTime = Time.time - cardData.AttackData.attackInterval + cardData.SpecialData.sprintAttack.attackInterval;
                     runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.SpecialData.sprintAttack, modelPosition.position, target, team));
@@ -140,7 +140,7 @@ public class UnitController : EntityController, IDamageable
                 break;
 
             case EntityState.Charge:
-                if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _))
+                if (target != null && entityAttacker.IsTargetInRange(target, cardData.SpecialData.chargeAttack.attackRange, out _))
                 {
                     runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.SpecialData.chargeAttack, modelPosition.position, target, team));
                     ChangeState(EntityState.AfterCharge);

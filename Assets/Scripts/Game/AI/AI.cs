@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class AI : MonoBehaviour
 {
-    public float currentElixer;
+    private ElixirManager elixir;
+
     public CardData[] originDeck;
     private Queue<CardData> deck;
     private CardData[] hand = new CardData[4];
@@ -16,6 +17,7 @@ public class AI : MonoBehaviour
     private void Start()
     {
         deck = new Queue<CardData>();
+        elixir = GetComponent<ElixirManager>();
 
         for (int i = 0; i < originDeck.Length; i++)
         {
@@ -33,13 +35,10 @@ public class AI : MonoBehaviour
     {
         if (!isActive) return;
 
-        Debug.Log($"{card.name} : {card.elixir}, {card.cardDatas.Length}");
-
         var cardType = ClassifyCard(card);
         Debug.Log(cardType);
 
         var selectedCard = SelectCard(cardType);
-        Debug.Log(selectedCard);
 
         if (selectedCard != -1)
         {
@@ -146,7 +145,7 @@ public class AI : MonoBehaviour
 
         for (int i = 0; i < hand.Length; i++)
         {
-            if (hand[i].elixir <= currentElixer && ClassifyCard(hand[i]) == type)
+            if (hand[i].elixir <= elixir.currentElixir && ClassifyCard(hand[i]) == type)
             {
                 return i;
             }
@@ -209,7 +208,7 @@ public class AI : MonoBehaviour
         {
             case ReactMethod.AfterAcrossBridge:
                 StartCoroutine(CoArrangementBridge(card, enemyCard, point));
-                break;
+                return;
             case ReactMethod.ArenaTowerShiled:
                 arrangementManager.Arrangement(card, team, 
                     new Vector3(EntityMover.VerticalMidLine + (EntityMover.RoadLine - 2) * reverse, 0,
@@ -236,8 +235,10 @@ public class AI : MonoBehaviour
                 break;
             case ReactMethod.Magic:
                 StartCoroutine(CoArrangementMagic(card, enemyCard, point));
-                break;
+                return;
         }
+
+        elixir.currentElixir -= card.elixir;
     }
 
     IEnumerator CoArrangementBridge(CardData card, CardData enemyCard, Vector3 point)
@@ -248,6 +249,8 @@ public class AI : MonoBehaviour
         arrangementManager.Arrangement(card, team,
                     new Vector3(EntityMover.VerticalMidLine + EntityMover.RoadLine * reverse, 0,
                     EntityMover.HorizontalMidLine - 1.5f));
+
+        elixir.currentElixir -= card.elixir;
     }
 
     IEnumerator CoArrangementMagic(CardData card, CardData enemyCard, Vector3 point)
@@ -272,6 +275,8 @@ public class AI : MonoBehaviour
                         point + new Vector3(0, 0, radius));
             }
         }
+
+        elixir.currentElixir -= card.elixir;
     }
 }
 

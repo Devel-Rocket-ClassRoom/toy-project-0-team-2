@@ -15,4 +15,4 @@ MonoBehaviour:
   health: 3052
   shiledHealth: 0
   entityType: 12
-  radius: 2
+  size: 1.5
