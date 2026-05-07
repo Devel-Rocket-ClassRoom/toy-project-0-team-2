@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public CardManager cardManager; // 인스펙터에서 연결
+    public CardManager cardManager;
     public int index;
 
     private GameObject previewObj;
@@ -31,7 +31,6 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         if (entityData.previewmodel == null)
         {
-            Debug.LogWarning($"{entityData.cardName} previewmodel이 없음");
             return;
         }
 
