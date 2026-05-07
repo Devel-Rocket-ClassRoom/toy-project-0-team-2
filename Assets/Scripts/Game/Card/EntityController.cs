@@ -11,6 +11,7 @@ public abstract class EntityController : RootController
     protected float lastSearchTime;
     protected float lastChargeTime;
     protected bool isChargeEnd;
+    protected bool isDead;
 
 
     public float health { get; protected set; }
@@ -48,8 +49,15 @@ public abstract class EntityController : RootController
         {
             var attack = Instantiate(model, modelPosition);
         }
+
+        Gameendmanager.onGameEnd += GameEnd;
     }
 
+
+    private void GameEnd(Team team)
+    {
+        if (this.team == team) Dead();
+    }
 
     public abstract void Dead();
 }
