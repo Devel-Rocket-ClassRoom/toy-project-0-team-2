@@ -5,6 +5,7 @@ using UnityEngine;
 public class CardData : ScriptableObject
 {
     public string cardName;
+    public GameObject cardImage;
     public int elixir;
     public CardDataStructure[] cardDatas;
 

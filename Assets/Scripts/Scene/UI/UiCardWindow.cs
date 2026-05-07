@@ -10,7 +10,7 @@ public class UiCardWindow : UiBaseWindow
     public Image PlayerColorBar;
 
     [Header("Card Deck")]
-    public List<GameObject> CardPrefabs;
+    public List<CardData> CardPrefabs;
     public Transform ScrollContent;
     public Transform[] CardSlots;
 
@@ -48,19 +48,19 @@ public class UiCardWindow : UiBaseWindow
             }
         }
 
-        foreach (var prefab in CardPrefabs)
+        foreach (var card in CardPrefabs)
         {
-            if (prefab == null)
+            if (card == null)
             {
                 continue;
             }
 
-            if (equippedCardNames.Contains(prefab.name))
+            if (equippedCardNames.Contains(card.cardName))
             {
                 continue;
             }
 
-            var newCard = Instantiate(prefab, ScrollContent);
+            var newCard = Instantiate(card.cardImage, ScrollContent);
             if (newCard.GetComponent<UiCardPrefab>() == null)
             {
                 newCard.AddComponent<UiCardPrefab>();
