@@ -2831,11 +2831,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 674611370}
   m_CullTransparentMesh: 1
---- !u!23 &674674107 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 8618228117098329783, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
-  m_PrefabInstance: {fileID: 969649472}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &677047922
 GameObject:
   m_ObjectHideFlags: 0
@@ -4168,16 +4163,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64bc6e9eafddf2c488d3bdc7ed67a43e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDragHandler
-  timerManager: {fileID: 599709365}
   cardManager: {fileID: 599709363}
   index: 0
-  worldPreviewPrefab: {fileID: 6724965079889689595, guid: 34f4337f87321ed42a68b3e64d7e3fdd, type: 3}
-  blueAreaRenderer: {fileID: 1646631193}
-  normalColor: {r: 1, g: 1, b: 1, a: 0}
-  highlightColor: {r: 0, g: 0.5340657, b: 1, a: 0}
   groundMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 1792
+  blueSpawnArea: {fileID: 1170926018}
 --- !u!1 &831486671
 GameObject:
   m_ObjectHideFlags: 0
@@ -9048,7 +9039,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2579866739123332399, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -10034,6 +10026,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 56d699d6b715bc1439b247d8d8585226, type: 2}
   arrangementManager: {fileID: 2013357499}
   isActive: 0
+--- !u!1 &1170926018 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 617322845246878684, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
+  m_PrefabInstance: {fileID: 969649472}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1193562619 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8894958032492249895, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
@@ -11189,16 +11186,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64bc6e9eafddf2c488d3bdc7ed67a43e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDragHandler
-  timerManager: {fileID: 599709365}
   cardManager: {fileID: 599709363}
   index: 1
-  worldPreviewPrefab: {fileID: 6724965079889689595, guid: 34f4337f87321ed42a68b3e64d7e3fdd, type: 3}
-  blueAreaRenderer: {fileID: 674674107}
-  normalColor: {r: 1, g: 1, b: 1, a: 0}
-  highlightColor: {r: 0, g: 0.53333336, b: 1, a: 0}
   groundMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 1792
+  blueSpawnArea: {fileID: 1170926018}
 --- !u!1 &1420953367 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 231474499300744111, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
@@ -11947,11 +11940,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1631328533}
   m_CullTransparentMesh: 1
---- !u!23 &1646631193 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 4759027662564712563, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
-  m_PrefabInstance: {fileID: 969649472}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1664429596 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4489484952207984653, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
@@ -12686,16 +12674,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64bc6e9eafddf2c488d3bdc7ed67a43e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDragHandler
-  timerManager: {fileID: 599709365}
   cardManager: {fileID: 599709363}
   index: 2
-  worldPreviewPrefab: {fileID: 6724965079889689595, guid: 34f4337f87321ed42a68b3e64d7e3fdd, type: 3}
-  blueAreaRenderer: {fileID: 674674107}
-  normalColor: {r: 1, g: 1, b: 1, a: 0}
-  highlightColor: {r: 0, g: 0.53333336, b: 1, a: 0}
   groundMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 1792
+  blueSpawnArea: {fileID: 1170926018}
 --- !u!1 &1819963211 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3295679061732269761, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
@@ -13969,16 +13953,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64bc6e9eafddf2c488d3bdc7ed67a43e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDragHandler
-  timerManager: {fileID: 599709365}
   cardManager: {fileID: 599709363}
   index: 3
-  worldPreviewPrefab: {fileID: 6724965079889689595, guid: 34f4337f87321ed42a68b3e64d7e3fdd, type: 3}
-  blueAreaRenderer: {fileID: 674674107}
-  normalColor: {r: 1, g: 1, b: 1, a: 0}
-  highlightColor: {r: 0, g: 0.53333336, b: 1, a: 0}
   groundMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 1792
+  blueSpawnArea: {fileID: 1170926018}
 --- !u!1 &2115966739 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7915586260941782028, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
