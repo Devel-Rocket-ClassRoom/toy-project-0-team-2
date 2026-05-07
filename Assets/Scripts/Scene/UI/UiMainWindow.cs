@@ -1,19 +1,9 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UiMainWindow : UiBaseWindow
 {
     public Button StartGameButton;
-
-    [Header("Player Display")]
-    public TMP_Text PlayerLevelText;
-    public Image PlayerLevelImage;
-
-    [Header("Gold & Gem")]
-    public TMP_Text GoldText;
-    public Image GoldImage;
-    public Image GemImage;
 
     protected override void Awake()
     {
