@@ -14,8 +14,6 @@ public class UiCardWindow : UiBaseWindow
     public Transform ScrollContent;
     public Transform[] CardSlots;
 
-    public CardData[] Deck;
-
     protected override void Awake()
     {
         base.Awake();
@@ -28,7 +26,7 @@ public class UiCardWindow : UiBaseWindow
             }
         }
 
-        Deck = new CardData[8];
+        DeckContainer.Instance.Deck = new CardData[8];
     }
 
     protected override void OnShow()
@@ -76,10 +74,10 @@ public class UiCardWindow : UiBaseWindow
 
     public void SetIntoDeck()
     {
-        Deck = GetEquippedCardDatas();
+        DeckContainer.Instance.Deck = GetEquippedCardDatas();
 
         int count = 0;
-        foreach (var data in Deck)
+        foreach (var data in DeckContainer.Instance.Deck)
         {
             if (data != null)
             {
