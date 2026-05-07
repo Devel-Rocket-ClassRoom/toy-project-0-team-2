@@ -48,9 +48,16 @@ public class EntityMover : MonoBehaviour
             int reverse = (team == Team.RedTeam) ? -1 : 1;
 
             if (transform.position.x > VerticalMidLine)
-                t.x = VerticalMidLine + RoadLine - 0.1f;
+            {
+                if (transform.position.x > VerticalMidLine + RoadLine) t.x = VerticalMidLine + RoadLine + 0.1f;
+                else t.x = VerticalMidLine + RoadLine - 0.1f;
+            }
             else
-                t.x = VerticalMidLine - RoadLine + 0.1f;
+            {
+                if (transform.position.x < VerticalMidLine - RoadLine)
+                    t.x = VerticalMidLine - RoadLine - 0.1f;
+                else t.x = VerticalMidLine - RoadLine + 0.1f;
+            }
 
             float relativeZ = (transform.position.z - HorizontalMidLine) * reverse;
 

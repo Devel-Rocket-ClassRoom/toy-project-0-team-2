@@ -22,7 +22,7 @@ MonoBehaviour:
   attackArriveTime: 0
   projectileSpeed: 0
   attackDuration: 0
-  attackRadius: 0
+  attackRadius: 2
   isNonTarget: 1
   toKingTower: 0
   attackFilter: 13
