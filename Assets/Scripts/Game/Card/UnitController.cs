@@ -5,6 +5,7 @@ public class UnitController : EntityController, IDamageable
     private TargetFinder targetFinder;
     private EntityMover entityMover;
     private EntityAttacker entityAttacker;
+    private Animator animator;
 
     private float activateWaitTime;
 
@@ -43,6 +44,7 @@ public class UnitController : EntityController, IDamageable
         activateWaitTime = this.cardData.activateWaitTime;
         speed = (cardData as UnitData).tilePerSeconds;
         entityMover?.Init(team);
+        animator = modelPosition.GetComponentInChildren<Animator>();
 
     }
 
@@ -219,13 +221,16 @@ public class UnitController : EntityController, IDamageable
         switch (state)
         {
             case EntityState.Idle:
+                animator.SetTrigger("Idle");
                 break;
 
             case EntityState.LookingForTarget:
+                animator.SetTrigger("Move");
                 entityMover.MoveControl(false);
                 break;
 
             case EntityState.Attack:
+                animator.SetTrigger("Attack");
                 entityMover.MoveControl(true);
                 break;
 
@@ -242,6 +247,7 @@ public class UnitController : EntityController, IDamageable
                 break;
 
             case EntityState.Dead:
+                animator.SetTrigger("Dead");
                 break;
         }
 
