@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ public class UiCardWindow : UiBaseWindow
     public Transform ScrollContent;
     public Transform[] CardSlots;
 
+    private CardData[] deck;
+
     protected override void Awake()
     {
         base.Awake();
@@ -25,6 +28,8 @@ public class UiCardWindow : UiBaseWindow
                 slot.gameObject.AddComponent<UiCardSlot>();
             }
         }
+
+        deck = new CardData[8];
     }
 
     protected override void OnShow()
@@ -66,5 +71,10 @@ public class UiCardWindow : UiBaseWindow
                 newCard.AddComponent<UiCardPrefab>();
             }
         }
+    }
+
+    public void SetIntoDeck(CardData card, int idx)
+    {
+        deck[idx] = card;
     }
 }
