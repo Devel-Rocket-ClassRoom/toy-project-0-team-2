@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public static class EntityManager
 {
@@ -55,32 +56,6 @@ public static class EntityManager
 
         if (entity.cardData.DefenseData != null && (entity.cardData.DefenseData.entityType & EntityType.CrownTower) != 0)
         {
-            if (entity.cardData.cardName == "King Tower")
-            {
-                Debug.Log(0);
-
-                if (entity.team == Team.RedTeam)
-                {
-                    for (int i = 0; i < redTeamCrownTower.Count; i++)
-                    {
-                        onCrounTowerDestroy?.Invoke(entity.team);
-                    }
-
-                    redTeamCrownTower.Clear();
-                }
-                else
-                {
-                    for (int i = 0; i < blueTeamCrownTower.Count; i++)
-                    {
-                        onCrounTowerDestroy?.Invoke(entity.team);
-                    }
-
-                    blueTeamCrownTower.Clear();
-                }
-
-                return;
-            }
-
             if (entity.team == Team.RedTeam)
             {
                 redTeamCrownTower.Remove(entity);
@@ -88,6 +63,34 @@ public static class EntityManager
             else if (entity.team == Team.BlueTeam)
             {
                 blueTeamCrownTower.Remove(entity);
+            }
+
+            if (entity.cardData.cardName == "King")
+            {
+                int count = 0;
+
+                if (entity.team == Team.RedTeam)
+                {
+                    count = redTeamCrownTower.Count;
+
+                    for (int i = count - 1; i >= 0; i--)
+                    {
+                        redTeamCrownTower[i].Dead();
+                        onCrounTowerDestroy?.Invoke(entity.team);
+                    }
+                }
+                else
+                {
+                    count = blueTeamCrownTower.Count;
+
+                    for (int i = count - 1; i >= 0; i--)
+                    {
+                        blueTeamCrownTower[i].Dead();
+                        onCrounTowerDestroy?.Invoke(entity.team);
+                    }
+                }
+
+                return;
             }
 
             onCrounTowerDestroy?.Invoke(entity.team);
