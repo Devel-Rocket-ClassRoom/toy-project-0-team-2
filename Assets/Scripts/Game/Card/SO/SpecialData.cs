@@ -25,6 +25,7 @@ public class SpecialData : ScriptableObject
     public float maxChargeRange;
     public float chargePrepareTime;
     public float chargeSpeed;
+    public bool immuneCharge;
     public AttackData chargeAttack;
 
     [Header("사망시 효과")]

@@ -12,18 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5251c65367c76ba408a00f633f5a172e, type: 3}
   m_Name: Prince_SpecialAttack
   m_EditorClassIdentifier: Assembly-CSharp::AttackData
-  attackInterval: 1.4
+  attackInterval: 1.1
   firstAttackTime: 0
-  lastDelay: 0.2
+  lastDelay: 1.1
   sightRange: 0
   attackRange: 2
   damage: 794
   crownTowerDamage: 0
-  knuckbackTile: 0
-  freezeTime: 0
   attackArriveTime: 0
   projectileSpeed: 0
+  attackDuration: 0
   attackRadius: 0
+  isNonTarget: 0
+  toKingTower: 0
   attackFilter: 13
   attackType: 0
   attackModel: {fileID: 0}

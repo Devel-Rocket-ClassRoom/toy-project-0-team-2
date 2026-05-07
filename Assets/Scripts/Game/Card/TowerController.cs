@@ -67,6 +67,7 @@ public class TowerController : EntityController, IDamageable
     {
         if (this.team == team) return;
         if (health < 0) return;
+        if (isImmune) return;
 
         health -= damage;
 

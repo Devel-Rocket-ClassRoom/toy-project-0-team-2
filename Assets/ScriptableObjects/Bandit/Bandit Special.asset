@@ -27,6 +27,7 @@ MonoBehaviour:
   maxChargeRange: 6
   chargePrepareTime: 0.8
   chargeSpeed: 15
+  immuneCharge: 1
   chargeAttack: {fileID: 11400000, guid: 82a0117e2099d0a4384a09df22b97b3f, type: 2}
   hasDeathrattle: 0
   deathrattleEntity: {fileID: 0}

@@ -16,7 +16,7 @@ MonoBehaviour:
   firstAttackTime: 0
   lastDelay: 0.5
   sightRange: 7
-  attackRange: 1.5
+  attackRange: 1
   damage: 396
   crownTowerDamage: 0
   attackArriveTime: 0

@@ -8,9 +8,10 @@ public class UnitController : EntityController, IDamageable
     private Animator animator;
 
     private float activateWaitTime;
-
     private float lastAttackTime;
-
+    protected float lastChargeTime;
+    protected float lastChargeEndTime;
+    protected bool isChargeEnd;
     private EntityType attackFilter;
 
     private float speed;
@@ -57,6 +58,7 @@ public class UnitController : EntityController, IDamageable
     {
         if (this.team == team) return;
         if (health < 0) return;
+        if (isImmune) return;
 
         health -= damage;
 
@@ -123,6 +125,7 @@ public class UnitController : EntityController, IDamageable
             case EntityState.Sprint:
                 if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _))
                 {
+                    lastAttackTime = Time.time - cardData.AttackData.attackInterval + cardData.SpecialData.sprintAttack.attackInterval;
                     runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.SpecialData.sprintAttack, modelPosition.position, target, team));
                     ChangeState(EntityState.Attack);
                 }
@@ -140,11 +143,19 @@ public class UnitController : EntityController, IDamageable
                 if (target != null && entityAttacker.IsTargetInRange(target, cardData.AttackData.attackRange, out _))
                 {
                     runningCoroutine = StartCoroutine(entityAttacker.CoAttack(cardData.SpecialData.chargeAttack, modelPosition.position, target, team));
-                    ChangeState(EntityState.Attack);
+                    ChangeState(EntityState.AfterCharge);
                 }
                 else if (target == null)
                 {
                     ChangeState(EntityState.LookingForTarget);
+                }
+                break;
+
+            case EntityState.AfterCharge:
+                if (Time.time - lastChargeEndTime > 0.1f)
+                {
+                    ChangeState(EntityState.Attack);
+                    isImmune = false;
                 }
                 break;
 
@@ -250,6 +261,13 @@ public class UnitController : EntityController, IDamageable
 
             case EntityState.Charge:
                 entityMover.MoveControl(false);
+                if (cardData.SpecialData.immuneCharge)
+                    isImmune = true;
+                break;
+
+            case EntityState.AfterCharge:
+                lastChargeEndTime = Time.time;
+                entityMover.MoveControl(true);
                 break;
 
             case EntityState.Dead:
@@ -270,5 +288,6 @@ public enum EntityState
     Sprint,
     PrepareCharge,
     Charge,
+    AfterCharge,
     Dead,
 }

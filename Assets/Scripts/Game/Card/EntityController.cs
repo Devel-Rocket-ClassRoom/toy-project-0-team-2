@@ -9,9 +9,9 @@ public abstract class EntityController : RootController
 
     protected float searchInterval = 0.2f;
     protected float lastSearchTime;
-    protected float lastChargeTime;
-    protected bool isChargeEnd;
+    
     protected bool isDead;
+    protected bool isImmune;
 
 
     public float health { get; protected set; }
