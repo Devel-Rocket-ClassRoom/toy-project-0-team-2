@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Zap Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Zap
-  elixir: 3
+  elixir: 2
   cardDatas:
-  - entityData: {fileID: 11400000, guid: feccc6452dfda1b47be92c929c2a2415, type: 2}
+  - entityData: {fileID: 11400000, guid: 21b1180b8933bff44a8d9e09e5cd8200, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}
-  arrangmentCompletTime: 0.3
+  arrangmentCompletTime: 0

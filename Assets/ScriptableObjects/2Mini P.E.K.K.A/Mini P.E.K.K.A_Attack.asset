@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5251c65367c76ba408a00f633f5a172e, type: 3}
   m_Name: Mini P.E.K.K.A_Attack
   m_EditorClassIdentifier: Assembly-CSharp::AttackData
-  attackInterval: 1
-  firstAttackTime: 0.5
+  attackInterval: 1.6
+  firstAttackTime: 0.4
   lastDelay: 0.5
-  sightRange: 7
+  sightRange: 5
   attackRange: 1.5
-  damage: 100
-  crownTowerDamage: 100
+  damage: 754
+  crownTowerDamage: 0
   attackArriveTime: 0
   projectileSpeed: 0
   attackDuration: 0

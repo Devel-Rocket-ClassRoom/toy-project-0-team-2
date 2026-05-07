@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DefenseData
   health: 824
   shiledHealth: 0
-  entityType: 0
+  entityType: 5
   radius: 0

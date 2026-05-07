@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37767327f3e93714d9a755ae0984fe59, type: 3}
   m_Name: Musketeer_Defense
   m_EditorClassIdentifier: Assembly-CSharp::DefenseData
-  health: 790
+  health: 720
   shiledHealth: 0
   entityType: 1
   radius: 0

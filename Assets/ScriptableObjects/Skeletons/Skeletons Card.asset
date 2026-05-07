@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skeletons Card
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Skeletons
-  elixir: 3
+  elixir: 1
   cardDatas:
   - entityData: {fileID: 11400000, guid: ca372f7571a66054c8e5c8b14d313072, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0.7}

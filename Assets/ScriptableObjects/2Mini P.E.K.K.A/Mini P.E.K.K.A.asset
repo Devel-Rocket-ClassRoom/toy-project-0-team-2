@@ -19,4 +19,4 @@ MonoBehaviour:
   model: {fileID: 4741513341930761228, guid: 2991981fd02eda845af5cd1748e4dbfb, type: 3}
   previewmodel: {fileID: 4741513341930761228, guid: 5094793cef5a61249882de505c9fd3b8, type: 3}
   activateWaitTime: 1
-  tilePerSeconds: 1
+  tilePerSeconds: 1.5

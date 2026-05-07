@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5251c65367c76ba408a00f633f5a172e, type: 3}
   m_Name: X-Bow_Attack
   m_EditorClassIdentifier: Assembly-CSharp::AttackData
-  attackInterval: 1
-  firstAttackTime: 0.5
-  lastDelay: 0.5
-  sightRange: 7
-  attackRange: 1.5
-  damage: 100
-  crownTowerDamage: 100
+  attackInterval: 0.3
+  firstAttackTime: 0.1
+  lastDelay: 0.1
+  sightRange: 11
+  attackRange: 11
+  damage: 41
+  crownTowerDamage: 0
   attackArriveTime: 0
-  projectileSpeed: 0
+  projectileSpeed: 15
   attackDuration: 0
   attackRadius: 0
   isNonTarget: 0

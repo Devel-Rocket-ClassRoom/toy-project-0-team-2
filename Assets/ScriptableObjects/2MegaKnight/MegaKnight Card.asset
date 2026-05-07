@@ -15,6 +15,8 @@ MonoBehaviour:
   cardName: MegaKnight
   elixir: 7
   cardDatas:
-  - entityData: {fileID: 11400000, guid: 2ee2b73a2539b1f488a9e832f2fc7315, type: 2}
+  - entityData: {fileID: 11400000, guid: bcc48e4a259db8d478130d307da2b0ed, type: 2}
+    positionAdjustment: {x: 0, y: 0, z: 0}
+  - entityData: {fileID: 11400000, guid: 93645cde0f49a1c4b95b4b46979f01f2, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}
   arrangmentCompletTime: 0

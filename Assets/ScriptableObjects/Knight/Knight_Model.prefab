@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6696993537285491356}
   - component: {fileID: 9003278833291390843}
   - component: {fileID: 1731949359477317299}
-  - component: {fileID: 5228962289659012257}
+  - component: {fileID: 8134702910179660811}
   m_Layer: 0
   m_Name: Knight_Model
   m_TagString: Untagged
@@ -92,8 +92,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5228962289659012257
-SphereCollider:
+--- !u!136 &8134702910179660811
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -110,8 +110,10 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.3
+  serializedVersion: 2
+  m_Radius: 0.14
+  m_Height: 0.5
+  m_Direction: 1
   m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!1001 &3875191070810192632
 PrefabInstance:

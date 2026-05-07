@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: Musketeer_Attack
   m_EditorClassIdentifier: Assembly-CSharp::AttackData
   attackInterval: 1
-  firstAttackTime: 0.5
+  firstAttackTime: 0.3
   lastDelay: 0.5
   sightRange: 7
-  attackRange: 1.5
-  damage: 100
-  crownTowerDamage: 100
+  attackRange: 6
+  damage: 218
+  crownTowerDamage: 0
   attackArriveTime: 0
-  projectileSpeed: 0
+  projectileSpeed: 15
   attackDuration: 0
   attackRadius: 0
   isNonTarget: 0
   toKingTower: 0
-  attackFilter: 13
+  attackFilter: -1
   attackType: 0
   attackModel: {fileID: 0}
   attackArriveModel: {fileID: 0}

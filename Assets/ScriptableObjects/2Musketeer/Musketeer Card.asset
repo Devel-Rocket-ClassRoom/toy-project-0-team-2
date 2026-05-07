@@ -15,6 +15,6 @@ MonoBehaviour:
   cardName: Musketeer
   elixir: 4
   cardDatas:
-  - entityData: {fileID: 11400000, guid: 2ee2b73a2539b1f488a9e832f2fc7315, type: 2}
+  - entityData: {fileID: 11400000, guid: 1e490e9a4d0622b47b995b5453f9be50, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}
   arrangmentCompletTime: 0
