@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +14,7 @@ public class UiCardWindow : UiBaseWindow
     public Transform ScrollContent;
     public Transform[] CardSlots;
 
-    private CardData[] deck;
+    public CardData[] Deck;
 
     protected override void Awake()
     {
@@ -29,7 +28,7 @@ public class UiCardWindow : UiBaseWindow
             }
         }
 
-        deck = new CardData[8];
+        Deck = new CardData[8];
     }
 
     protected override void OnShow()
@@ -66,15 +65,55 @@ public class UiCardWindow : UiBaseWindow
             }
 
             var newCard = Instantiate(card.cardImage, ScrollContent);
-            if (newCard.GetComponent<UiCardPrefab>() == null)
+            var prefabScript = newCard.GetComponent<UiCardPrefab>();
+            if (prefabScript == null)
             {
-                newCard.AddComponent<UiCardPrefab>();
+                prefabScript = newCard.AddComponent<UiCardPrefab>();
             }
+            prefabScript.cardData = card;
         }
     }
 
-    public void SetIntoDeck(CardData card, int idx)
+    public void SetIntoDeck()
     {
-        deck[idx] = card;
+        Deck = GetEquippedCardDatas();
+
+        int count = 0;
+        foreach (var data in Deck)
+        {
+            if (data != null)
+            {
+                count++;
+            }
+        }
+
+        if (count < 8)
+        {
+            Debug.LogWarning($"덱이 미완성입니다. (현재: {count}/8)");
+            return;
+        }
+    }
+
+    public CardData[] GetEquippedCardDatas()
+    {
+        CardData[] currentDeck = new CardData[8];
+
+        for (int i = 0; i < CardSlots.Length; i++)
+        {
+            if (i >= 8)
+            {
+                break;
+            }
+
+            if (CardSlots[i].childCount > 0)
+            {
+                var cardPrefab = CardSlots[i].GetChild(0).GetComponent<UiCardPrefab>();
+                if (cardPrefab != null)
+                {
+                    currentDeck[i] = cardPrefab.cardData;
+                }
+            }
+        }
+        return currentDeck;
     }
 }

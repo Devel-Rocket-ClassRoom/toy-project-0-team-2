@@ -9,7 +9,9 @@ public class UiCardPrefab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private Vector3 startPosition;
     private ScrollRect parentScrollRect;
 
-    void Awake()
+    public CardData cardData;
+
+    private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null)
@@ -25,15 +27,21 @@ public class UiCardPrefab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         originalParent = transform.parent;
         startPosition = transform.position;
 
+        if (parentScrollRect == null)
+        {
+            parentScrollRect = GetComponentInParent<ScrollRect>();
+        }
+
         if (parentScrollRect != null)
         {
+            parentScrollRect.StopMovement();
             parentScrollRect.enabled = false;
         }
 
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0.6f;
 
-        transform.SetParent(transform.root);
+        transform.SetParent(UiManager.Instance.CardWindow.transform);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -51,9 +59,8 @@ public class UiCardPrefab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             parentScrollRect.enabled = true;
         }
 
-        GameObject dropTarget = eventData.pointerCurrentRaycast.gameObject;
-        bool isDroppedOnSlot = dropTarget != null && dropTarget.GetComponent<UiCardSlot>() != null;
-        if (!isDroppedOnSlot)
+        bool isStuckInSlot = GetComponentInParent<UiCardSlot>() != null;
+        if (!isStuckInSlot)
         {
             var cardWindow = UiManager.Instance.CardWindow;
             if (cardWindow != null && cardWindow.ScrollContent != null)

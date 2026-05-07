@@ -19,6 +19,7 @@ public class UiMainWindow : UiBaseWindow
 
     private void OnClickStartGame()
     {
+        UiManager.Instance.CardWindow.SetIntoDeck();
         Debug.Log("[MainWindow] 게임 시작");
     }
 }

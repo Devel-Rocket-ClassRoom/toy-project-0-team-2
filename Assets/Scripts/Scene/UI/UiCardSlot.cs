@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UiCardSlot : MonoBehaviour, IDropHandler
 {
@@ -9,16 +10,19 @@ public class UiCardSlot : MonoBehaviour, IDropHandler
         {
             if (transform.childCount > 0)
             {
-                var existingCard = transform.GetChild(0);
-                var window = GetComponentInParent<UiCardWindow>();
-                if (window != null)
+                Transform existingCard = transform.GetChild(0);
+
+                var cardWindow = UiManager.Instance.CardWindow;
+                if (cardWindow != null && cardWindow.ScrollContent != null)
                 {
-                    existingCard.SetParent(window.ScrollContent);
+                    existingCard.SetParent(cardWindow.ScrollContent);
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(cardWindow.ScrollContent.GetComponent<RectTransform>());
                 }
             }
 
-            eventData.pointerDrag.transform.SetParent(transform);
-            eventData.pointerDrag.transform.localPosition = Vector3.zero;
+            GameObject newCard = eventData.pointerDrag;
+            newCard.transform.SetParent(this.transform);
+            newCard.transform.localPosition = Vector3.zero;
         }
     }
 }
