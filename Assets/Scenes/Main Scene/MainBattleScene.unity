@@ -1069,7 +1069,7 @@ GameObject:
   - component: {fileID: 283686587}
   - component: {fileID: 283686586}
   m_Layer: 5
-  m_Name: four
+  m_Name: fore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2202,11 +2202,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 589688275}
   m_CullTransparentMesh: 1
---- !u!1 &591100166 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 617322845246878684, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
-  m_PrefabInstance: {fileID: 969649472}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &599709359
 GameObject:
   m_ObjectHideFlags: 0
@@ -2269,13 +2264,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HandManager
   deck:
-  - {fileID: 11400000, guid: a0e8dbdacbe702944939f097a5d7a8ca, type: 2}
-  - {fileID: 11400000, guid: 29cb22a3f3517064caf11743887f748a, type: 2}
-  - {fileID: 11400000, guid: 1a4d898b507cce641bf46955cb4f2195, type: 2}
-  - {fileID: 11400000, guid: 425e2c6c4213bb44797a5c249d319c0c, type: 2}
+  - {fileID: 11400000, guid: f588bcac452c1ce4d992a8ff9f24d1d4, type: 2}
+  - {fileID: 11400000, guid: c8eb519a6f32ffe4db1bd0cab1ef7ff0, type: 2}
+  - {fileID: 11400000, guid: d4326956a36d4f443882295f34589387, type: 2}
+  - {fileID: 11400000, guid: cc048f59bc94ede4793ecedc18b520ff, type: 2}
   - {fileID: 11400000, guid: 56d699d6b715bc1439b247d8d8585226, type: 2}
   - {fileID: 11400000, guid: 212286fdcb65bad41825b9fe2c91b1d6, type: 2}
-  - {fileID: 11400000, guid: ea3d15a3114f552418c443c4bde4f3a7, type: 2}
+  - {fileID: 11400000, guid: a675fb13887889a48bc69ec943ac25ba, type: 2}
   - {fileID: 11400000, guid: 5289c439a2ef80d43b5a38f497292721, type: 2}
   handCards:
   - {fileID: 0}
@@ -2469,7 +2464,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 890d97ac453b444889bf7df383a03c84, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3bb4a8e48206fc34a86e5f5a776c3c8a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2682,8 +2677,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'AIName: master'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bd35944397b949c4a88f459ab9746ef9, type: 2}
-  m_sharedMaterial: {fileID: 6306965842655176055, guid: bd35944397b949c4a88f459ab9746ef9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4172,8 +4167,8 @@ MonoBehaviour:
   index: 0
   groundMask:
     serializedVersion: 2
-    m_Bits: 1792
-  blueSpawnArea: {fileID: 591100166}
+    m_Bits: 768
+  blueSpawnArea: {fileID: 0}
 --- !u!1 &831486671
 GameObject:
   m_ObjectHideFlags: 0
@@ -9984,7 +9979,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1167192738}
   - component: {fileID: 1167192739}
-  - component: {fileID: 1167192740}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -10019,6 +10013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef34a80186c61f44a8a9c1ba8f0ee4a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AI
+  currentElixer: 10
   originDeck:
   - {fileID: 11400000, guid: a0e8dbdacbe702944939f097a5d7a8ca, type: 2}
   - {fileID: 11400000, guid: ea3d15a3114f552418c443c4bde4f3a7, type: 2}
@@ -10030,21 +10025,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 56d699d6b715bc1439b247d8d8585226, type: 2}
   arrangementManager: {fileID: 2013357499}
   isActive: 1
---- !u!114 &1167192740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1167192737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72f25658cc2302b4995278b67b40b457, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ElixirManager
-  gameendmanager: {fileID: 599709366}
-  currentElixir: 0
-  timerManager: {fileID: 599709365}
 --- !u!1 &1193562619 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8894958032492249895, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
@@ -11204,8 +11184,8 @@ MonoBehaviour:
   index: 1
   groundMask:
     serializedVersion: 2
-    m_Bits: 1792
-  blueSpawnArea: {fileID: 591100166}
+    m_Bits: 768
+  blueSpawnArea: {fileID: 0}
 --- !u!1 &1420953367 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 231474499300744111, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
@@ -11749,8 +11729,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Timer
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bd35944397b949c4a88f459ab9746ef9, type: 2}
-  m_sharedMaterial: {fileID: 6306965842655176055, guid: bd35944397b949c4a88f459ab9746ef9, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -12692,8 +12672,8 @@ MonoBehaviour:
   index: 2
   groundMask:
     serializedVersion: 2
-    m_Bits: 1792
-  blueSpawnArea: {fileID: 591100166}
+    m_Bits: 768
+  blueSpawnArea: {fileID: 0}
 --- !u!1 &1819963211 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3295679061732269761, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
@@ -13971,8 +13951,8 @@ MonoBehaviour:
   index: 3
   groundMask:
     serializedVersion: 2
-    m_Bits: 1792
-  blueSpawnArea: {fileID: 591100166}
+    m_Bits: 768
+  blueSpawnArea: {fileID: 0}
 --- !u!1 &2115966739 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7915586260941782028, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}

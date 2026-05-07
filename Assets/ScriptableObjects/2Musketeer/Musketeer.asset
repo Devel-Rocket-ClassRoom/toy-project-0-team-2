@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300f6651ac0f4ed45a5974fcedfad824, type: 3}
+  m_Name: Musketeer
+  m_EditorClassIdentifier: Assembly-CSharp::UnitData
+  entityId: 0
+  AttackData: {fileID: 11400000, guid: eeb8da458c9eb664480d02e694deb5fa, type: 2}
+  DefenseData: {fileID: 11400000, guid: 31ce6850281913b4fbfabe298312b054, type: 2}
+  SpecialData: {fileID: 0}
+  model: {fileID: 4741513341930761228, guid: 2991981fd02eda845af5cd1748e4dbfb, type: 3}
+  previewmodel: {fileID: 4741513341930761228, guid: 5094793cef5a61249882de505c9fd3b8, type: 3}
+  activateWaitTime: 1
+  tilePerSeconds: 1

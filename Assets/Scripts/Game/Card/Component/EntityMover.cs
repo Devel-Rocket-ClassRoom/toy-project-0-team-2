@@ -26,10 +26,6 @@ public class EntityMover : MonoBehaviour
             ArenaTowerLine = Mathf.Abs(arena.z - HorizontalMidLine);
             RoadLine = Mathf.Abs(arena.x - VerticalMidLine);
 
-            Debug.Log(VerticalMidLine);
-            Debug.Log(HorizontalMidLine);
-            Debug.Log(ArenaTowerLine);
-
             isInit = true;
         }
     }
