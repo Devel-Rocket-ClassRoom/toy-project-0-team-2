@@ -13,6 +13,8 @@ public static class EntityManager
     public static List<EntityController> blueTeamCrownTower = new List<EntityController>();
 
     public static Action onEntitiesChanged;
+    public static event Action<Team> onCrounTowerDestroy;
+
 
     public static void AddEntities(EntityController entity)
     {
@@ -51,8 +53,34 @@ public static class EntityManager
             blueTeamEntities.Remove(entity);
         }
 
-        if (entity.cardData.DefenseData != null && entity.cardData.DefenseData.entityType == EntityType.CrownTower)
+        if (entity.cardData.DefenseData != null && (entity.cardData.DefenseData.entityType & EntityType.CrownTower) != 0)
         {
+            if (entity.cardData.cardName == "King Tower")
+            {
+                Debug.Log(0);
+
+                if (entity.team == Team.RedTeam)
+                {
+                    for (int i = 0; i < redTeamCrownTower.Count; i++)
+                    {
+                        onCrounTowerDestroy?.Invoke(entity.team);
+                    }
+
+                    redTeamCrownTower.Clear();
+                }
+                else
+                {
+                    for (int i = 0; i < blueTeamCrownTower.Count; i++)
+                    {
+                        onCrounTowerDestroy?.Invoke(entity.team);
+                    }
+
+                    blueTeamCrownTower.Clear();
+                }
+
+                return;
+            }
+
             if (entity.team == Team.RedTeam)
             {
                 redTeamCrownTower.Remove(entity);
@@ -61,6 +89,8 @@ public static class EntityManager
             {
                 blueTeamCrownTower.Remove(entity);
             }
+
+            onCrounTowerDestroy?.Invoke(entity.team);
         }
 
         onEntitiesChanged?.Invoke();

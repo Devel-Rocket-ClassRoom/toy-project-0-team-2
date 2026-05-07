@@ -25,6 +25,11 @@ public class EntityMover : MonoBehaviour
             Vector3 arena = CardArrangementManager.Instance.RedArena[1].position;
             ArenaTowerLine = Mathf.Abs(arena.z - HorizontalMidLine);
             RoadLine = Mathf.Abs(arena.x - VerticalMidLine);
+
+            Debug.Log(VerticalMidLine);
+            Debug.Log(HorizontalMidLine);
+            Debug.Log(ArenaTowerLine);
+
             isInit = true;
         }
     }
