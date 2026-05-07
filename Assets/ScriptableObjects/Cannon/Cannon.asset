@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300f6651ac0f4ed45a5974fcedfad824, type: 3}
+  m_Name: Cannon
+  m_EditorClassIdentifier: Assembly-CSharp::UnitData
+  entityId: 0
+  AttackData: {fileID: 11400000, guid: 09479e8b335bb1647a72b6693fdaeaa3, type: 2}
+  DefenseData: {fileID: 11400000, guid: 59d673aec5415224e8dacfa23b8e95a6, type: 2}
+  SpecialData: {fileID: 0}
+  model: {fileID: 4826274244099483105, guid: df2460b052c77c64c98617801fa1e1c8, type: 3}
+  previewmodel: {fileID: 4826274244099483105, guid: 4f78c93ba8eadbf48a6288080c9e2341, type: 3}
+  activateWaitTime: 1
+  tilePerSeconds: 1
