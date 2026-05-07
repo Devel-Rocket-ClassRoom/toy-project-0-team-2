@@ -47,14 +47,14 @@ public class EntityMover : MonoBehaviour
             t = target.transform.position;
             t.y = transform.position.y;
         }
-        else
+        else if (target == null)
         {
             int reverse = (team == Team.RedTeam) ? -1 : 1;
 
             if (transform.position.x > VerticalMidLine)
-                t.x = VerticalMidLine + RoadLine;
+                t.x = VerticalMidLine + RoadLine - 0.1f;
             else
-                t.x = VerticalMidLine - RoadLine;
+                t.x = VerticalMidLine - RoadLine + 0.1f;
 
             float relativeZ = (transform.position.z - HorizontalMidLine) * reverse;
 
