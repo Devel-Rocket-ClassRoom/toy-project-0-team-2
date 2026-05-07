@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6f0f19c39740a488a3d3966749bfc0, type: 3}
   m_Name: Arrow Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  elixer: 3
+  cardName: Arrow
+  elixir: 3
   cardDatas:
   - entityData: {fileID: 11400000, guid: feccc6452dfda1b47be92c929c2a2415, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}

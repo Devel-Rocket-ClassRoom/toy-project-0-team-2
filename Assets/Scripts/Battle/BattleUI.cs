@@ -92,7 +92,7 @@ public class BattleUI : MonoBehaviour
             }
 
             EntityData data = card.cardDatas[0].entityData;
-            int cost = data.elixir;
+            int cost = card.elixir;
 
             CardNames[i].text = data.name;
             CardElixirs[i].text = cost.ToString();
@@ -142,10 +142,9 @@ public class BattleUI : MonoBehaviour
     {
     
         CardData nextCard = handManager.deckQueue.Peek();
-        EntityData data = nextCard.cardDatas[0].entityData;
 
-        NextCardNames.text = data.name;
-        NextCardElixirs.text = data.elixir.ToString();
+        NextCardNames.text = nextCard.cardName;
+        NextCardElixirs.text = nextCard.elixir.ToString();
     }
 
 

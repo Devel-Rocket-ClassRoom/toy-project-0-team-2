@@ -31,7 +31,7 @@ public class CardManager : MonoBehaviour
 
         EntityData entityData = card.cardDatas[0].entityData;
 
-        if (elixir.currentElixir < entityData.elixir)
+        if (elixir.currentElixir < card.elixir)
         {
             Debug.Log("엘릭서 부족");
             return;
@@ -62,15 +62,15 @@ public class CardManager : MonoBehaviour
 
         Vector3 spawnPos = hit.point;
 
-        UseCard(index, card, entityData, spawnPos);
+        UseCard(index, card, spawnPos);
     }
 
-    private void UseCard(int index, CardData card, EntityData entityData, Vector3 spawnPos)
+    private void UseCard(int index, CardData card, Vector3 spawnPos)
     {
 
         cardArrangementManager.Arrangement(card, myTeam, spawnPos);
 
-        elixir.currentElixir -= entityData.elixir;
+        elixir.currentElixir -= card.elixir;
         handManager.UseHandCard(index);
     }
 

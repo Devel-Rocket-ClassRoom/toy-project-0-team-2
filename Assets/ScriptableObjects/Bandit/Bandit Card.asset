@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6f0f19c39740a488a3d3966749bfc0, type: 3}
   m_Name: Bandit Card
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  elixer: 3
+  cardName: Bandit
+  elixir: 3
   cardDatas:
   - entityData: {fileID: 11400000, guid: 0aeeec25b5b376c4d805121c48a4527d, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}

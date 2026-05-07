@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 300f6651ac0f4ed45a5974fcedfad824, type: 3}
   m_Name: BabyDragon
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
-  cardName: baby dragon
-  elixir: 4
-  level: 0
+  entityId: 4
   AttackData: {fileID: 11400000, guid: 570005f9f42652d4cbc098328533f8e0, type: 2}
   DefenseData: {fileID: 11400000, guid: 1635fe06f2a8fdf4c81762ae56b23f45, type: 2}
   SpecialData: {fileID: 0}

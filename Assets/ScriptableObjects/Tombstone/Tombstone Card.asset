@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6f0f19c39740a488a3d3966749bfc0, type: 3}
   m_Name: Tombstone Card
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  elixer: 3
+  cardName: Tombstone
+  elixir: 0
   cardDatas:
   - entityData: {fileID: 11400000, guid: f836269e44ccf534f937d99829c63b30, type: 2}
     positionAdjustment: {x: 0, y: 0, z: 0}

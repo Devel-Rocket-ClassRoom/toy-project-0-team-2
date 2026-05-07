@@ -4,9 +4,7 @@ using UnityEngine;
 [Serializable]
 public abstract class EntityData : ScriptableObject
 {
-    public string cardName;
-    public int elixir;
-    public int level;
+    public int entityId;
 
     public AttackData AttackData;
     public DefenseData DefenseData;

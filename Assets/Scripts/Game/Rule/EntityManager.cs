@@ -65,7 +65,7 @@ public static class EntityManager
                 blueTeamCrownTower.Remove(entity);
             }
 
-            if (entity.cardData.cardName == "King")
+            if (entity.cardData.entityId == -1)
             {
                 int count = 0;
 

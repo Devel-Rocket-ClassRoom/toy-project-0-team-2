@@ -33,7 +33,7 @@ public class AI : MonoBehaviour
     {
         if (!isActive) return;
 
-        Debug.Log($"{card.name} : {card.elixer}, {card.cardDatas.Length}");
+        Debug.Log($"{card.name} : {card.elixir}, {card.cardDatas.Length}");
 
         var cardType = ClassifyCard(card);
         Debug.Log(cardType);
@@ -60,28 +60,28 @@ public class AI : MonoBehaviour
     {
         if (card.cardDatas[0].entityData.DefenseData != null)
         {
-            if (card.elixer >= 6
+            if (card.elixir >= 6
             && card.cardDatas.Length == 1
             && (card.cardDatas[0].entityData.DefenseData.entityType & (EntityType.Aerial | EntityType.Ground)) != 0)
             {
                 return EntityTypeDetail.BigUnit;
             }
 
-            if (card.elixer >= 3 && card.elixer <= 6
+            if (card.elixir >= 3 && card.elixir <= 6
                 && card.cardDatas.Length <= 6
                 && (card.cardDatas[0].entityData.DefenseData.entityType & (EntityType.Aerial | EntityType.Ground)) != 0)
             {
                 return EntityTypeDetail.MiddleUnit;
             }
 
-            if (card.elixer >= 2 && card.elixer <= 4
+            if (card.elixir >= 2 && card.elixir <= 4
                 && card.cardDatas.Length >= 3
                 && (card.cardDatas[0].entityData.DefenseData.entityType & (EntityType.Aerial | EntityType.Ground)) != 0)
             {
                 return EntityTypeDetail.WiniUnit;
             }
 
-            if (card.elixer == 1)
+            if (card.elixir == 1)
             {
                 return EntityTypeDetail.Recycle;
             }
@@ -135,7 +135,7 @@ public class AI : MonoBehaviour
 
             for (int i = 0; i < hand.Length; i++)
             {
-                if (hand[i].elixer < hand[selected].elixer)
+                if (hand[i].elixir < hand[selected].elixir)
                 {
                     selected = i;
                 }
@@ -146,7 +146,7 @@ public class AI : MonoBehaviour
 
         for (int i = 0; i < hand.Length; i++)
         {
-            if (hand[i].elixer <= currentElixer && ClassifyCard(hand[i]) == type)
+            if (hand[i].elixir <= currentElixer && ClassifyCard(hand[i]) == type)
             {
                 return i;
             }
