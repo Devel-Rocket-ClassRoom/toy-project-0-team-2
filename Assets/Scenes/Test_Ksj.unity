@@ -4165,9 +4165,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardDragHandler
   cardManager: {fileID: 599709363}
   index: 0
-  blueAreaRenderer: {fileID: 1781330472}
+  blueAreaRenderer: []
   normalColor: {r: 1, g: 1, b: 1, a: 1}
-  highlightColor: {r: 0, g: 0, b: 1, a: 1}
+  highlightColor: {r: 0, g: 0.16342616, b: 1, a: 1}
   groundMask:
     serializedVersion: 2
     m_Bits: 1792
@@ -11371,7 +11371,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardDragHandler
   cardManager: {fileID: 599709363}
   index: 1
-  blueAreaRenderer: {fileID: 1781330472}
+  blueAreaRenderer: []
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0, g: 0, b: 1, a: 1}
   groundMask:
@@ -12544,11 +12544,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1781166806}
   m_CullTransparentMesh: 1
---- !u!23 &1781330472 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 4759027662564712563, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
-  m_PrefabInstance: {fileID: 969649472}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1784884133 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7457447146302962615, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
@@ -12866,7 +12861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardDragHandler
   cardManager: {fileID: 599709363}
   index: 2
-  blueAreaRenderer: {fileID: 1781330472}
+  blueAreaRenderer: []
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0, g: 0, b: 1, a: 1}
   groundMask:
@@ -14146,7 +14141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CardDragHandler
   cardManager: {fileID: 599709363}
   index: 3
-  blueAreaRenderer: {fileID: 1781330472}
+  blueAreaRenderer: []
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0, g: 0, b: 1, a: 1}
   groundMask:

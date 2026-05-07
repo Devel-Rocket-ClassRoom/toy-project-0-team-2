@@ -8,7 +8,7 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     private GameObject previewObj;
 
-    public Renderer blueAreaRenderer;
+    public Renderer[] blueAreaRenderer;
     public Color normalColor = Color.white;
     public Color highlightColor = Color.blue;
     public LayerMask groundMask;
@@ -36,9 +36,9 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         previewObj = Instantiate(entityData.previewmodel);
 
-        if (blueAreaRenderer != null)
+        foreach (Renderer renderer in blueAreaRenderer) 
         {
-            blueAreaRenderer.material.color = highlightColor;
+           renderer.material.color = highlightColor;
         }
     }
 
@@ -61,9 +61,9 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             Destroy(previewObj);
         }
 
-        if (blueAreaRenderer != null)
+        foreach (Renderer renderer in blueAreaRenderer)
         {
-            blueAreaRenderer.material.color = normalColor;
+            renderer.material = null;
         }
     }
 
