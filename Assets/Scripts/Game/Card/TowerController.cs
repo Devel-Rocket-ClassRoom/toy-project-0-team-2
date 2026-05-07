@@ -17,7 +17,7 @@ public class TowerController : EntityController, IDamageable
     private EntityType attackFilter;
 
     [SerializeField]
-    private float health;
+    public float health;
 
     private float hpConsumePerSec;
 

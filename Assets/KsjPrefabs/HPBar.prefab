@@ -107,6 +107,8 @@ MonoBehaviour:
   offset: {x: 0, y: 2, z: 1}
   unitHP: {fileID: 5227594025473455042}
   HPBar: {fileID: 6569483015288231177}
+  fillImage: {fileID: 3956563272134176679}
+  tower: {fileID: 0}
 --- !u!1 &499540167957277483
 GameObject:
   m_ObjectHideFlags: 0

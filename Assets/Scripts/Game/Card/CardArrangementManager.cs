@@ -85,10 +85,16 @@ public class CardArrangementManager : MonoBehaviour
 
                 if (realUnit != null)
                 {
-                    cardManager.CreateHealthBar(realUnit);
+                    cardManager.CreateHealthBar(realUnit, team);
                 }
 
-               
+                TowerController realTower = entity.GetComponent<TowerController>();
+
+                if (realTower != null)
+                {
+                    cardManager.CreateTowerHealthBar(realTower, team);
+                }
+
             }
             else if (controller is AttackEntityController a)
             {

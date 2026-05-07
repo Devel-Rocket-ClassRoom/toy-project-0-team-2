@@ -8,9 +8,12 @@ public class CardManager : MonoBehaviour
     public CardArrangementManager cardArrangementManager;
     public Team myTeam = Team.RedTeam;
     public HandManager handManager;
-    public LayerMask Ground;
     public UnitHealthBarUI healthBarPrefab;
     public Transform worldUICanvas;
+
+    public LayerMask GroundLayerMask;
+    public LayerMask redLayerMask;
+    public LayerMask blueLayerMaskk;
 
     public void UsedCard(int index, Vector2 screenPoint)
     {
@@ -25,6 +28,7 @@ public class CardManager : MonoBehaviour
         {
             return;
         }
+
         EntityData entityData = card.cardDatas[0].entityData;
 
         if (elixir.currentElixir < entityData.elixir)
@@ -33,11 +37,26 @@ public class CardManager : MonoBehaviour
             return;
         }
 
+        // 카드 타입 확인
+        bool isSpell = entityData is SpellData;
+
+        // 사용할 레이어 결정
+        LayerMask currentMask;
+
+        if (isSpell)
+        {
+            currentMask = GroundLayerMask;
+        }
+        else
+        {
+            currentMask = myTeam == Team.RedTeam? redLayerMask: blueLayerMaskk;
+        }
+
         Ray ray = Camera.main.ScreenPointToRay(screenPoint);
 
-        if (!Physics.Raycast(ray, out RaycastHit hit, 1000f, Ground))
+        if (!Physics.Raycast(ray, out RaycastHit hit, 1000f, currentMask))
         {
-            Debug.Log("소환 가능한 바닥이 아님");
+            Debug.Log("이 영역에는 소환 불가");
             return;
         }
 
@@ -55,13 +74,23 @@ public class CardManager : MonoBehaviour
         handManager.UseHandCard(index);
     }
 
-    public void CreateHealthBar(UnitController unit)
+    public void CreateHealthBar(UnitController unit,Team team)
     {
         if (unit == null)
         {
             return;
         }
         UnitHealthBarUI hpBar = Instantiate(healthBarPrefab, worldUICanvas);
-        hpBar.Init(unit);
+        hpBar.Init(unit, team);
+    }
+    public void CreateTowerHealthBar(TowerController tower, Team team)
+    {
+        if (tower == null)
+        {
+            return;
+        }
+
+        UnitHealthBarUI hpBar = Instantiate(healthBarPrefab, worldUICanvas);
+        hpBar.InitTower(tower, team);
     }
 }
