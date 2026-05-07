@@ -116,8 +116,8 @@ public class AI : MonoBehaviour
                 break;
 
             case EntityTypeDetail.WiniUnit:
-                card = CheckHand(EntityTypeDetail.MiddleUnit);
-                if (card == -1) card = CheckHand(EntityTypeDetail.Magic);
+                card = CheckHand(EntityTypeDetail.Magic);
+                if (card == -1) card = CheckHand(EntityTypeDetail.MiddleUnit);
                 if (card == -1) card = CheckHand(EntityTypeDetail.WiniUnit);
                 if (card == -1) card = CheckHand(EntityTypeDetail.Recycle);
                 break;
@@ -272,7 +272,7 @@ public class AI : MonoBehaviour
             {
                 yield return new WaitForSeconds(card.arrangmentCompletTime);
                 arrangementManager.Arrangement(card, team,
-                        point + new Vector3(0, 0, radius));
+                        point + new Vector3(0, 0, radius - 1));
             }
         }
 
