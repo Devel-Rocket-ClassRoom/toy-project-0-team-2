@@ -4638,6 +4638,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 212286fdcb65bad41825b9fe2c91b1d6, type: 2}
   - {fileID: 11400000, guid: 56d699d6b715bc1439b247d8d8585226, type: 2}
   arrangementManager: {fileID: 2013357499}
+  isActive: 0
 --- !u!1 &1225399664
 GameObject:
   m_ObjectHideFlags: 0
@@ -7329,6 +7330,7 @@ MonoBehaviour:
   towerPrefab: {fileID: 3513200580512419274, guid: 36465f59d5813c240b6677f02dcd7178, type: 3}
   spellPrefab: {fileID: -516425212405120444, guid: 2a44e87fb34de794db23a50626647354, type: 3}
   KingTower: {fileID: 11400000, guid: 68c36222fc144f548b067464865499d3, type: 2}
+  ArenaTower: {fileID: 11400000, guid: 3a1634a98c24d4e4da5855ebf66b2c86, type: 2}
   RedTeamKing: {fileID: 724905060}
   BlueTeamKing: {fileID: 1150681324}
   RedArena:
