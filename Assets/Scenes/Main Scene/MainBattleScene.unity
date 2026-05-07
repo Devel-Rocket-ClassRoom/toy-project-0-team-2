@@ -9979,6 +9979,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1167192738}
   - component: {fileID: 1167192739}
+  - component: {fileID: 1167192740}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -10013,7 +10014,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef34a80186c61f44a8a9c1ba8f0ee4a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AI
-  currentElixer: 10
   originDeck:
   - {fileID: 11400000, guid: a0e8dbdacbe702944939f097a5d7a8ca, type: 2}
   - {fileID: 11400000, guid: ea3d15a3114f552418c443c4bde4f3a7, type: 2}
@@ -10025,6 +10025,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 56d699d6b715bc1439b247d8d8585226, type: 2}
   arrangementManager: {fileID: 2013357499}
   isActive: 1
+--- !u!114 &1167192740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167192737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72f25658cc2302b4995278b67b40b457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElixirManager
+  gameendmanager: {fileID: 599709366}
+  currentElixir: 0
+  timerManager: {fileID: 599709365}
 --- !u!1 &1193562619 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8894958032492249895, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
