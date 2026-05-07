@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 913928144fb240d45a0b3d0ab98717d2, type: 3}
+  m_Name: Fireball
+  m_EditorClassIdentifier: Assembly-CSharp::SpellData
+  entityId: 0
+  AttackData: {fileID: 11400000, guid: 36b26b949c0cb3840a9bf8ddddbb05c5, type: 2}
+  DefenseData: {fileID: 0}
+  SpecialData: {fileID: 0}
+  model: {fileID: 3604592886499914945, guid: d998580d41903764d8054c20814aed2e, type: 3}
+  previewmodel: {fileID: 3604592886499914945, guid: f3483e821a19b2247b4c00351c51c5b9, type: 3}
+  activateWaitTime: 0

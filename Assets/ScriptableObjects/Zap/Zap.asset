@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 913928144fb240d45a0b3d0ab98717d2, type: 3}
+  m_Name: Zap
+  m_EditorClassIdentifier: Assembly-CSharp::SpellData
+  entityId: 0
+  AttackData: {fileID: 11400000, guid: 862ae0da5ca320d4594d6c3d73b1cd21, type: 2}
+  DefenseData: {fileID: 0}
+  SpecialData: {fileID: 0}
+  model: {fileID: 6724965079889689595, guid: 0a4599e9cd141b043a4d5c255906565a, type: 3}
+  previewmodel: {fileID: 6724965079889689595, guid: fa46f1001d7aab747bfafde71af2067d, type: 3}
+  activateWaitTime: 0
