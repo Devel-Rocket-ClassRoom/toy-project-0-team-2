@@ -42,7 +42,7 @@ public abstract class EntityController : RootController
         if (cardData != null && cardData.DefenseData != null)
         {
             entityType = cardData.DefenseData.entityType;
-            size = cardData.DefenseData.radius;
+            size = cardData.DefenseData.size;
         }
 
         if (model != null)

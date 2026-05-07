@@ -7,5 +7,5 @@ public class DefenseData : ScriptableObject
     public float shiledHealth;
 
     public EntityType entityType;
-    public float radius;
+    public float size;
 }

@@ -216,7 +216,8 @@ public class AttackEntityController : RootController
                 for (int i = enemies.Count - 1; i >= 0; i--)
                 {
                     float sqrDistance = (enemies[i].transform.position - transform.position).sqrMagnitude;
-                    if (sqrDistance < attackData.attackRadius * attackData.attackRadius)
+                    float radius = attackData.attackRadius + enemies[i].size;
+                    if (sqrDistance < radius * radius)
                     {
                         if (enemies[i].cardData.DefenseData != null)
                         {
