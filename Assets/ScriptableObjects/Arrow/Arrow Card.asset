@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Arrow Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Arrow
+  cardImage: {fileID: 4588823211049315563, guid: e00222f778efacf4eb91195f5955898e, type: 3}
   elixir: 3
   cardDatas:
   - entityData: {fileID: 11400000, guid: feccc6452dfda1b47be92c929c2a2415, type: 2}

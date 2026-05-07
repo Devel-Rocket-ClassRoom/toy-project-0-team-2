@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Skeleton Army
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Skeleton Army
+  cardImage: {fileID: 4588823211049315563, guid: 0fe5af9e97ca3ac448b3b5a354e5a873, type: 3}
   elixir: 3
   cardDatas:
   - entityData: {fileID: 11400000, guid: ca372f7571a66054c8e5c8b14d313072, type: 2}

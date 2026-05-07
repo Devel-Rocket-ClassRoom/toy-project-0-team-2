@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tombstone Card
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Tombstone
-  cardImage: {fileID: 0}
+  cardImage: {fileID: 4588823211049315563, guid: cf3b042eca44765478d2a488cd9b8e79, type: 3}
   elixir: 3
   cardDatas:
   - entityData: {fileID: 11400000, guid: f836269e44ccf534f937d99829c63b30, type: 2}

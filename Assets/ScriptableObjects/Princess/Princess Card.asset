@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Princess Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Princess
+  cardImage: {fileID: 4588823211049315563, guid: 8c9665deb15755d4dac50507575c75a2, type: 3}
   elixir: 3
   cardDatas:
   - entityData: {fileID: 11400000, guid: 915889229b96f2048bca62e1dae2edbf, type: 2}

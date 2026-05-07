@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Bandit Card
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Bandit
+  cardImage: {fileID: 4588823211049315563, guid: 064038836ce2d1940914abaa339330f6, type: 3}
   elixir: 3
   cardDatas:
   - entityData: {fileID: 11400000, guid: 0aeeec25b5b376c4d805121c48a4527d, type: 2}
