@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
   cardName: Knight
   elixir: 3
+  level: 0
   AttackData: {fileID: 11400000, guid: e0ace04edc8313b4fb793937a6eacf8d, type: 2}
   DefenseData: {fileID: 11400000, guid: c244ab21f8d4dbd49a1dfa7e89a621e3, type: 2}
   SpecialData: {fileID: 0}
   model: {fileID: 4741513341930761228, guid: 2991981fd02eda845af5cd1748e4dbfb, type: 3}
+  previewmodel: {fileID: 4741513341930761228, guid: 2991981fd02eda845af5cd1748e4dbfb, type: 3}
   activateWaitTime: 1
   tilePerSeconds: 1

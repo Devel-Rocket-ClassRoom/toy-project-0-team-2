@@ -19,5 +19,6 @@ MonoBehaviour:
   DefenseData: {fileID: 11400000, guid: 1635fe06f2a8fdf4c81762ae56b23f45, type: 2}
   SpecialData: {fileID: 0}
   model: {fileID: 8566075057799971464, guid: c4df0b81bd1e53c42972f7788aa75420, type: 3}
+  previewmodel: {fileID: 8566075057799971464, guid: c4df0b81bd1e53c42972f7788aa75420, type: 3}
   activateWaitTime: 1
   tilePerSeconds: 1.5

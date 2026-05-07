@@ -3,15 +3,10 @@ using UnityEngine.EventSystems;
 
 public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-
-    public timerManager timerManager;
-    public CardManager cardManager;
-
+    public CardManager cardManager; // 인스펙터에서 연결
     public int index;
 
-    public GameObject worldPreviewPrefab;
     private GameObject previewObj;
-
 
     public Renderer blueAreaRenderer;
     public Color normalColor = Color.white;
@@ -20,18 +15,46 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        previewObj = Instantiate(worldPreviewPrefab);
+        if (cardManager.gameendmanager.Gameover)
+        {
+            return;
+        }
 
-        blueAreaRenderer.material.color = highlightColor;
+        CardData card = cardManager.handManager.handCards[index];
+
+        if (card == null || card.cardDatas.Length == 0)
+        {
+            return;
+        }
+
+        EntityData entityData = card.cardDatas[0].entityData;
+
+        if (entityData.previewmodel == null)
+        {
+            Debug.LogWarning($"{entityData.cardName} previewmodel이 없음");
+            return;
+        }
+
+        previewObj = Instantiate(entityData.previewmodel);
+
+        if (blueAreaRenderer != null)
+        {
+            blueAreaRenderer.material.color = highlightColor;
+        }
     }
+
     public void OnDrag(PointerEventData eventData)
     {
-        
         MovePreview(eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (cardManager.gameendmanager.Gameover)
+        {
+            return;
+        }
+
         cardManager.UsedCard(index, eventData.position);
 
         if (previewObj != null)
@@ -39,9 +62,11 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             Destroy(previewObj);
         }
 
-        blueAreaRenderer.material.color = normalColor;
+        if (blueAreaRenderer != null)
+        {
+            blueAreaRenderer.material.color = normalColor;
+        }
     }
-
 
     void MovePreview(PointerEventData eventData)
     {
@@ -49,6 +74,7 @@ public class CardDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             return;
         }
+
         Ray ray = Camera.main.ScreenPointToRay(eventData.position);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundMask))

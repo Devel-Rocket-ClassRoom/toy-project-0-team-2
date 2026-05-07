@@ -13,6 +13,7 @@ public abstract class EntityData : ScriptableObject
     public SpecialData SpecialData;
 
     public GameObject model;
+    public GameObject previewmodel;
     public float activateWaitTime;
 }
 
