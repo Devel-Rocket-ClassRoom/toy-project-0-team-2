@@ -68,7 +68,7 @@ public class UnitController : EntityController, IDamageable
         }
     }
 
-    private void Dead()
+    public override void Dead()
     {
         if (cardData.SpecialData != null && cardData.SpecialData.hasDeathrattle)
         {

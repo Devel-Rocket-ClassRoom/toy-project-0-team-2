@@ -74,7 +74,6 @@ public class AttackEntityController : RootController
         if (isNonTarget)
         {
             destination = target;
-            Debug.Log(destination);
         }
         else
         {

@@ -1906,7 +1906,7 @@ Transform:
   m_GameObject: {fileID: 494753408}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14, y: 0, z: -10}
+  m_LocalPosition: {x: 5.5, y: 0, z: -9.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3427,7 +3427,7 @@ Transform:
   m_GameObject: {fileID: 724905059}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.5, y: 0, z: 14}
+  m_LocalPosition: {x: 0, y: 0, z: 13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9469,7 +9469,7 @@ Transform:
   m_GameObject: {fileID: 1006055373}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 0, z: 10}
+  m_LocalPosition: {x: -5.5, y: 0, z: 9.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9972,7 +9972,7 @@ Transform:
   m_GameObject: {fileID: 1150681323}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.5, y: 0, z: -11}
+  m_LocalPosition: {x: 0, y: 0, z: -13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10033,6 +10033,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 212286fdcb65bad41825b9fe2c91b1d6, type: 2}
   - {fileID: 11400000, guid: 56d699d6b715bc1439b247d8d8585226, type: 2}
   arrangementManager: {fileID: 2013357499}
+  isActive: 0
 --- !u!1 &1193562619 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8894958032492249895, guid: 0f97b69a13a7c994cb4deebcabbd9869, type: 3}
@@ -10538,7 +10539,7 @@ Transform:
   m_GameObject: {fileID: 1296969608}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 0, z: -10}
+  m_LocalPosition: {x: -5.5, y: 0, z: -9.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11047,7 +11048,7 @@ Transform:
   m_GameObject: {fileID: 1402690209}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14, y: 0, z: 10}
+  m_LocalPosition: {x: 5.5, y: 0, z: 9.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12126,7 +12127,7 @@ Transform:
   m_GameObject: {fileID: 1747679796}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.5, y: 0, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13378,7 +13379,7 @@ Transform:
   m_GameObject: {fileID: 2013357497}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8.5, y: 0, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13407,6 +13408,7 @@ MonoBehaviour:
   towerPrefab: {fileID: 3513200580512419274, guid: 36465f59d5813c240b6677f02dcd7178, type: 3}
   spellPrefab: {fileID: -516425212405120444, guid: 2a44e87fb34de794db23a50626647354, type: 3}
   KingTower: {fileID: 11400000, guid: 68c36222fc144f548b067464865499d3, type: 2}
+  ArenaTower: {fileID: 11400000, guid: 3a1634a98c24d4e4da5855ebf66b2c86, type: 2}
   RedTeamKing: {fileID: 724905060}
   BlueTeamKing: {fileID: 1150681324}
   RedArena:

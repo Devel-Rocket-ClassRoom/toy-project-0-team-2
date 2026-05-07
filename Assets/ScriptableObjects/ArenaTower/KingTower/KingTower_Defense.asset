@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37767327f3e93714d9a755ae0984fe59, type: 3}
   m_Name: KingTower_Defense
   m_EditorClassIdentifier: Assembly-CSharp::DefenseData
-  health: 4824
+  health: 1
   shiledHealth: 0
   entityType: 12
   radius: 0

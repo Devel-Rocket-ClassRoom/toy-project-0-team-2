@@ -51,5 +51,5 @@ public abstract class EntityController : RootController
     }
 
 
-
+    public abstract void Dead();
 }
