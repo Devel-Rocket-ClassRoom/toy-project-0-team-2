@@ -151,8 +151,6 @@ public class TowerController : EntityController, IDamageable
                     StartCoroutine(entityAttacker.CoAttack(cardData.AttackData, modelPosition.position, target, team));
                     lastAttackTime = Time.time;
                 }
-                if (target != null)
-                        transform.LookAt(target.transform.position);
                 break;
             case EntityState.Sprint:
                 break;
