@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: X-Bow Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: X-Bow
+  cardImage: {fileID: 4588823211049315563, guid: d6ef6808049996c4d89c1aef928d28ba, type: 3}
   elixir: 6
   cardDatas:
   - entityData: {fileID: 11400000, guid: 23498f5fe0024ae4db8232bbb3b4cae2, type: 2}

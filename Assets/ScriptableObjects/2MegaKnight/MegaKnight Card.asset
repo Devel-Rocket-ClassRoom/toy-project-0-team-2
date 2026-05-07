@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: MegaKnight Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: MegaKnight
+  cardImage: {fileID: 4588823211049315563, guid: b6a13d2cdad13da4cb6d4adb1b36cf60, type: 3}
   elixir: 7
   cardDatas:
   - entityData: {fileID: 11400000, guid: bcc48e4a259db8d478130d307da2b0ed, type: 2}

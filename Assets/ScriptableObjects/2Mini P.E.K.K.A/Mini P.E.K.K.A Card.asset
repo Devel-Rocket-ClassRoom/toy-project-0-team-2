@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Mini P.E.K.K.A Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Mini P.E.K.K.A
+  cardImage: {fileID: 4588823211049315563, guid: 83a112fa2b55715479947c16e586dbc0, type: 3}
   elixir: 4
   cardDatas:
   - entityData: {fileID: 11400000, guid: 6b82b49fcf7da9743937c0353e259268, type: 2}

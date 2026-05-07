@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Cannon Card
   m_EditorClassIdentifier: Assembly-CSharp::Card
   cardName: Cannon
+  cardImage: {fileID: 4588823211049315563, guid: 3d8b5693f9427f5419f0d6889cc02750, type: 3}
   elixir: 3
   cardDatas:
   - entityData: {fileID: 11400000, guid: 2ee2b73a2539b1f488a9e832f2fc7315, type: 2}
