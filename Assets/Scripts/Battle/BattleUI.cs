@@ -24,7 +24,6 @@ public class BattleUI : MonoBehaviour
 
     //Ä«µå
     private Color originalColor;
-    public Image[] CardImage = new Image[4];
     public Button[] CardButtons = new Button[4];
     public HandManager handManager;
     public TextMeshProUGUI NextCardNames;
@@ -94,7 +93,7 @@ public class BattleUI : MonoBehaviour
             Image image = card.cardImage.GetComponent<CardImageContainer>().image;
             int cost = card.elixir;
 
-            CardImage[i].sprite = image.sprite;
+            CardButtons[i].GetComponent<Image>().sprite = image.sprite;
 
 
             ColorBlock cb = CardButtons[i].colors;
