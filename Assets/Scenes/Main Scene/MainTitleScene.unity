@@ -2749,6 +2749,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 53394819e9457b6489e082eabcac8e68, type: 2}
   - {fileID: 11400000, guid: 212286fdcb65bad41825b9fe2c91b1d6, type: 2}
   - {fileID: 11400000, guid: 56d699d6b715bc1439b247d8d8585226, type: 2}
+  - {fileID: 11400000, guid: 38ddf7debd633824ea10c05e73332da5, type: 2}
+  - {fileID: 11400000, guid: d4326956a36d4f443882295f34589387, type: 2}
+  - {fileID: 11400000, guid: 7e051c0605ff02542a065795ebe2baa9, type: 2}
+  - {fileID: 11400000, guid: c8eb519a6f32ffe4db1bd0cab1ef7ff0, type: 2}
+  - {fileID: 11400000, guid: cc048f59bc94ede4793ecedc18b520ff, type: 2}
+  - {fileID: 11400000, guid: 7396966b9d279214b8aaac04703996d3, type: 2}
+  - {fileID: 11400000, guid: a675fb13887889a48bc69ec943ac25ba, type: 2}
+  - {fileID: 11400000, guid: f588bcac452c1ce4d992a8ff9f24d1d4, type: 2}
   ScrollContent: {fileID: 335432150}
   CardSlots:
   - {fileID: 293056338}
@@ -2759,7 +2767,6 @@ MonoBehaviour:
   - {fileID: 1233120185}
   - {fileID: 348198680}
   - {fileID: 1397395189}
-  Deck: []
 --- !u!1 &1217868764
 GameObject:
   m_ObjectHideFlags: 0
@@ -2869,6 +2876,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 607036283}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1233120186
 MonoBehaviour:
@@ -3053,17 +3064,6 @@ CanvasRenderer:
   m_GameObject: {fileID: 1295298979}
   m_CullTransparentMesh: 1
 --- !u!1 &1296729010
-  - {fileID: 11400000, guid: 38ddf7debd633824ea10c05e73332da5, type: 2}
-  - {fileID: 11400000, guid: d4326956a36d4f443882295f34589387, type: 2}
-  - {fileID: 11400000, guid: 7e051c0605ff02542a065795ebe2baa9, type: 2}
-  - {fileID: 11400000, guid: c8eb519a6f32ffe4db1bd0cab1ef7ff0, type: 2}
-  - {fileID: 11400000, guid: cc048f59bc94ede4793ecedc18b520ff, type: 2}
-  - {fileID: 11400000, guid: a675fb13887889a48bc69ec943ac25ba, type: 2}
-  - {fileID: 11400000, guid: f588bcac452c1ce4d992a8ff9f24d1d4, type: 2}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4773,6 +4773,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862387429}
   m_CullTransparentMesh: 1
+--- !u!1 &1912949440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1912949442}
+  - component: {fileID: 1912949441}
+  m_Layer: 0
+  m_Name: Deck Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1912949441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912949440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e8f7ddc45802740b1a0f40c4d2348f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeckContainer
+  Deck: []
+--- !u!4 &1912949442
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912949440}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.79219, y: -0, z: 0.18671}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1993069536
 GameObject:
   m_ObjectHideFlags: 0
@@ -5528,3 +5573,4 @@ SceneRoots:
   - {fileID: 1337456723}
   - {fileID: 288063575}
   - {fileID: 459047925}
+  - {fileID: 1912949442}
