@@ -36,9 +36,10 @@ public class BattleUI : MonoBehaviour
     private Image imoticonSub;
     private Image imoticonMain;
 
-
+  
     private void Start()
     {
+
         ElixirSlider.minValue = 0;
         ElixirSlider.maxValue = 10;
         originalColor= Color.white;

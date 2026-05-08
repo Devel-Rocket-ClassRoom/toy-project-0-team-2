@@ -7,6 +7,8 @@ public abstract class UiBaseWindow : MonoBehaviour
     public Button BattleButton;   // 메인(전투 준비) 창으로 이동
     public Button CardDeckButton; // PlayerSelectButtons 팝업 열기
 
+    public SettingUI settingUI;
+
     protected virtual void Awake()
     {
         BattleButton.onClick.AddListener(OnClickBattle);
@@ -30,11 +32,19 @@ public abstract class UiBaseWindow : MonoBehaviour
 
     private void OnClickBattle()
     {
+        settingUI.CloseSetting();
+
         UiManager.Instance.ShowMain();
+
+       
     }
 
     private void OnClickCardDeck()
     {
+        settingUI.CloseSetting();
+
         UiManager.Instance.ShowCard();
+
+      
     }
 }
