@@ -25,7 +25,10 @@ public class UiCardWindow : UiBaseWindow
                 slot.gameObject.AddComponent<UiCardSlot>();
             }
         }
+    }
 
+    private void Start()
+    {
         DeckContainer.Instance.Deck = new CardData[8];
     }
 

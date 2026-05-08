@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Three Musketeers Card
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   cardName: Three Musketeers
-  cardImage: {fileID: 0}
+  cardImage: {fileID: 4588823211049315563, guid: f36de40e286b06c4d908e044ecb3584a, type: 3}
   elixir: 9
   cardDatas:
   - entityData: {fileID: 11400000, guid: 1e490e9a4d0622b47b995b5453f9be50, type: 2}
