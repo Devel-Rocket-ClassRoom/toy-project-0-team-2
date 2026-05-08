@@ -12,6 +12,10 @@ public class AI : MonoBehaviour
     public CardArrangementManager arrangementManager;
     private Team team = Team.RedTeam;
 
+    private float lastTopElixir;
+    private float lastTopElixirSide;
+    private float topElixirTime = 10f;
+
     public bool isActive;
 
     private void Start()
@@ -31,9 +35,47 @@ public class AI : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (elixir.currentElixir > 9.5f)
+        {
+            int min = int.MaxValue, idx = 0;
+
+            for (int i = 0; i < hand.Length; i++)
+            {
+                if (ClassifyCard(hand[i]) != EntityTypeDetail.Magic && hand[i].elixir < min)
+                {
+                    idx = i;
+                    min = hand[i].elixir;
+                }
+            }
+
+            if (lastTopElixirSide > EntityMover.VerticalMidLine)
+            {
+                ArrangementCard(hand[idx], null, new Vector3(EntityMover.VerticalMidLine + 1, 0, 0), ReactMethod.Rear);
+            }
+            else
+            {
+                ArrangementCard(hand[idx], null, new Vector3(EntityMover.VerticalMidLine - 1, 0, 0), ReactMethod.Rear);
+            }
+
+            deck.Enqueue(hand[idx]);
+            hand[idx] = deck.Dequeue();
+        }
+
+        if (Time.time - topElixirTime > 12f)
+        {
+            lastTopElixir = 0;
+        }
+    }
+
     public void PlayerArrangementCard(CardData card, Vector3 point)
     {
         if (!isActive) return;
+
+        if (card.elixir >= lastTopElixir) lastTopElixir = card.elixir;
+        lastTopElixirSide = point.x;
+        topElixirTime = Time.time;
 
         var cardType = ClassifyCard(card);
         Debug.Log(cardType);
@@ -46,8 +88,8 @@ public class AI : MonoBehaviour
             Debug.Log(method);
 
             ArrangementCard(hand[selectedCard], card, point, method);
-            hand[selectedCard] = deck.Dequeue();
             deck.Enqueue(hand[selectedCard]);
+            hand[selectedCard] = deck.Dequeue();
         }
         else
         {

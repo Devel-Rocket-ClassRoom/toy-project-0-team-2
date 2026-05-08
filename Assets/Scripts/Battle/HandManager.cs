@@ -6,12 +6,22 @@ public class HandManager : MonoBehaviour
 {
 
     public Queue<CardData> deckQueue = new Queue<CardData>();
-    public List<CardData> deck = new List<CardData>();
+    private List<CardData> deck = new List<CardData>();
 
     public CardData[] handCards = new CardData[4];
     public Button[] cardButtons = new Button[4];
 
 
+
+    private void Awake()
+    {
+        var deck = DeckContainer.Instance.Deck;
+
+        for (int i = 0; i < deck.Length; i++)
+        {
+            this.deck.Add(deck[i]);
+        }
+    }
 
     private void Start()
     {
