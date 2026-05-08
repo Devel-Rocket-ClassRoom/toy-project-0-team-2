@@ -102,7 +102,6 @@ public class AI : MonoBehaviour
         if (card.cardDatas[0].entityData.DefenseData != null)
         {
             if (card.elixir >= 6
-            && card.cardDatas.Length == 1
             && (card.cardDatas[0].entityData.DefenseData.entityType & (EntityType.Aerial | EntityType.Ground)) != 0)
             {
                 return EntityTypeDetail.BigUnit;

@@ -24,8 +24,7 @@ public class BattleUI : MonoBehaviour
 
     //Ä«µå
     private Color originalColor;
-    public TextMeshProUGUI[] CardNames = new TextMeshProUGUI[4];
-    public TextMeshProUGUI[] CardElixirs = new TextMeshProUGUI[4];
+    public Image[] CardImage = new Image[4];
     public Button[] CardButtons = new Button[4];
     public HandManager handManager;
     public TextMeshProUGUI NextCardNames;
@@ -92,11 +91,10 @@ public class BattleUI : MonoBehaviour
                 continue;
             }
 
-            EntityData data = card.cardDatas[0].entityData;
+            Image image = card.cardImage.GetComponent<CardImageContainer>().image;
             int cost = card.elixir;
 
-            CardNames[i].text = data.name;
-            CardElixirs[i].text = cost.ToString();
+            CardImage[i].sprite = image.sprite;
 
 
             ColorBlock cb = CardButtons[i].colors;
