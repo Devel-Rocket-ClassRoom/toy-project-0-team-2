@@ -26,10 +26,8 @@ public class BattleUI : MonoBehaviour
     private Color originalColor;
     public Button[] CardButtons = new Button[4];
     public HandManager handManager;
-    public TextMeshProUGUI NextCardNames;
-    public TextMeshProUGUI NextCardElixirs;
+    public Image nextCard;
     //¹Ì±¸Çö
-    private Image nextCard;
     private TextMeshProUGUI RedName;
     private Image imoticonSub;
     private Image imoticonMain;
@@ -141,8 +139,7 @@ public class BattleUI : MonoBehaviour
     
         CardData nextCard = handManager.deckQueue.Peek();
 
-        NextCardNames.text = nextCard.cardName;
-        NextCardElixirs.text = nextCard.elixir.ToString();
+        this.nextCard.sprite = nextCard.cardImage.GetComponent<CardImageContainer>().image.sprite;
     }
 
 

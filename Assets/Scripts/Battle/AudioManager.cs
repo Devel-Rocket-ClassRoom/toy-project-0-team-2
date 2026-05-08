@@ -45,4 +45,9 @@ public class TitleAudioManager : MonoBehaviour
         audioSource.mute = mute;
         PlayerPrefs.SetInt("BGM_MUTE", mute ? 1 : 0);
     }
+
+    public void OnDestroy()
+    {
+        Instance = null;
+    }
 }

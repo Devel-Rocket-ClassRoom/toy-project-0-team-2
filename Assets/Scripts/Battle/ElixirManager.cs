@@ -7,6 +7,7 @@ public class ElixirManager : MonoBehaviour
     private const float maxElixir = 10;
     private float regenRate = 0.35f;
     public float currentElixir;
+    public float elixerMult = 1f;
     public timerManager timerManager;
 
 
@@ -25,7 +26,7 @@ public class ElixirManager : MonoBehaviour
         {
             regenRate = 0.7f;
         }
-        currentElixir += Time.deltaTime * regenRate;
+        currentElixir += Time.deltaTime * regenRate * elixerMult;
         currentElixir = Mathf.Clamp(currentElixir, 0, maxElixir);
     }
 
