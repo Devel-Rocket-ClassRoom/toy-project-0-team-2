@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(dotnet csharpier *)"
+    ],
+    "deny": [
+      "Read(./Library/**)",
+      "Read(!./Library/PackageCache/**)",
+      "Read(./Temp/**)",
+      "Read(./Logs/**)",
+      "Read(./obj/**)",
+      "Read(./**/*.csproj)",
+      "Read(./**/*.sln)",
+      "Write(./**/*.meta)",
+      "Edit(./**/packages-lock.json)",
+      "Edit(./**/*.unity)",
+      "Write(./**/*.unity)",
+      "Bash(rm -rf *)"
+    ],
+    "defaultMode": "default"
+  },
+
+      "[csharp]": {
+        "editor.defaultFormatter": "csharpier.csharpier-vscode",
+        "editor.formatOnSave": true
+	    }
+}

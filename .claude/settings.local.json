@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -iE \"\\\\.\\(csproj|sln|slnx|suo|user|userprefs|pidb|booproj|svd|pdb|mdb|opendb|VC\\\\.db|tmp\\)$\")"
+    ]
+  }
+}
