@@ -7,5 +7,7 @@ public interface IDamageable
 
 public enum Team
 {
-    RedTeam, BlueTeam, Neutrality
+    RedTeam,
+    BlueTeam,
+    Neutrality,
 }
