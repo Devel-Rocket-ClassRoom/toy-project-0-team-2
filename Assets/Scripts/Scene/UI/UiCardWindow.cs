@@ -14,6 +14,8 @@ public class UiCardWindow : UiBaseWindow
     public Transform ScrollContent;
     public Transform[] CardSlots;
 
+    private bool _deckLoaded = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -27,7 +29,17 @@ public class UiCardWindow : UiBaseWindow
         }
     }
 
-    private void Start()
+    protected override void OnShow()
+    {
+        if (!_deckLoaded)
+        {
+            _deckLoaded = true;
+            LoadSavedDeck();
+        }
+        OnRefreshCardList();
+    }
+
+    private void LoadSavedDeck()
     {
         DeckContainer.Instance.Deck = new CardData[8];
 
@@ -53,11 +65,6 @@ public class UiCardWindow : UiBaseWindow
         }
     }
 
-    protected override void OnShow()
-    {
-        OnRefreshCardList();
-    }
-
     private void OnRefreshCardList()
     {
         foreach (Transform child in ScrollContent)
@@ -65,12 +72,16 @@ public class UiCardWindow : UiBaseWindow
             Destroy(child.gameObject);
         }
 
-        HashSet<string> equippedCardNames = new HashSet<string>();
+        HashSet<CardData> equippedCards = new HashSet<CardData>();
         foreach (var slot in CardSlots)
         {
-            if (slot.childCount > 0)
+            if (slot.childCount == 0)
+                continue;
+
+            var prefabScript = slot.GetChild(0).GetComponent<UiCardPrefab>();
+            if (prefabScript != null && prefabScript.cardData != null)
             {
-                equippedCardNames.Add(slot.GetChild(0).name.Replace("(Clone)", "").Trim());
+                equippedCards.Add(prefabScript.cardData);
             }
         }
 
@@ -81,7 +92,7 @@ public class UiCardWindow : UiBaseWindow
                 continue;
             }
 
-            if (equippedCardNames.Contains(card.cardName))
+            if (equippedCards.Contains(card))
             {
                 continue;
             }
