@@ -14,6 +14,8 @@ public class UiCardWindow : UiBaseWindow
     public Transform ScrollContent;
     public Transform[] CardSlots;
 
+    private bool _deckLoaded = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -27,14 +29,40 @@ public class UiCardWindow : UiBaseWindow
         }
     }
 
-    private void Start()
-    {
-        DeckContainer.Instance.Deck = new CardData[8];
-    }
-
     protected override void OnShow()
     {
+        if (!_deckLoaded)
+        {
+            _deckLoaded = true;
+            LoadSavedDeck();
+        }
         OnRefreshCardList();
+    }
+
+    private void LoadSavedDeck()
+    {
+        DeckContainer.Instance.Deck = new CardData[8];
+
+        string[] savedNames = DeckContainer.Instance.LoadDeckNames();
+        if (savedNames == null)
+            return;
+
+        for (int i = 0; i < CardSlots.Length && i < savedNames.Length; i++)
+        {
+            if (string.IsNullOrEmpty(savedNames[i]))
+                continue;
+
+            CardData card = CardPrefabs.Find(c => c != null && c.cardName == savedNames[i]);
+            if (card == null)
+                continue;
+
+            var newCard = Instantiate(card.cardImage, CardSlots[i]);
+            newCard.transform.localPosition = Vector3.zero;
+            var prefabScript = newCard.GetComponent<UiCardPrefab>();
+            if (prefabScript == null)
+                prefabScript = newCard.AddComponent<UiCardPrefab>();
+            prefabScript.cardData = card;
+        }
     }
 
     private void OnRefreshCardList()
@@ -44,12 +72,16 @@ public class UiCardWindow : UiBaseWindow
             Destroy(child.gameObject);
         }
 
-        HashSet<string> equippedCardNames = new HashSet<string>();
+        HashSet<CardData> equippedCards = new HashSet<CardData>();
         foreach (var slot in CardSlots)
         {
-            if (slot.childCount > 0)
+            if (slot.childCount == 0)
+                continue;
+
+            var prefabScript = slot.GetChild(0).GetComponent<UiCardPrefab>();
+            if (prefabScript != null && prefabScript.cardData != null)
             {
-                equippedCardNames.Add(slot.GetChild(0).name.Replace("(Clone)", "").Trim());
+                equippedCards.Add(prefabScript.cardData);
             }
         }
 
@@ -60,7 +92,7 @@ public class UiCardWindow : UiBaseWindow
                 continue;
             }
 
-            if (equippedCardNames.Contains(card.cardName))
+            if (equippedCards.Contains(card))
             {
                 continue;
             }
@@ -93,6 +125,12 @@ public class UiCardWindow : UiBaseWindow
             Debug.LogWarning($"덱이 미완성입니다. (현재: {count}/8)");
             return;
         }
+    }
+
+    public void OnClickSaveDeck()
+    {
+        DeckContainer.Instance.SaveDeck(GetEquippedCardDatas());
+        Debug.Log("덱이 저장되었습니다.");
     }
 
     public CardData[] GetEquippedCardDatas()
