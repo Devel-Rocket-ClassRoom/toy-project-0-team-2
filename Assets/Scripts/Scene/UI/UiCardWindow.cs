@@ -30,6 +30,27 @@ public class UiCardWindow : UiBaseWindow
     private void Start()
     {
         DeckContainer.Instance.Deck = new CardData[8];
+
+        string[] savedNames = DeckContainer.Instance.LoadDeckNames();
+        if (savedNames == null)
+            return;
+
+        for (int i = 0; i < CardSlots.Length && i < savedNames.Length; i++)
+        {
+            if (string.IsNullOrEmpty(savedNames[i]))
+                continue;
+
+            CardData card = CardPrefabs.Find(c => c != null && c.cardName == savedNames[i]);
+            if (card == null)
+                continue;
+
+            var newCard = Instantiate(card.cardImage, CardSlots[i]);
+            newCard.transform.localPosition = Vector3.zero;
+            var prefabScript = newCard.GetComponent<UiCardPrefab>();
+            if (prefabScript == null)
+                prefabScript = newCard.AddComponent<UiCardPrefab>();
+            prefabScript.cardData = card;
+        }
     }
 
     protected override void OnShow()
@@ -93,6 +114,12 @@ public class UiCardWindow : UiBaseWindow
             Debug.LogWarning($"덱이 미완성입니다. (현재: {count}/8)");
             return;
         }
+    }
+
+    public void OnClickSaveDeck()
+    {
+        DeckContainer.Instance.SaveDeck(GetEquippedCardDatas());
+        Debug.Log("덱이 저장되었습니다.");
     }
 
     public CardData[] GetEquippedCardDatas()
